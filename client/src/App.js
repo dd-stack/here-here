@@ -12,11 +12,11 @@ export default function App() {
   return (
     <div className="App">
       <BrowserRouter>
+        <Header />
         <Routes>
+          <Route path="/" element={<Write />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Header />} />
-          <Route path="/my-page" element={<MyPage />} />
-          <Route path="/write" element={<Write />} />
+          <Route path="/mypage" element={<MyPage />} />
         </Routes>
       </BrowserRouter>
     </div>
