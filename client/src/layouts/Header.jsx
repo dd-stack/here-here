@@ -19,6 +19,7 @@ const LogoStyle = styled.div`
   cursor: pointer;
 `;
 
+// 로그인이 되었을 때
 const NavListIcon = styled.div`
   margin-right: 20px;
   cursor: pointer;
@@ -28,13 +29,17 @@ const NavListIcon = styled.div`
 `;
 
 export default function Header() {
-  const [NavList, setNavList] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const onClick = () => {
+    setIsOpen(!isOpen);
+  };
 
   return (
     <HeaderWrapper>
       <LogoStyle>여기 여기 붙어라</LogoStyle>
-      <NavListIcon onClick={() => setNavList(!NavList)}>
-        {NavList ? <RxCross1 size="30px" /> : <RxHamburgerMenu size="30px" />}
+      <NavListIcon onClick={onClick}>
+        {isOpen ? <RxCross1 size="30px" /> : <RxHamburgerMenu size="30px" />}
       </NavListIcon>
     </HeaderWrapper>
   );
