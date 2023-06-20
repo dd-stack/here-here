@@ -8,9 +8,13 @@ import Info from "./pages/Info";
 import Making from "./pages/Making";
 import MyPage from "./pages/MyPage";
 
+// import etc
+import GlobalStyles from "./styles/GlobalStyles";
+
 export default function App() {
   return (
     <div className="App">
+      <GlobalStyles />
       <BrowserRouter>
         <Header />
         <Routes>
