@@ -6,6 +6,13 @@ import { RxHamburgerMenu, RxCross1 } from "react-icons/rx";
 import NavList from "../components/NavList";
 
 const HeaderWrapper = styled.div`
+  width: 100%;
+  max-width: 640px;
+  position: fixed;
+  z-index: 1;
+`;
+
+const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -40,14 +47,14 @@ export default function Header() {
   };
 
   return (
-    <>
-      <HeaderWrapper>
+    <HeaderWrapper>
+      <HeaderContainer>
         <LogoStyle>여기 여기 붙어라</LogoStyle>
         <NavListIcon onClick={handleClick}>
           {isOpen ? <RxCross1 size="30px" /> : <RxHamburgerMenu size="30px" />}
         </NavListIcon>
-      </HeaderWrapper>
+      </HeaderContainer>
       <NavList isOpen={isOpen} />
-    </>
+    </HeaderWrapper>
   );
 }
