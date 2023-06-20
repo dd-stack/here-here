@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import styled from "styled-components";
 import { FcCloseUpMode, FcBusinesswoman, FcMinus } from "react-icons/fc";
 
@@ -27,15 +29,17 @@ const ListItems = styled.ul`
   }
 `;
 
-export default function Modal({ isOpen }) {
+export default function Modal({ isOpen, onMakingNavClick, onMypageNavClick }) {
+  const navigate = useNavigate();
+
   return (
     <NavListContainer open={isOpen}>
       <ListItems>
-        <li>
+        <li onClick={onMakingNavClick}>
           <FcCloseUpMode />
           초대장 만들기
         </li>
-        <li>
+        <li onClick={onMypageNavClick}>
           <FcBusinesswoman />
           마이페이지
         </li>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import styled from "styled-components";
 import { RxHamburgerMenu, RxCross1 } from "react-icons/rx";
@@ -40,21 +41,42 @@ const NavListIcon = styled.div`
 `;
 
 export default function Header() {
+  const navigate = useNavigate();
+
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleClick = () => {
+  const handleLogoClick = () => {
+    navigate("/");
+    setIsOpen(false);
+  };
+
+  const handleIconClick = () => {
     setIsOpen(!isOpen);
+  };
+
+  const onMakingNavClick = () => {
+    navigate("/making");
+    setIsOpen(false);
+  };
+
+  const onMypageNavClick = () => {
+    navigate("/mypage");
+    setIsOpen(false);
   };
 
   return (
     <HeaderWrapper>
       <HeaderContainer>
-        <LogoStyle>여기 여기 붙어라</LogoStyle>
-        <NavListIcon onClick={handleClick}>
+        <LogoStyle onClick={handleLogoClick}>여기 여기 붙어라</LogoStyle>
+        <NavListIcon onClick={handleIconClick}>
           {isOpen ? <RxCross1 size="30px" /> : <RxHamburgerMenu size="30px" />}
         </NavListIcon>
       </HeaderContainer>
-      <NavList isOpen={isOpen} />
+      <NavList
+        isOpen={isOpen}
+        onMakingNavClick={onMakingNavClick}
+        onMypageNavClick={onMypageNavClick}
+      />
     </HeaderWrapper>
   );
 }
