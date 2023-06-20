@@ -3,6 +3,8 @@ import { useState } from "react";
 import styled from "styled-components";
 import { RxHamburgerMenu, RxCross1 } from "react-icons/rx";
 
+import NavList from "../components/NavList";
+
 const HeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -30,34 +32,10 @@ const NavListIcon = styled.div`
   }
 `;
 
-const NavListContainer = styled.div`
-  max-height: ${(props) => (props.isOpen ? "240px" : "0")};
-  overflow: hidden;
-  transition: max-height 0.4s ease;
-  box-shadow: 0 1px 2px hsla(0, 0%, 0%, 0.05), 0 1px 4px hsla(0, 0%, 0%, 0.05),
-    0 2px 8px hsla(0, 0%, 0%, 0.05);
-`;
-
-const NavList = styled.ul`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 240px;
-  margin: 0;
-  padding: 0 20px;
-  background-color: #fff;
-  > li {
-    margin: 20px 0;
-    font-size: 18px;
-    cursor: pointer;
-  }
-`;
-
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const onClick = () => {
+  const handleClick = () => {
     setIsOpen(!isOpen);
   };
 
@@ -65,17 +43,11 @@ export default function Header() {
     <>
       <HeaderWrapper>
         <LogoStyle>여기 여기 붙어라</LogoStyle>
-        <NavListIcon onClick={onClick}>
+        <NavListIcon onClick={handleClick}>
           {isOpen ? <RxCross1 size="30px" /> : <RxHamburgerMenu size="30px" />}
         </NavListIcon>
       </HeaderWrapper>
-      <NavListContainer isOpen={isOpen}>
-        <NavList>
-          <li>초대장 만들기</li>
-          <li>마이페이지</li>
-          <li>로그아웃</li>
-        </NavList>
-      </NavListContainer>
+      <NavList isOpen={isOpen} />
     </>
   );
 }
