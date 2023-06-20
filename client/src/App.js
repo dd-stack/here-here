@@ -5,6 +5,7 @@ import Header from "./layouts/Header";
 
 // import pages
 import Info from "./pages/Info";
+import Login from "./pages/Login";
 import Making from "./pages/Making";
 import MyPage from "./pages/MyPage";
 
@@ -19,6 +20,7 @@ export default function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Info />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/making" element={<Making />} />
           <Route path="/mypage" element={<MyPage />} />
         </Routes>
