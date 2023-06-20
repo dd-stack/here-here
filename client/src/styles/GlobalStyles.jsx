@@ -44,6 +44,8 @@ const GlobalStyles = createGlobalStyle`
     margin: 0 auto;
     padding: 0;
     max-width: 640px;
+    box-shadow: 0 1px 2px hsla(0, 0%, 0%, 0.05), 0 1px 4px hsla(0, 0%, 0%, 0.05),
+    0 2px 8px hsla(0, 0%, 0%, 0.05);
   }
 
   img, picture, video, canvas, svg {
