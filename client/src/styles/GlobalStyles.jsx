@@ -14,7 +14,24 @@ const GlobalStyles = createGlobalStyle`
     --error-color: #F45050;
   }
 
+  // 웹 폰트 적용
+  @font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'KyoboHand';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/KyoboHand.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+
   * {
+    font-family: 'Pretendard-Regular';
+    color: var(--font-color);
     // 레이아웃 리셋
     box-sizing: border-box;
   }
@@ -24,9 +41,9 @@ const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    max-width: 640px;
     margin: 0 auto;
     padding: 0;
+    max-width: 640px;
   }
 
   img, picture, video, canvas, svg {

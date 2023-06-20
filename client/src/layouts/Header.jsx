@@ -4,31 +4,27 @@ import styled from "styled-components";
 import { RxHamburgerMenu, RxCross1 } from "react-icons/rx";
 
 const HeaderWrapper = styled.div`
-  height: 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 50px;
   background-color: var(--third-theme-color);
 `;
 
 const LogoStyle = styled.div`
   margin-left: 20px;
+  font-family: "KyoboHand";
+  font-size: 28px;
+  font-weight: 600;
+  cursor: pointer;
 `;
 
 const NavListIcon = styled.div`
   margin-right: 20px;
-  color: var(--first-theme-color);
   cursor: pointer;
-`;
-
-const CustomHamburgerMenu = styled(RxHamburgerMenu)`
-  width: 30px;
-  height: 30px;
-`;
-
-const CustomCross1 = styled(RxCross1)`
-  width: 30px;
-  height: 30px;
+  > svg > path {
+    color: var(--first-theme-color);
+  }
 `;
 
 export default function Header() {
@@ -38,7 +34,7 @@ export default function Header() {
     <HeaderWrapper>
       <LogoStyle>여기 여기 붙어라</LogoStyle>
       <NavListIcon onClick={() => setNavList(!NavList)}>
-        {NavList ? <CustomCross1 /> : <CustomHamburgerMenu />}
+        {NavList ? <RxCross1 size="30px" /> : <RxHamburgerMenu size="30px" />}
       </NavListIcon>
     </HeaderWrapper>
   );
