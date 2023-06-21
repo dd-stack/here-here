@@ -9,6 +9,7 @@ const GlobalStyles = createGlobalStyle`
     --fourth-theme-color: #F1C376;
     
     // 기본 컬러
+    --background-color: #fdfcfa;
     --font-color: #0C0A09;
     --link-color: #0074cc;
     --error-color: #F45050;

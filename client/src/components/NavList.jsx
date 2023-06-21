@@ -1,5 +1,3 @@
-import { useNavigate } from "react-router-dom";
-
 import styled from "styled-components";
 import { FcCloseUpMode, FcBusinesswoman, FcMinus } from "react-icons/fc";
 
@@ -30,8 +28,6 @@ const ListItems = styled.ul`
 `;
 
 export default function Modal({ isOpen, onMakingNavClick, onMypageNavClick }) {
-  const navigate = useNavigate();
-
   return (
     <NavListContainer open={isOpen}>
       <ListItems>
