@@ -15,7 +15,8 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "styled-components": "^6.0.0-rc.3",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "@babel/plugin-proposal-private-property-in-object": "^7.15.0"
   },
   "scripts": {
     "start": "react-scripts start",
