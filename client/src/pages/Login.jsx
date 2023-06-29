@@ -1,6 +1,18 @@
+import { useNavigate } from "react-router-dom";
+
+// axios 관련
+import axios from "../api/core/instance";
+
+// redux 관련
+import { useDispatch } from "react-redux";
+import { setUserInfo, setAccessToken } from "../store";
+
 import styled from "styled-components";
+
+// 아이콘
 import { FcConferenceCall } from "react-icons/fc";
 
+// 이미지
 import kakaoLogin from "../img/kakao-login.png";
 
 const EntireContainer = styled.div`
@@ -42,6 +54,26 @@ const LogoStyle = styled.div`
 `;
 
 export default function Login() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  // 카카오 로그인 요청 (임의로 /login으로 get요청)
+  const handleClick = async () => {
+    try {
+      const response = await axios.get("/login");
+      // 엑세스 토큰 & 유저 정보 저장
+      const token = response.headers.authorization;
+      const user = response.data;
+      dispatch(setAccessToken(token));
+      dispatch(setUserInfo(user));
+      // 홈 화면으로
+      navigate("/");
+    } catch (error) {
+      const status = error?.response?.status;
+      // todo: 에러 코드에 따라 분기 처리
+    }
+  };
+
   return (
     <EntireContainer>
       <LoginContainer>
@@ -52,7 +84,7 @@ export default function Login() {
           <br />
           붙어라
         </LogoStyle>
-        <img src={kakaoLogin} alt="kakao login button" />
+        <img src={kakaoLogin} onClick={handleClick} alt="kakao login button" />
       </LoginContainer>
     </EntireContainer>
   );
