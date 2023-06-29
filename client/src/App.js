@@ -1,3 +1,4 @@
+// 라우터 세팅
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // import layouts
