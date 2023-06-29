@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import styled from "styled-components";
 
@@ -11,18 +11,12 @@ const EntireContainer = styled.div`
   background-color: var(--background-color);
 `;
 
-const LoginButton = styled.button``;
+const LoginButton = styled(Link)``;
 
 export default function Info() {
-  const navigate = useNavigate();
-
-  const handleLoginBtnClick = () => {
-    navigate("/login");
-  };
-
   return (
     <EntireContainer>
-      <LoginButton onClick={handleLoginBtnClick}>로그인하러 가기</LoginButton>
+      <LoginButton to="/login">로그인하러 가기</LoginButton>
     </EntireContainer>
   );
 }
