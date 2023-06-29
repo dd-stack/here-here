@@ -56,7 +56,6 @@ const LoginIcon = styled(Link)`
   margin-right: 20px;
   border: 2px solid #d1c3a8;
   border-radius: 5px;
-  color: var(--first-theme-color);
   background-color: var(--background-color);
 `;
 
