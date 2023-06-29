@@ -39,6 +39,7 @@ export default function Modal({ isOpen, onMakingNavClick, onMypageNavClick }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // 로그아웃
   const handleClick = () => {
     dispatch(setAccessToken(null));
     dispatch(setUserInfo(null));
