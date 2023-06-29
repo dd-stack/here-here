@@ -1,7 +1,12 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+
+// redux 관련
+import { useSelector } from "react-redux";
 
 import styled from "styled-components";
+
+// 아이콘
 import { RxHamburgerMenu, RxCross1 } from "react-icons/rx";
 
 import NavList from "../components/NavList";
@@ -40,8 +45,25 @@ const NavListIcon = styled.div`
   }
 `;
 
+// 로그인이 되지 않았을 때
+const LoginIcon = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 30px;
+  margin-top: 5px;
+  margin-right: 20px;
+  border: 2px solid #d1c3a8;
+  border-radius: 5px;
+  color: var(--first-theme-color);
+  background-color: var(--background-color);
+`;
+
 export default function Header() {
   const navigate = useNavigate();
+
+  let userInfo = useSelector((state) => state.userInfo);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -64,13 +86,17 @@ export default function Header() {
     <HeaderWrapper>
       <HeaderContainer>
         <LogoStyle onClick={handleLogoClick}>여기 여기 붙어라</LogoStyle>
-        <NavListIcon
-          onClick={() => {
-            setIsOpen(!isOpen);
-          }}
-        >
-          {isOpen ? <RxCross1 size="30px" /> : <RxHamburgerMenu size="30px" />}
-        </NavListIcon>
+        {userInfo ? ( // refactor point: 삼항 연산자 중복 -> 더 보기 좋게 쓸 순 없을까?
+          <NavListIcon
+            onClick={() => {
+              setIsOpen(!isOpen);
+            }}
+          >
+            {isOpen ? <RxCross1 size="30px" /> : <RxHamburgerMenu size="30px" />}
+          </NavListIcon>
+        ) : (
+          <LoginIcon to="/login">로그인</LoginIcon>
+        )}
       </HeaderContainer>
       <NavList
         isOpen={isOpen}
