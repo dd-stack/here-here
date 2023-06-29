@@ -50,10 +50,6 @@ export default function Header() {
     setIsOpen(false);
   };
 
-  const handleIconClick = () => {
-    setIsOpen(!isOpen);
-  };
-
   const onMakingNavClick = () => {
     navigate("/making");
     setIsOpen(false);
@@ -68,7 +64,11 @@ export default function Header() {
     <HeaderWrapper>
       <HeaderContainer>
         <LogoStyle onClick={handleLogoClick}>여기 여기 붙어라</LogoStyle>
-        <NavListIcon onClick={handleIconClick}>
+        <NavListIcon
+          onClick={() => {
+            setIsOpen(!isOpen);
+          }}
+        >
           {isOpen ? <RxCross1 size="30px" /> : <RxHamburgerMenu size="30px" />}
         </NavListIcon>
       </HeaderContainer>
