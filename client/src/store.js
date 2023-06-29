@@ -1,12 +1,12 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 
-// 유저 정보 -> 객체 형태
+// 유저 정보
 let userInfo = createSlice({
   name: "userInfo",
-  initialState: null,
+  initialState: {},
   reducers: {
     setUserInfo(state, action) {
-      state.userInfo = action.payload;
+      return action.payload;
     },
   },
 });
@@ -14,10 +14,10 @@ let userInfo = createSlice({
 // 엑세스 토큰
 let accessToken = createSlice({
   name: "accessToken",
-  initialState: null,
+  initialState: "",
   reducers: {
     setAccessToken(state, action) {
-      state.accessToken = action.payload;
+      return action.payload;
     },
   },
 });

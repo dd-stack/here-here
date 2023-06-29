@@ -86,7 +86,7 @@ export default function Header() {
     <HeaderWrapper>
       <HeaderContainer>
         <LogoStyle onClick={handleLogoClick}>여기 여기 붙어라</LogoStyle>
-        {userInfo ? ( // refactor point: 삼항 연산자 중복 -> 더 보기 좋게 쓸 순 없을까?
+        {Object.keys(userInfo).length ? ( // refactor point: 삼항 연산자 중복 -> 더 보기 좋게 쓸 순 없을까?
           <NavListIcon
             onClick={() => {
               setIsOpen(!isOpen);
@@ -100,6 +100,7 @@ export default function Header() {
       </HeaderContainer>
       <NavList
         isOpen={isOpen}
+        setIsOpen={setIsOpen}
         onMakingNavClick={onMakingNavClick}
         onMypageNavClick={onMypageNavClick}
       />

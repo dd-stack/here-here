@@ -8,8 +8,8 @@ export default function MyPage() {
 
   let userInfo = useSelector((state) => state.userInfo);
 
-  // 로그인이 되어 있지 않다면 로그인 화면으로
-  if (userInfo) {
+  // 로그인이 되어 있지 않다면(유저 정보가 빈 객체라면) 로그인 화면으로
+  if (!Object.keys(userInfo).length) {
     navigate("/login");
   }
 

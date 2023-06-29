@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 // redux 관련
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { setUserInfo, setAccessToken } from "../store";
 
 import styled from "styled-components";
@@ -35,15 +35,21 @@ const ListItems = styled.ul`
   }
 `;
 
-export default function Modal({ isOpen, onMakingNavClick, onMypageNavClick }) {
+export default function NavList({ isOpen, setIsOpen, onMakingNavClick, onMypageNavClick }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  let userInfo = useSelector((state) => state.userInfo);
+  console.log(userInfo);
+
   // 로그아웃
   const handleClick = () => {
-    dispatch(setAccessToken(null));
-    dispatch(setUserInfo(null));
+    // 엑세스 토큰 & 유저 정보 초기화
+    dispatch(setAccessToken(""));
+    dispatch(setUserInfo({}));
+    // 홈 화면으로 라우팅, NavList 닫기
     navigate("/");
+    setIsOpen(false);
   };
 
   return (
@@ -57,8 +63,8 @@ export default function Modal({ isOpen, onMakingNavClick, onMypageNavClick }) {
           <FcBusinesswoman />
           마이페이지
         </li>
-        <li>
-          <FcMinus onClick={handleClick} />
+        <li onClick={handleClick}>
+          <FcMinus />
           로그아웃
         </li>
       </ListItems>

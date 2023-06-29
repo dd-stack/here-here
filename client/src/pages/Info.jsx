@@ -23,7 +23,7 @@ export default function Info() {
 
   return (
     <EntireContainer>
-      {userInfo ? (
+      {Object.keys(userInfo).length ? (
         <MakingButton to="/making">초대장 만들러 가기</MakingButton>
       ) : (
         <LoginButton to="/login">로그인하러 가기</LoginButton>

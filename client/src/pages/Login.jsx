@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 // axios 관련
@@ -58,14 +59,18 @@ export default function Login() {
   const dispatch = useDispatch();
 
   let userInfo = useSelector((state) => state.userInfo);
+  console.log(userInfo);
 
-  // 이미 로그인이 되어 있다면 홈 화면으로
-  if (userInfo) {
-    navigate("/");
-  }
+  // 이미 로그인이 되어 있다면(유저 정보가 빈 객체가 아니라면) 홈 화면으로
+  useEffect(() => {
+    if (Object.keys(userInfo).length) {
+      navigate("/");
+    }
+  }, [userInfo, navigate]);
 
   // 카카오 로그인 요청 (임의로 /login으로 get요청)
   const handleClick = async () => {
+    /*
     try {
       const response = await axios.get("/login");
       // 엑세스 토큰 & 유저 정보 저장
@@ -79,6 +84,9 @@ export default function Login() {
       const status = error?.response?.status;
       // todo: 에러 코드에 따라 분기 처리
     }
+    */
+    const user = { name: "kim" };
+    dispatch(setUserInfo(user));
   };
 
   return (
