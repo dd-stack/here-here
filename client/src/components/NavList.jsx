@@ -1,3 +1,9 @@
+import { useNavigate } from "react-router-dom";
+
+// redux 관련
+import { useDispatch } from "react-redux";
+import { setUserInfo, setAccessToken } from "../store";
+
 import styled from "styled-components";
 
 // 아이콘
@@ -30,6 +36,15 @@ const ListItems = styled.ul`
 `;
 
 export default function Modal({ isOpen, onMakingNavClick, onMypageNavClick }) {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleClick = () => {
+    dispatch(setAccessToken(null));
+    dispatch(setUserInfo(null));
+    navigate("/");
+  };
+
   return (
     <NavListContainer open={isOpen}>
       <ListItems>
@@ -42,7 +57,7 @@ export default function Modal({ isOpen, onMakingNavClick, onMypageNavClick }) {
           마이페이지
         </li>
         <li>
-          <FcMinus />
+          <FcMinus onClick={handleClick} />
           로그아웃
         </li>
       </ListItems>
