@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
 
+// redux 관련
+import { useSelector } from "react-redux";
+
 import styled from "styled-components";
 
 const EntireContainer = styled.div`
@@ -13,10 +16,18 @@ const EntireContainer = styled.div`
 
 const LoginButton = styled(Link)``;
 
+const MakingButton = styled(Link)``;
+
 export default function Info() {
+  let userInfo = useSelector((state) => state.userInfo);
+
   return (
     <EntireContainer>
-      <LoginButton to="/login">로그인하러 가기</LoginButton>
+      {userInfo ? (
+        <MakingButton to="/making">초대장 만들러 가기</MakingButton>
+      ) : (
+        <LoginButton to="/login">로그인하러 가기</LoginButton>
+      )}
     </EntireContainer>
   );
 }
