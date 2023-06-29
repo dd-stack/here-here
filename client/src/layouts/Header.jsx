@@ -9,6 +9,7 @@ import styled from "styled-components";
 // 아이콘
 import { RxHamburgerMenu, RxCross1 } from "react-icons/rx";
 
+// 컴포넌트
 import NavList from "../components/NavList";
 
 const HeaderWrapper = styled.div`
