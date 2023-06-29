@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "../api/core/instance";
 
 // redux 관련
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { setUserInfo, setAccessToken } from "../store";
 
 import styled from "styled-components";
@@ -56,6 +56,13 @@ const LogoStyle = styled.div`
 export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  let userInfo = useSelector((state) => state.userInfo);
+
+  // 이미 로그인이 되어 있다면 홈 화면으로
+  if (userInfo) {
+    navigate("/");
+  }
 
   // 카카오 로그인 요청 (임의로 /login으로 get요청)
   const handleClick = async () => {
