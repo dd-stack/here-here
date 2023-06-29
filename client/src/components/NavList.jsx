@@ -1,4 +1,6 @@
 import styled from "styled-components";
+
+// 아이콘
 import { FcCloseUpMode, FcBusinesswoman, FcMinus } from "react-icons/fc";
 
 const NavListContainer = styled.div`

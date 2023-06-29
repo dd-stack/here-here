@@ -11,7 +11,7 @@ let userInfo = createSlice({
   },
 });
 
-// 엑세스 토큰 ->
+// 엑세스 토큰
 let accessToken = createSlice({
   name: "accessToken",
   initialState: null,
@@ -30,6 +30,6 @@ export default configureStore({
   },
 });
 
-// 변경 함수 내보내기
+// 상태 변경 함수 내보내기
 export let { setUserInfo } = userInfo.actions;
 export let { setAccessToken } = accessToken.actions;
