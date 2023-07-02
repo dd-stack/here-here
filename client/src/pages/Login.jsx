@@ -1,12 +1,9 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-// axios 관련
-import axios from "../api/core/instance";
-
 // redux 관련
 import { useSelector, useDispatch } from "react-redux";
-import { setUserInfo, setAccessToken } from "../store";
+import { setToken, setUserInfo } from "../store";
 
 import styled from "styled-components";
 
@@ -15,6 +12,9 @@ import { FcConferenceCall } from "react-icons/fc";
 
 // 이미지
 import kakaoLogin from "../img/kakao-login.png";
+
+// api
+import { login } from "../api/user";
 
 const EntireContainer = styled.div`
   display: flex;
@@ -58,35 +58,32 @@ export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  let userInfo = useSelector((state) => state.userInfo);
-  console.log(userInfo);
+  const isLogin = useSelector((state) => state.user.userInfo);
 
-  // 이미 로그인이 되어 있다면(유저 정보가 빈 객체가 아니라면) 홈 화면으로
+  // 이미 로그인이 되어 있다면 홈 화면으로
   useEffect(() => {
-    if (Object.keys(userInfo).length) {
+    if (isLogin) {
       navigate("/");
     }
-  }, [userInfo, navigate]);
+  }, [isLogin, navigate]);
 
-  // 카카오 로그인 요청 (임의로 /login으로 get요청)
-  const handleClick = async () => {
-    /*
-    try {
-      const response = await axios.get("/login");
-      // 엑세스 토큰 & 유저 정보 저장
-      const token = response.headers.authorization;
-      const user = response.data;
-      dispatch(setAccessToken(token));
-      dispatch(setUserInfo(user));
-      // 홈 화면으로
-      navigate("/");
-    } catch (error) {
-      const status = error?.response?.status;
-      // todo: 에러 코드에 따라 분기 처리
-    }
-    */
-    const user = { name: "kim" };
-    dispatch(setUserInfo(user));
+  // 카카오 로그인 요청
+  const handleClick = () => {
+    login().then((response) => {
+      if (response !== "fail") {
+        // 엑세스 토큰 & 유저 정보 저장
+        const token = response.headers.authorization;
+        const user = response.data;
+        dispatch(setToken(token));
+        dispatch(setUserInfo(user));
+        // 홈 화면으로
+        navigate("/");
+      }
+      if (response === "fail") {
+        // todo: 에러 코드에 따라 분기 처리
+        alert("로그인에 실패했습니다. 자세한 내용은 사이트 관리자에게 문의해 주시길 바랍니다.");
+      }
+    });
   };
 
   return (

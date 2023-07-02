@@ -19,11 +19,11 @@ const LoginButton = styled(Link)``;
 const MakingButton = styled(Link)``;
 
 export default function Info() {
-  let userInfo = useSelector((state) => state.userInfo);
+  const isLogin = useSelector((state) => state.user.userInfo);
 
   return (
     <EntireContainer>
-      {Object.keys(userInfo).length ? (
+      {isLogin ? (
         <MakingButton to="/making">초대장 만들러 가기</MakingButton>
       ) : (
         <LoginButton to="/login">로그인하러 가기</LoginButton>
