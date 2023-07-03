@@ -58,7 +58,7 @@ export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const isLogin = useSelector((state) => state.user.userInfo);
+  const isLogin = useSelector((state) => state.user?.userInfo);
 
   // 이미 로그인이 되어 있다면 홈 화면으로
   useEffect(() => {

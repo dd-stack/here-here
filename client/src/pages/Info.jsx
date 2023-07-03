@@ -19,7 +19,7 @@ const LoginButton = styled(Link)``;
 const MakingButton = styled(Link)``;
 
 export default function Info() {
-  const isLogin = useSelector((state) => state.user.userInfo);
+  const isLogin = useSelector((state) => state.user?.userInfo);
 
   return (
     <EntireContainer>

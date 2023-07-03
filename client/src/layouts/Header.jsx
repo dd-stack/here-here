@@ -63,7 +63,7 @@ const LoginIcon = styled(Link)`
 export default function Header() {
   const navigate = useNavigate();
 
-  const isLogin = useSelector((state) => state.user.userInfo);
+  const isLogin = useSelector((state) => state.user?.userInfo);
 
   const [isOpen, setIsOpen] = useState(false);
 
