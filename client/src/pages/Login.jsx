@@ -69,17 +69,17 @@ export default function Login() {
 
   // 카카오 로그인 요청
   const handleClick = () => {
-    login().then((response) => {
-      if (response !== "fail") {
-        // 엑세스 토큰 & 유저 정보 저장
-        const token = response.headers.authorization;
-        const user = response.data;
+    login().then((result) => {
+      if (result !== "fail") {
+        // 응답받은 내용으로 엑세스 토큰 & 유저 정보 저장
+        const token = result.headers.authorization;
+        const user = result.data;
         dispatch(setToken(token));
         dispatch(setUserInfo(user));
         // 홈 화면으로
         navigate("/");
       }
-      if (response === "fail") {
+      if (result === "fail") {
         // todo: 에러 코드에 따라 분기 처리
         alert("로그인에 실패했습니다. 자세한 내용은 사이트 관리자에게 문의해 주시기 바랍니다.");
       }
