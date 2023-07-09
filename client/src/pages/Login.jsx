@@ -1,20 +1,15 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
-// redux 관련
 import { useSelector, useDispatch } from "react-redux";
 import { setToken, setUserInfo } from "../store";
 
 import styled from "styled-components";
-
-// 아이콘
 import { FcConferenceCall } from "react-icons/fc";
-
-// 이미지
 import kakaoLogin from "../img/kakao-login.png";
 
-// api
 import { login } from "../api/user";
+
+import decodeJwtToken from "../utils/decodeJwtToken";
 
 const EntireContainer = styled.div`
   display: flex;
@@ -67,15 +62,16 @@ export default function Login() {
     }
   }, [isLogin, navigate]);
 
-  // 카카오 로그인 요청
   const handleClick = () => {
     login().then((result) => {
       if (result !== "fail") {
-        // 응답받은 내용으로 엑세스 토큰 & 유저 정보 저장
+        // 응답받은 내용으로 엑세스 토큰 저장
         const token = result.headers.authorization;
-        const user = result.data;
         dispatch(setToken(token));
-        dispatch(setUserInfo(user));
+        // 토큰을 디코딩하여 유저 정보 저장
+        const payload = decodeJwtToken(token);
+        console.log(payload);
+        // dispatch(setUserInfo(user));
         // 홈 화면으로
         navigate("/");
       }
