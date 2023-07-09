@@ -62,6 +62,7 @@ export default function Login() {
     }
   }, [isLogin, navigate]);
 
+  // 카카오 로그인
   const handleClick = () => {
     login().then((result) => {
       if (result !== "fail") {

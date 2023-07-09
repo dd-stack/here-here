@@ -1,15 +1,10 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-
-// redux 관련
 import { useSelector } from "react-redux";
 
 import styled from "styled-components";
-
-// 아이콘
 import { RxHamburgerMenu, RxCross1 } from "react-icons/rx";
 
-// 컴포넌트
 import NavList from "../components/NavList";
 
 const HeaderWrapper = styled.div`

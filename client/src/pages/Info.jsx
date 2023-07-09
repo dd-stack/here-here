@@ -1,6 +1,4 @@
 import { Link } from "react-router-dom";
-
-// redux 관련
 import { useSelector } from "react-redux";
 
 import styled from "styled-components";

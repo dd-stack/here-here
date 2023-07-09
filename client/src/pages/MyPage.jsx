@@ -1,7 +1,5 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
-// redux 관련
 import { useSelector } from "react-redux";
 
 export default function MyPage() {

@@ -1,12 +1,8 @@
 import { useNavigate } from "react-router-dom";
-
-// redux 관련
 import { useDispatch } from "react-redux";
 import { clearToken, clearUserInfo } from "../store";
 
 import styled from "styled-components";
-
-// 아이콘
 import { FcCloseUpMode, FcBusinesswoman, FcMinus } from "react-icons/fc";
 
 const NavListContainer = styled.div`
