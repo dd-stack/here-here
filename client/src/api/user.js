@@ -1,9 +1,9 @@
 import axios from "./core/instance";
 
-// 카카오 로그인 (임의로 /login으로 get요청)
+// 카카오 로그인
 export const login = async () => {
   try {
-    const response = await axios.get("/login");
+    const response = await axios.get("/oauth2/authorization/kakao");
     return response;
   } catch (error) {
     console.log(error);
