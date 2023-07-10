@@ -1,9 +1,8 @@
 import axios from "./core/instance";
 
-// 카카오 로그인
-export const login = async () => {
+export const getUserInfo = async (code) => {
   try {
-    const response = await axios.get("/oauth2/authorization/kakao");
+    const response = await axios.post("/api/token", code);
     return response;
   } catch (error) {
     console.log(error);

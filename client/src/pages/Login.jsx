@@ -1,15 +1,10 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { setToken, setUserInfo } from "../store";
+import { useSelector } from "react-redux";
 
 import styled from "styled-components";
 import { FcConferenceCall } from "react-icons/fc";
 import kakaoLogin from "../img/kakao-login.png";
-
-import { login } from "../api/user";
-
-import decodeJwtToken from "../utils/decodeJwtToken";
 
 const EntireContainer = styled.div`
   display: flex;
@@ -51,7 +46,6 @@ const LogoStyle = styled.div`
 
 export default function Login() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const isLogin = useSelector((state) => state.user?.userInfo);
 
@@ -64,23 +58,7 @@ export default function Login() {
 
   // 카카오 로그인
   const handleClick = () => {
-    login().then((result) => {
-      if (result !== "fail") {
-        // 응답받은 내용으로 엑세스 토큰 저장
-        const token = result.headers.authorization;
-        dispatch(setToken(token));
-        // 토큰을 디코딩하여 유저 정보 저장
-        const payload = decodeJwtToken(token);
-        console.log(payload);
-        // dispatch(setUserInfo(user));
-        // 홈 화면으로
-        navigate("/");
-      }
-      if (result === "fail") {
-        // todo: 에러 코드에 따라 분기 처리
-        alert("로그인에 실패했습니다. 자세한 내용은 사이트 관리자에게 문의해 주시기 바랍니다.");
-      }
-    });
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`;
   };
 
   return (

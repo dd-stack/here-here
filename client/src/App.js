@@ -7,8 +7,9 @@ import Header from "./layouts/Header";
 // import pages
 import Info from "./pages/Info";
 import Login from "./pages/Login";
-import Making from "./pages/Making";
+import Redirection from "./pages/Redirection";
 import MyPage from "./pages/MyPage";
+import Making from "./pages/Making";
 
 // import etc
 import GlobalStyles from "./styles/GlobalStyles";
@@ -22,8 +23,9 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Info />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/making" element={<Making />} />
+          <Route path="/login/oauth2/code/kakao" element={<Redirection />} />
           <Route path="/mypage" element={<MyPage />} />
+          <Route path="/making" element={<Making />} />
         </Routes>
       </BrowserRouter>
     </div>
