@@ -2,7 +2,7 @@ import axios from "axios";
 
 // 인증이 필요없는 경우
 export const instance = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL}`,
+  // baseURL: `${process.env.REACT_APP_BASE_URL}`,
   headers: { "Content-Type": "application/json" },
 });
 
