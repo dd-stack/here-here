@@ -26,8 +26,8 @@ export const authAxios = axios.create({
 // 왜 그냥 헤더에 넣었을 땐 토큰 상태가 최신화되지 못했을까?
 authAxios.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
-    config.headers.Authorization = `Bearer ${token}`;
+    const tokenData = localStorage.getItem("token")?.data;
+    config.headers.Authorization = `Bearer ${tokenData}`;
     return config;
   },
   (error) => {
