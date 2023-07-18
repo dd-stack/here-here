@@ -34,7 +34,7 @@ const userSlice = createSlice({
 
 export default configureStore({
   reducer: {
-    userSlice: userSlice.reducer,
+    user: userSlice.reducer,
   },
 });
 

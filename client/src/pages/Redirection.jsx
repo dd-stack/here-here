@@ -20,9 +20,8 @@ export default function Redirection() {
         const token = result.headers.authorization;
         dispatch(setToken(token));
         // 토큰을 디코딩하여 유저 정보 저장
-        const payload = decodeJwtToken(token);
-        console.log(payload);
-        // dispatch(setUserInfo(user));
+        const user = decodeJwtToken(token);
+        dispatch(setUserInfo(user));
       }
       if (result === "fail") {
         // todo: 에러 코드에 따라 분기 처리

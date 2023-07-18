@@ -2,7 +2,7 @@ import axios from "./core/instance";
 
 export const getUserInfo = async (code) => {
   try {
-    const response = await axios.post("/api/token", code);
+    const response = await axios.post("/api/token", { code });
     return response;
   } catch (error) {
     console.log(error);
