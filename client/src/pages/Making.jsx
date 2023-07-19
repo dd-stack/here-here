@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import DaumPostcode from "react-daum-postcode";
 
 import styled from "styled-components";
 import { FcCameraIdentification } from "react-icons/fc";
 
 import { postImage } from "../api/image";
+import { postCard } from "../api/card";
 import Card from "../components/Card";
 
 const EntireContainer = styled.div`
@@ -85,6 +87,24 @@ const TextLocationBox = styled.div`
   cursor: pointer;
 `;
 
+const SubmitButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 330px;
+  margin: 60px 0 20px 0;
+  > button {
+    width: 150px;
+    height: 50px;
+    border: 2px solid var(--second-theme-color);
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    background-color: var(--third-theme-color);
+    box-shadow: 0 1px 2px hsla(0, 0%, 0%, 0.05), 0 1px 4px hsla(0, 0%, 0%, 0.05),
+      0 2px 8px hsla(0, 0%, 0%, 0.05);
+  }
+`;
+
 export default function Making() {
   const navigate = useNavigate();
 
@@ -97,6 +117,7 @@ export default function Making() {
   //   }
   // }, [isLogin, navigate]);
 
+  const [openPostcode, setOpenPostcode] = useState(false);
   const [card, setCard] = useState({
     title: "",
     startTime: "",
@@ -105,6 +126,7 @@ export default function Making() {
     content: "",
     textLocation: "center",
     textColor: "#0C0A09",
+    location: "",
   });
   console.log(card);
 
@@ -117,6 +139,14 @@ export default function Making() {
     if (value !== card.key) {
       setCard((previous) => ({ ...previous, [key]: value }));
     }
+  };
+
+  const handleClick = () => {
+    setOpenPostcode((current) => !current);
+  };
+
+  const handleSelectAddress = (data) => {
+    setCard((previous) => ({ ...previous, location: data.address }));
   };
 
   const handleImageUpload = (event) => {
@@ -133,6 +163,18 @@ export default function Making() {
     });
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    postCard(card).then((response) => {
+      if (response === "success") {
+        // navigate("/making-success");
+      }
+      if (response === "fail") {
+        alert("초대장 만들기에 실패했습니다.");
+      }
+    });
+  };
+
   const labels = [
     {
       id: "title",
@@ -143,6 +185,7 @@ export default function Making() {
           type="text"
           name="title"
           placeholder="공유 시 보이는 문구입니다."
+          maxLength="50"
           value={card.title}
           onChange={handleInputChange}
           required
@@ -216,7 +259,6 @@ export default function Making() {
           maxLength="150"
           value={card.content}
           onChange={handleInputChange}
-          required
         />
       ),
     },
@@ -255,6 +297,24 @@ export default function Making() {
         </>
       ),
     },
+    {
+      id: "location",
+      title: "장소(선택) :",
+      children: (
+        <>
+          <input
+            id="location"
+            type="text"
+            name="location"
+            placeholder="주소를 검색해 주세요."
+            value={card.location}
+            onClick={handleClick}
+            readOnly
+          />
+          <button onClick={handleClick}>검색</button>
+        </>
+      ),
+    },
   ];
 
   return (
@@ -263,12 +323,23 @@ export default function Making() {
         <span>(미리 보기)</span>
         <Card card={card} />
       </CardContainer>
-      {labels.map((label) => (
-        <InputWrapper key={label.id}>
-          <label htmlFor={label.id}>{label.title}</label>
-          <InputItems>{label.children}</InputItems>
-        </InputWrapper>
-      ))}
+      <form onSubmit={handleSubmit}>
+        {labels.map((label) => (
+          <InputWrapper key={label.id}>
+            <label htmlFor={label.id}>{label.title}</label>
+            <InputItems>{label.children}</InputItems>
+          </InputWrapper>
+        ))}
+        {openPostcode && (
+          <DaumPostcode
+            onComplete={handleSelectAddress}
+            autoClose={true} // 값을 선택할 경우 자동 닫힘
+          />
+        )}
+        <SubmitButtonWrapper>
+          <button type="submit">초대장 만들기</button>
+        </SubmitButtonWrapper>
+      </form>
     </EntireContainer>
   );
 }
