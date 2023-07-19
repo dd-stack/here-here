@@ -327,11 +327,11 @@ export default function Making() {
   ];
 
   return (
-    <>
+    <EntireContainer>
       {submitSuccess ? (
         <MakingSuccess cardId={cardId} />
       ) : (
-        <EntireContainer>
+        <>
           <CardContainer>
             <span>(미리 보기)</span>
             <Card card={card} />
@@ -355,8 +355,8 @@ export default function Making() {
               </button>
             </SubmitButtonWrapper>
           </form>
-        </EntireContainer>
+        </>
       )}
-    </>
+    </EntireContainer>
   );
 }
