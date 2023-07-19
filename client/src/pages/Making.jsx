@@ -118,6 +118,7 @@ export default function Making() {
   // }, [isLogin, navigate]);
 
   const [openPostcode, setOpenPostcode] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   const [card, setCard] = useState({
     title: "",
     startTime: "",
@@ -165,12 +166,15 @@ export default function Making() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setDisabled(true);
     postCard(card).then((response) => {
       if (response === "success") {
         // navigate("/making-success");
+        setDisabled(false);
       }
       if (response === "fail") {
         alert("초대장 만들기에 실패했습니다.");
+        setDisabled(false);
       }
     });
   };
@@ -337,7 +341,9 @@ export default function Making() {
           />
         )}
         <SubmitButtonWrapper>
-          <button type="submit">초대장 만들기</button>
+          <button type="submit" disabled={disabled}>
+            초대장 만들기
+          </button>
         </SubmitButtonWrapper>
       </form>
     </EntireContainer>
