@@ -11,6 +11,7 @@ const GlobalStyles = createGlobalStyle`
     // 기본 컬러
     --background-color: #fdfcfa;
     --font-color: #0C0A09;
+    --gray-color: #9E9E9E;
     --link-color: #0074cc;
     --error-color: #F45050;
   }
