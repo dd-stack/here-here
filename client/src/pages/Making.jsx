@@ -49,6 +49,7 @@ const InputItems = styled.div`
 const ColorBox = styled.div`
   height: 50px;
   width: 50px;
+  border: 1px solid var(--gray-color);
   background-color: ${(props) => props.color};
   cursor: pointer;
 `;
@@ -82,10 +83,6 @@ const TextLocationBox = styled.div`
   width: 50px;
   border: 1px solid var(--gray-color);
   cursor: pointer;
-`;
-
-const TextColorBox = styled(ColorBox)`
-  border: 1px solid var(--gray-color);
 `;
 
 export default function Making() {
@@ -215,9 +212,9 @@ export default function Making() {
       title: "텍스트 색 :",
       children: (
         <>
-          <TextColorBox color="#fdfcfa" onClick={() => handleBoxChange("textColor", "#fdfcfa")} />
-          <TextColorBox color="#9E9E9E" onClick={() => handleBoxChange("textColor", "#9E9E9E")} />
-          <TextColorBox color="#0C0A09" onClick={() => handleBoxChange("textColor", "#0C0A09")} />
+          <ColorBox color="#fdfcfa" onClick={() => handleBoxChange("textColor", "#fdfcfa")} />
+          <ColorBox color="#9E9E9E" onClick={() => handleBoxChange("textColor", "#9E9E9E")} />
+          <ColorBox color="#0C0A09" onClick={() => handleBoxChange("textColor", "#0C0A09")} />
           <ColorInput
             id="textColor"
             type="color"
