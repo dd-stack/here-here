@@ -99,6 +99,8 @@ export default function Making() {
 
   const [card, setCard] = useState({
     title: "",
+    startTime: "",
+    endTime: "",
     background: "#fff",
     content: "",
     textLocation: "center",
@@ -142,6 +144,34 @@ export default function Making() {
           name="title"
           placeholder="공유 시 보이는 문구입니다."
           value={card.title}
+          onChange={handleInputChange}
+          required
+        />
+      ),
+    },
+    {
+      id: "startTime",
+      title: "시작 날짜 :",
+      children: (
+        <input
+          id="startTime"
+          type="datetime-local"
+          name="startTime"
+          value={card.startTime}
+          onChange={handleInputChange}
+          required
+        />
+      ),
+    },
+    {
+      id: "endTime",
+      title: "종료 날짜 :",
+      children: (
+        <input
+          id="endTime"
+          type="datetime-local"
+          name="endTime"
+          value={card.endTime}
           onChange={handleInputChange}
           required
         />
