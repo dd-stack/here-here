@@ -9,6 +9,7 @@ import { FcCameraIdentification } from "react-icons/fc";
 import { postImage } from "../api/image";
 import { postCard } from "../api/card";
 import Card from "../components/Card";
+import MakingSuccess from "../components/MakingSuccess";
 
 const EntireContainer = styled.div`
   display: flex;
@@ -117,8 +118,6 @@ export default function Making() {
   //   }
   // }, [isLogin, navigate]);
 
-  const [openPostcode, setOpenPostcode] = useState(false);
-  const [disabled, setDisabled] = useState(false);
   const [card, setCard] = useState({
     title: "",
     startTime: "",
@@ -130,6 +129,10 @@ export default function Making() {
     location: "",
   });
   console.log(card);
+  const [disabled, setDisabled] = useState(false);
+  const [openPostcode, setOpenPostcode] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [cardId, setCardId] = useState(null);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -167,12 +170,14 @@ export default function Making() {
   const handleSubmit = (event) => {
     event.preventDefault();
     setDisabled(true);
-    postCard(card).then((response) => {
-      if (response === "success") {
-        // navigate("/making-success");
+    postCard(card).then((result) => {
+      if (result !== "fail") {
+        // 데이터 오는 형식 임의로
+        setCardId(result.data.id);
+        setSubmitSuccess(true);
         setDisabled(false);
       }
-      if (response === "fail") {
+      if (result === "fail") {
         alert("초대장 만들기에 실패했습니다.");
         setDisabled(false);
       }
@@ -322,30 +327,36 @@ export default function Making() {
   ];
 
   return (
-    <EntireContainer>
-      <CardContainer>
-        <span>(미리 보기)</span>
-        <Card card={card} />
-      </CardContainer>
-      <form onSubmit={handleSubmit}>
-        {labels.map((label) => (
-          <InputWrapper key={label.id}>
-            <label htmlFor={label.id}>{label.title}</label>
-            <InputItems>{label.children}</InputItems>
-          </InputWrapper>
-        ))}
-        {openPostcode && (
-          <DaumPostcode
-            onComplete={handleSelectAddress}
-            autoClose={true} // 값을 선택할 경우 자동 닫힘
-          />
-        )}
-        <SubmitButtonWrapper>
-          <button type="submit" disabled={disabled}>
-            초대장 만들기
-          </button>
-        </SubmitButtonWrapper>
-      </form>
-    </EntireContainer>
+    <>
+      {submitSuccess ? (
+        <MakingSuccess cardId={cardId} />
+      ) : (
+        <EntireContainer>
+          <CardContainer>
+            <span>(미리 보기)</span>
+            <Card card={card} />
+          </CardContainer>
+          <form onSubmit={handleSubmit}>
+            {labels.map((label) => (
+              <InputWrapper key={label.id}>
+                <label htmlFor={label.id}>{label.title}</label>
+                <InputItems>{label.children}</InputItems>
+              </InputWrapper>
+            ))}
+            {openPostcode && (
+              <DaumPostcode
+                onComplete={handleSelectAddress}
+                autoClose={true} // 값을 선택할 경우 자동 닫힘
+              />
+            )}
+            <SubmitButtonWrapper>
+              <button type="submit" disabled={disabled}>
+                초대장 만들기
+              </button>
+            </SubmitButtonWrapper>
+          </form>
+        </EntireContainer>
+      )}
+    </>
   );
 }
