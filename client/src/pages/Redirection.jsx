@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import { setToken, setUserInfo } from "../store";
 
 import { getUserInfo } from "../api/user";
-
 import decodeJwtToken from "../utils/decodeJwtToken";
 
 export default function Redirection() {

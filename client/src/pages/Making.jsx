@@ -6,7 +6,6 @@ import styled from "styled-components";
 import { FcCameraIdentification } from "react-icons/fc";
 
 import { postImage } from "../api/image";
-
 import Card from "../components/Card";
 
 const EntireContainer = styled.div`
@@ -110,26 +109,14 @@ export default function Making() {
   });
   console.log(card);
 
-  const handleChange = (event) => {
+  const handleInputChange = (event) => {
     const { name, value } = event.target;
     setCard((previous) => ({ ...previous, [name]: value }));
   };
 
-  const handleColorChange = (color) => {
-    if (color !== card.background) {
-      setCard((previous) => ({ ...previous, background: color }));
-    }
-  };
-
-  const handleTextLocationChange = (location) => {
-    if (location !== card.textLocation) {
-      setCard((previous) => ({ ...previous, textLocation: location }));
-    }
-  };
-
-  const handleTextColorChange = (color) => {
-    if (color !== card.textColor) {
-      setCard((previous) => ({ ...previous, textColor: color }));
+  const handleBoxChange = (key, value) => {
+    if (value !== card.key) {
+      setCard((previous) => ({ ...previous, [key]: value }));
     }
   };
 
@@ -158,7 +145,7 @@ export default function Making() {
           name="title"
           placeholder="공유 시 보이는 문구입니다."
           value={card.title}
-          onChange={handleChange}
+          onChange={handleInputChange}
           required
         />
       ),
@@ -168,18 +155,18 @@ export default function Making() {
       title: "배경 :",
       children: (
         <>
-          <ColorBox color="#F1CBD2" onClick={() => handleColorChange("#F1CBD2")} />
-          <ColorBox color="#F2C9B7" onClick={() => handleColorChange("#F2C9B7")} />
-          <ColorBox color="#EFDA92" onClick={() => handleColorChange("#EFDA92")} />
-          <ColorBox color="#B5D9CD" onClick={() => handleColorChange("#B5D9CD")} />
-          <ColorBox color="#C3D0D7" onClick={() => handleColorChange("#C3D0D7")} />
-          <ColorBox color="#B2B2CD" onClick={() => handleColorChange("#B2B2CD")} />
+          <ColorBox color="#F1CBD2" onClick={() => handleBoxChange("background", "#F1CBD2")} />
+          <ColorBox color="#F2C9B7" onClick={() => handleBoxChange("background", "#F2C9B7")} />
+          <ColorBox color="#EFDA92" onClick={() => handleBoxChange("background", "#EFDA92")} />
+          <ColorBox color="#B5D9CD" onClick={() => handleBoxChange("background", "#B5D9CD")} />
+          <ColorBox color="#C3D0D7" onClick={() => handleBoxChange("background", "#C3D0D7")} />
+          <ColorBox color="#B2B2CD" onClick={() => handleBoxChange("background", "#B2B2CD")} />
           <ColorInput
             id="background"
             type="color"
             name="background"
             value={card.background}
-            onChange={handleChange}
+            onChange={handleInputChange}
           />
           <ImageInput>
             <label htmlFor="imageInput">
@@ -201,7 +188,7 @@ export default function Making() {
           placeholder="일정, 준비물, 초대 문구 등 상세 내용을 적어주세요. (최대 150자)"
           maxLength="150"
           value={card.content}
-          onChange={handleChange}
+          onChange={handleInputChange}
           required
         />
       ),
@@ -211,9 +198,15 @@ export default function Making() {
       title: "텍스트 위치 :",
       children: (
         <>
-          <TextLocationBox onClick={() => handleTextLocationChange("top")}>위</TextLocationBox>
-          <TextLocationBox onClick={() => handleTextLocationChange("center")}>중간</TextLocationBox>
-          <TextLocationBox onClick={() => handleTextLocationChange("bottom")}>아래</TextLocationBox>
+          <TextLocationBox onClick={() => handleBoxChange("textLocation", "top")}>
+            위
+          </TextLocationBox>
+          <TextLocationBox onClick={() => handleBoxChange("textLocation", "center")}>
+            중간
+          </TextLocationBox>
+          <TextLocationBox onClick={() => handleBoxChange("textLocation", "bottom")}>
+            아래
+          </TextLocationBox>
         </>
       ),
     },
@@ -222,15 +215,15 @@ export default function Making() {
       title: "텍스트 색 :",
       children: (
         <>
-          <TextColorBox color="#fdfcfa" onClick={() => handleTextColorChange("#fdfcfa")} />
-          <TextColorBox color="#9E9E9E" onClick={() => handleTextColorChange("#9E9E9E")} />
-          <TextColorBox color="#0C0A09" onClick={() => handleTextColorChange("#0C0A09")} />
+          <TextColorBox color="#fdfcfa" onClick={() => handleBoxChange("textColor", "#fdfcfa")} />
+          <TextColorBox color="#9E9E9E" onClick={() => handleBoxChange("textColor", "#9E9E9E")} />
+          <TextColorBox color="#0C0A09" onClick={() => handleBoxChange("textColor", "#0C0A09")} />
           <ColorInput
             id="textColor"
             type="color"
             name="textColor"
             value={card.textColor}
-            onChange={handleChange}
+            onChange={handleInputChange}
           />
         </>
       ),
