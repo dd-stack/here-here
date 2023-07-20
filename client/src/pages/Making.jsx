@@ -8,7 +8,7 @@ import { FcCameraIdentification } from "react-icons/fc";
 
 import { postImage } from "../api/image";
 import { postCard } from "../api/card";
-import Card from "../components/Card";
+import CardCardView from "../components/CardView";
 import MakingSuccess from "../components/MakingSuccess";
 
 const EntireContainer = styled.div`
@@ -131,8 +131,8 @@ export default function Making() {
   console.log(card);
   const [disabled, setDisabled] = useState(false);
   const [openPostcode, setOpenPostcode] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
-  const [cardId, setCardId] = useState(null);
+  const [submitSuccess, setSubmitSuccess] = useState(true);
+  const [cardId, setCardId] = useState(1);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -327,14 +327,14 @@ export default function Making() {
   ];
 
   return (
-    <EntireContainer>
+    <>
       {submitSuccess ? (
         <MakingSuccess cardId={cardId} />
       ) : (
-        <>
+        <EntireContainer>
           <CardContainer>
             <span>(미리 보기)</span>
-            <Card card={card} />
+            <CardCardView card={card} />
           </CardContainer>
           <form onSubmit={handleSubmit}>
             {labels.map((label) => (
@@ -355,8 +355,8 @@ export default function Making() {
               </button>
             </SubmitButtonWrapper>
           </form>
-        </>
+        </EntireContainer>
       )}
-    </EntireContainer>
+    </>
   );
 }

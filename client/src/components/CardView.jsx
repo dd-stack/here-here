@@ -32,7 +32,7 @@ const CardContent = styled.div`
   white-space: pre-wrap;
 `;
 
-export default function Card({ card }) {
+export default function CardView({ card }) {
   return (
     <CardContainer color={card.background} location={card.textLocation}>
       <CardContent color={card.textColor}>{card.content}</CardContent>
