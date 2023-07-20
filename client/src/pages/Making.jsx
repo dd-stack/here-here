@@ -131,8 +131,8 @@ export default function Making() {
   console.log(card);
   const [disabled, setDisabled] = useState(false);
   const [openPostcode, setOpenPostcode] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(true);
-  const [cardId, setCardId] = useState(1);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [cardId, setCardId] = useState(null);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
