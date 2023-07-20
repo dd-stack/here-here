@@ -18,7 +18,7 @@ export const fileAxios = axios.create({
 
 // 인증이 필요한 경우
 export const authAxios = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL}`,
+  // baseURL: `${process.env.REACT_APP_BASE_URL}`,
 });
 
 // 요청 전 헤더에 토큰을 추가하는 인터셉터 추가
