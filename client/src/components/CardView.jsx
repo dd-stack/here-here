@@ -17,7 +17,7 @@ const CardContainer = styled.div`
   justify-content: center;
   height: 330px;
   width: 330px;
-  background: ${(props) => (props.color.startsWith("#") ? props.color : `url(${props.bgcolor})`)};
+  background: ${(props) => (props.color.startsWith("#") ? props.color : `url(${props.color})`)};
   background-size: cover;
   background-position: center;
   box-shadow: 0 1px 2px hsla(0, 0%, 0%, 0.05), 0 1px 4px hsla(0, 0%, 0%, 0.05),
