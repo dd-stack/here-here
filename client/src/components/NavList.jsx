@@ -40,7 +40,7 @@ export default function NavList({ isOpen, setIsOpen, onMakingNavClick, onMypageN
     // 엑세스 토큰 & 유저 정보 삭제
     dispatch(clearToken());
     dispatch(clearUserInfo());
-    // 홈 화면으로 라우팅, NavList 닫기
+    // 홈 화면으로 라우팅(새로고침이 나으려나?), NavList 닫기
     navigate("/");
     setIsOpen(false);
   };
