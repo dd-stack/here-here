@@ -31,11 +31,11 @@ export default function KakaoMap({ location }) {
         map.setCenter(coords);
       }
     });
-  }, []);
+  }, [location]);
 
   return (
     <div>
-      <div id="map" style={{ width: "500px", height: "400px" }} ref={mapContainerRef} />
+      <div id="map" style={{ width: "350px", height: "280px" }} ref={mapContainerRef} />
     </div>
   );
 }
