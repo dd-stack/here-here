@@ -6,7 +6,7 @@ export default function KakaoMap({ location }) {
   useEffect(() => {
     const mapOptions = {
       center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-      level: 3,
+      level: 5,
     };
 
     // 지도 생성
@@ -35,7 +35,7 @@ export default function KakaoMap({ location }) {
 
   return (
     <div>
-      <div id="map" style={{ width: "350px", height: "280px" }} ref={mapContainerRef} />
+      <div id="map" style={{ width: "330px", height: "330px" }} ref={mapContainerRef} />
     </div>
   );
 }
