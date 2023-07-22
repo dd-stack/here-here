@@ -29,7 +29,7 @@ const ItemText = styled.span`
 `;
 
 export default function Card() {
-  const { cardId } = useParams(null);
+  const { id } = useParams();
 
   //   const [card, setCard] = useState({
   //     title: "",
@@ -81,7 +81,7 @@ export default function Card() {
           <KakaoMap location={location} />
         </>
       )}
-      <SnsShare cardId={cardId} />
+      <SnsShare cardId={id} />
     </EntireContainer>
   );
 }

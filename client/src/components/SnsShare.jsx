@@ -111,7 +111,7 @@ export default function SnsShare({ cardId }) {
 
     setTimeout(() => {
       setIsCopied(false);
-    }, 1500);
+    }, 1600);
   };
 
   return (
