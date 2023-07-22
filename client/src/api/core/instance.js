@@ -10,7 +10,7 @@ export default instance;
 
 // form-data 의 경우
 export const fileAxios = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL}`,
+  // baseURL: `${process.env.REACT_APP_BASE_URL}`,
   headers: {
     "Content-Type": "multipart/form-data",
   },
