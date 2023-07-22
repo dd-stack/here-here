@@ -8,8 +8,7 @@ import { FcCameraIdentification } from "react-icons/fc";
 
 import { postImage } from "../api/image";
 import { postCard } from "../api/card";
-import CardCardView from "../components/CardView";
-import MakingSuccess from "../components/MakingSuccess";
+import CardView from "../components/CardView";
 
 const EntireContainer = styled.div`
   display: flex;
@@ -111,12 +110,12 @@ export default function Making() {
 
   const isLogin = useSelector((state) => state.user?.userInfo);
 
-  // // 로그인이 되어 있지 않다면 로그인 화면으로
-  // useEffect(() => {
-  //   if (!isLogin) {
-  //     navigate("/login");
-  //   }
-  // }, [isLogin, navigate]);
+  // 로그인이 되어 있지 않다면 로그인 화면으로
+  useEffect(() => {
+    if (!isLogin) {
+      navigate("/login");
+    }
+  }, [isLogin, navigate]);
 
   const [card, setCard] = useState({
     title: "",
@@ -131,8 +130,6 @@ export default function Making() {
   console.log(card);
   const [disabled, setDisabled] = useState(false);
   const [openPostcode, setOpenPostcode] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
-  const [cardId, setCardId] = useState(null);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -157,11 +154,11 @@ export default function Making() {
     const formData = new FormData();
     formData.append("file", event.target.files[0]);
     // 만약에 이미 url이 들어 있다면 해당 이미지 삭제 후 업로드 요청
-    postImage(formData).then((response) => {
-      if (response !== "fail") {
-        setCard((previous) => ({ ...previous, background: response.image }));
+    postImage(formData).then((result) => {
+      if (result !== "fail") {
+        setCard((previous) => ({ ...previous, background: result.image }));
       }
-      if (response === "fail") {
+      if (result === "fail") {
         alert("이미지 등록에 실패했습니다.");
       }
     });
@@ -173,8 +170,8 @@ export default function Making() {
     postCard(card).then((result) => {
       if (result !== "fail") {
         // 데이터 오는 형식 임의로
-        setCardId(result.data.id);
-        setSubmitSuccess(true);
+        const cardId = result.data.id;
+        navigate(`/card/${cardId}`);
         setDisabled(false);
       }
       if (result === "fail") {
@@ -193,8 +190,8 @@ export default function Making() {
           id="title"
           type="text"
           name="title"
-          placeholder="공유 시 보이는 문구입니다."
-          maxLength="50"
+          placeholder="캘린더 등록 시 보이는 문구입니다."
+          maxLength="20"
           value={card.title}
           onChange={handleInputChange}
           required
@@ -327,36 +324,30 @@ export default function Making() {
   ];
 
   return (
-    <>
-      {submitSuccess ? (
-        <MakingSuccess cardId={cardId} />
-      ) : (
-        <EntireContainer>
-          <CardContainer>
-            <span>(미리 보기)</span>
-            <CardCardView card={card} />
-          </CardContainer>
-          <form onSubmit={handleSubmit}>
-            {labels.map((label) => (
-              <InputWrapper key={label.id}>
-                <label htmlFor={label.id}>{label.title}</label>
-                <InputItems>{label.children}</InputItems>
-              </InputWrapper>
-            ))}
-            {openPostcode && (
-              <DaumPostcode
-                onComplete={handleSelectAddress}
-                autoClose={true} // 값을 선택할 경우 자동 닫힘
-              />
-            )}
-            <SubmitButtonWrapper>
-              <button type="submit" disabled={disabled}>
-                초대장 만들기
-              </button>
-            </SubmitButtonWrapper>
-          </form>
-        </EntireContainer>
-      )}
-    </>
+    <EntireContainer>
+      <CardContainer>
+        <span>(미리 보기)</span>
+        <CardView card={card} />
+      </CardContainer>
+      <form onSubmit={handleSubmit}>
+        {labels.map((label) => (
+          <InputWrapper key={label.id}>
+            <label htmlFor={label.id}>{label.title}</label>
+            <InputItems>{label.children}</InputItems>
+          </InputWrapper>
+        ))}
+        {openPostcode && (
+          <DaumPostcode
+            onComplete={handleSelectAddress}
+            autoClose={true} // 값을 선택할 경우 자동 닫힘
+          />
+        )}
+        <SubmitButtonWrapper>
+          <button type="submit" disabled={disabled}>
+            초대장 만들기
+          </button>
+        </SubmitButtonWrapper>
+      </form>
+    </EntireContainer>
   );
 }
