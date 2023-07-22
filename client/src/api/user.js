@@ -11,3 +11,5 @@ export const getUserInfo = async (code) => {
 };
 
 // todo: 로그아웃도 통신 필요?
+
+// todo: 회원탈퇴 기능 구현

@@ -12,7 +12,7 @@ export const postImage = async (formData) => {
 
 // export const deleteImage = async (url) => {
 //   try {
-//     await fileAxios.delete("/image", { data: { image: url } });
+//     await fileAxios.delete("/image", { image: url });
 //     return "success";
 //   } catch (error) {
 //     console.log(error);
