@@ -9,7 +9,7 @@ const SnsShareContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 330px;
-  margin: 100px 0 50px 0;
+  margin-top: 70px;
   padding: 30px 0;
   border: 2px solid var(--third-theme-color);
   border-radius: 10px;
@@ -49,7 +49,7 @@ const NotificationText = styled.span`
   transform: translate(-50%, -50%);
   padding: 10px;
   border-radius: 10px;
-  background-color: var(--third-theme-color);
+  background-color: #fff;
   z-index: 2;
   opacity: ${(props) => (props.visible ? 1 : 0)};
   transition: opacity 0.3s ease-in-out;
