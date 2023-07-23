@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { format } from "date-fns";
 
 import styled from "styled-components";
+import Swal from "sweetalert2";
 
 import { getCard } from "../api/card";
 import CardView from "../components/CardView";
@@ -86,12 +87,21 @@ export default function Card() {
 
   const handleClick = () => {
     if (!isLogin) {
-      // eslint-disable-next-line no-restricted-globals, no-unused-expressions
-      confirm(
-        "\n로그인이 필요한 서비스입니다.\n\n카카오로 간편하게 로그인한 후, 톡캘린더를 연동하고 \n받은 초대장을 관리해 보세요!"
-      )
-        ? navigate("/login")
-        : null;
+      Swal.fire({
+        title: "로그인이 필요한 서비스입니다.",
+        text: "카카오로 간편하게 로그인한 후, 톡캘린더를 연동하고 받은 초대장을 관리해 보세요!",
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonColor: "var(--link-color)",
+        confirmButtonText: "확인",
+        cancelButtonText: "취소",
+        padding: "20px 40px 40px",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/login");
+        }
+        // 로그인 한 후엔 원래 페이지로 돌아오기
+      });
     }
     if (isLogin) {
       // 1. 톡캘린더 일정 등록 요청

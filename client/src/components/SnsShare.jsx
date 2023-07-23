@@ -48,6 +48,7 @@ const NotificationText = styled.span`
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 10px;
+  border: 1px solid var(--gray-color);
   border-radius: 10px;
   background-color: #fff;
   z-index: 2;
