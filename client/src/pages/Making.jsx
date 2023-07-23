@@ -219,7 +219,10 @@ export default function Making() {
           type="datetime-local"
           name="startTime"
           value={card.startTime}
-          onChange={handleInputChange}
+          onChange={(event) => {
+            handleInputChange(event);
+            setCard((previous) => ({ ...previous, endTime: "" })); // 시작 날짜가 변경되면 종료 날짜를 초기화
+          }}
           min={new Date().toISOString().slice(0, 16)} // 현재 시간 이후만 선택 가능
           required
         />
@@ -235,6 +238,7 @@ export default function Making() {
           name="endTime"
           value={card.endTime}
           onChange={handleInputChange}
+          disabled={!card.startTime} // 시작 날짜가 선택되지 않은 경우에는 비활성화
           min={card.startTime} // 시작 날짜 이후만 선택 가능
           required
         />
