@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import DaumPostcode from "react-daum-postcode";
 
 import styled from "styled-components";
+import Swal from "sweetalert2";
 import { FcCameraIdentification } from "react-icons/fc";
 
 import { postImage } from "../api/image";
@@ -167,18 +168,29 @@ export default function Making() {
   const handleSubmit = (event) => {
     event.preventDefault();
     setDisabled(true);
-    postCard(card).then((result) => {
-      if (result !== "fail") {
-        // 데이터 오는 형식 임의로
-        const cardId = result.data.id;
-        navigate(`/card/${cardId}`);
-        setDisabled(false);
-      }
-      if (result === "fail") {
-        alert("초대장 만들기에 실패했습니다.");
-        setDisabled(false);
-      }
+
+    Swal.fire({
+      text: "초대장을 만드는 중입니다.",
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: true,
+      padding: "20px 40px 40px",
     });
+
+    setTimeout(() => {
+      postCard(card).then((result) => {
+        if (result !== "fail") {
+          // 데이터 오는 형식 임의로
+          const cardId = result.data.id;
+          navigate(`/card/${cardId}`);
+          setDisabled(false);
+        }
+        if (result === "fail") {
+          alert("초대장 만들기에 실패했습니다.");
+          setDisabled(false);
+        }
+      });
+    }, 1500);
   };
 
   const labels = [
