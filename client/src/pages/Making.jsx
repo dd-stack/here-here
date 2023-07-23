@@ -220,6 +220,7 @@ export default function Making() {
           name="startTime"
           value={card.startTime}
           onChange={handleInputChange}
+          min={new Date().toISOString().slice(0, 16)} // 현재 시간 이후만 선택 가능
           required
         />
       ),
@@ -234,6 +235,7 @@ export default function Making() {
           name="endTime"
           value={card.endTime}
           onChange={handleInputChange}
+          min={card.startTime} // 시작 날짜 이후만 선택 가능
           required
         />
       ),
