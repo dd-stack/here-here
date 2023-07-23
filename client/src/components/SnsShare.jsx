@@ -40,6 +40,7 @@ const KakaoButtonContainer = styled.div`
   height: 50px;
   border-radius: 25px;
   overflow: hidden;
+  cursor: pointer;
 `;
 
 const NotificationText = styled.span`
@@ -62,30 +63,26 @@ export default function SnsShare({ cardId }) {
   const [isCopied, setIsCopied] = useState(false);
 
   useEffect(() => {
-    // 최신 Kakao SDK 로드
     const kakaoScript = document.createElement("script");
-    kakaoScript.src = "https://t1.kakaocdn.net/kakao_js_sdk/2.3.0/kakao.min.js";
-    kakaoScript.integrity =
-      "sha384-70k0rrouSYPWJt7q9rSTKpiTfX6USlMYjZUtr1Du+9o4cGvhPAWxngdtVZDdErlh";
-    kakaoScript.crossOrigin = "anonymous";
+    kakaoScript.src = "https://developers.kakao.com/sdk/js/kakao.js";
     kakaoScript.async = true;
     document.body.appendChild(kakaoScript);
 
-    kakaoScript.onload = () => {
+    return () => {
+      document.body.removeChild(kakaoScript);
+    };
+  }, []);
+
+  const handleKakaoClick = () => {
+    if (window.Kakao) {
       const Kakao = window.Kakao;
+
       // 초기화되지 않았다면 초기화
       if (!Kakao.isInitialized()) {
         Kakao.init(process.env.REACT_APP_JAVASCRIPT_KEY);
       }
-    };
-  }, []);
 
-  useEffect(() => {
-    // 카카오 링크 버튼 생성
-    if (window.Kakao && document.querySelector("#kakaotalk-sharing-btn")) {
-      const Kakao = window.Kakao;
-      Kakao.Share.createDefaultButton({
-        container: "#kakaotalk-sharing-btn",
+      Kakao.Share.sendDefault({
         objectType: "feed",
         content: {
           title: "띵동! 초대장이 도착했어요 ~🎵",
@@ -96,17 +93,10 @@ export default function SnsShare({ cardId }) {
             webUrl: url,
           },
         },
-        buttons: [
-          {
-            title: "자세히 보기",
-            link: {
-              webUrl: url,
-            },
-          },
-        ],
+        buttonTitle: "자세히 보기",
       });
     }
-  }, [url]);
+  };
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(url);
@@ -125,13 +115,11 @@ export default function SnsShare({ cardId }) {
           <FaLink size={24} />
         </LinkShareContainer>
         <NotificationText visible={isCopied}>링크가 복사되었습니다.</NotificationText>
-        <KakaoButtonContainer>
-          <a id="kakaotalk-sharing-btn" href="javascript:;">
-            <img
-              src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
-              alt="카카오톡 공유 보내기 버튼"
-            />
-          </a>
+        <KakaoButtonContainer onClick={handleKakaoClick}>
+          <img
+            src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
+            alt="카카오톡 공유 보내기 버튼"
+          />
         </KakaoButtonContainer>
         <FacebookShareButton url={url}>
           <FacebookIcon size={50} round={true}></FacebookIcon>
