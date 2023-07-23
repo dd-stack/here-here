@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { format } from "date-fns";
 
 import styled from "styled-components";
@@ -28,8 +29,24 @@ const ItemText = styled.span`
   line-height: 1.5;
 `;
 
+const JoinButton = styled.button`
+  width: 150px;
+  height: 50px;
+  margin-top: 150px;
+  border: 2px solid var(--second-theme-color);
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  background-color: var(--third-theme-color);
+  box-shadow: 0 1px 2px hsla(0, 0%, 0%, 0.05), 0 1px 4px hsla(0, 0%, 0%, 0.05),
+    0 2px 8px hsla(0, 0%, 0%, 0.05);
+`;
+
 export default function Card() {
+  const navigate = useNavigate();
   const { id } = useParams();
+
+  const isLogin = useSelector((state) => state.user?.userInfo);
 
   //   const [card, setCard] = useState({
   //     title: "",
@@ -67,6 +84,21 @@ export default function Card() {
   //     });
   //   }, []);
 
+  const handleClick = () => {
+    if (!isLogin) {
+      // eslint-disable-next-line no-restricted-globals, no-unused-expressions
+      confirm(
+        "\n로그인이 필요한 서비스입니다.\n\n카카오로 간편하게 로그인한 후, 톡캘린더를 연동하고 \n받은 초대장을 관리해 보세요!"
+      )
+        ? navigate("/login")
+        : null;
+    }
+    if (isLogin) {
+      // 1. 톡캘린더 일정 등록 요청
+      // 2. 내가 받은 초대장 목록 업데이트 요청
+    }
+  };
+
   return (
     <EntireContainer>
       <CardView card={card} />
@@ -81,6 +113,9 @@ export default function Card() {
           <KakaoMap location={location} />
         </>
       )}
+      <JoinButton type="button" onClick={handleClick}>
+        수락하기
+      </JoinButton>
       <SnsShare cardId={id} />
     </EntireContainer>
   );
