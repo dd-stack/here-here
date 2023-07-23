@@ -51,6 +51,8 @@ const NotificationText = styled.span`
   border-radius: 10px;
   background-color: var(--third-theme-color);
   z-index: 2;
+  opacity: ${(props) => (props.visible ? 1 : 0)};
+  transition: opacity 0.3s ease-in-out;
 `;
 
 export default function SnsShare({ cardId }) {
@@ -111,7 +113,7 @@ export default function SnsShare({ cardId }) {
 
     setTimeout(() => {
       setIsCopied(false);
-    }, 1600);
+    }, 1500);
   };
 
   return (
@@ -121,7 +123,7 @@ export default function SnsShare({ cardId }) {
         <LinkShareContainer onClick={copyToClipboard}>
           <FaLink size={24} />
         </LinkShareContainer>
-        {isCopied && <NotificationText>링크가 복사되었습니다.</NotificationText>}
+        <NotificationText visible={isCopied}>링크가 복사되었습니다.</NotificationText>
         <KakaoButtonContainer>
           <a id="kakaotalk-sharing-btn" href="javascript:;">
             <img
