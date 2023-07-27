@@ -49,41 +49,45 @@ export default function Card() {
 
   const isLogin = useSelector((state) => state.user?.userInfo);
 
-  //   const [card, setCard] = useState({
-  //     title: "",
-  //     startTime: "",
-  //     endTime: "",
-  //     background: "#fff",
-  //     content: "",
-  //     textLocation: "center",
-  //     textColor: "#0C0A09",
-  //     location: "",
-  //   });
-
-  const card = {
-    title: "소고기 파티",
-    startTime: "2023-07-23T12:00",
-    endTime: "2023-07-23T14:00",
-    background: "#EFDA92",
-    content: "준비물: 입\n\n우리집에서 소고기 꾸어먹자아아",
+  const [card, setCard] = useState({
+    title: "",
+    startTime: "",
+    endTime: "",
+    background: "#fff",
+    content: "",
     textLocation: "center",
     textColor: "#0C0A09",
-    location: "서울특별시 강남구 역삼동 825-25",
-  };
-  const { location } = card;
-  const formattedStartTime = format(new Date(card.startTime), "yyyy년 MM월 dd일 a hh:mm");
-  const formattedEndTime = format(new Date(card.endTime), "yyyy년 MM월 dd일 a hh:mm");
+    location: "",
+  });
 
-  //   useEffect(() => {
-  //     getCard().then((result) => {
-  //       if (result !== "fail") {
-  //         setCard(result.data);
-  //       }
-  //       if (result === "fail") {
-  //         alert("초대장 불러오기에 실패했습니다.");
-  //       }
-  //     });
-  //   }, []);
+  const { location } = card;
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+
+  useEffect(() => {
+    // 컴포넌트가 처음 로드될 때 스크롤을 페이지 제일 위로 이동
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    getCard(id).then((result) => {
+      if (result !== "fail") {
+        console.log(result.data);
+        setCard(result.data);
+        // 날짜 포맷 변경
+        const formattedStartTime = format(
+          new Date(result.data.startTime),
+          "yyyy년 MM월 dd일 a hh:mm"
+        );
+        const formattedEndTime = format(new Date(result.data.endTime), "yyyy년 MM월 dd일 a hh:mm");
+        setStartTime(formattedStartTime);
+        setEndTime(formattedEndTime);
+      }
+      if (result === "fail") {
+        alert("초대장 불러오기에 실패했습니다.");
+      }
+    });
+  }, [id]);
 
   const handleClick = () => {
     if (!isLogin) {
@@ -99,8 +103,9 @@ export default function Card() {
       }).then((result) => {
         if (result.isConfirmed) {
           navigate("/login");
+        } else {
+          navigate(`/card/${id}`);
         }
-        // 로그인 한 후엔 원래 페이지로 돌아오기
       });
     }
     if (isLogin) {
@@ -114,8 +119,8 @@ export default function Card() {
       <CardView card={card} />
       <TitleText>- 일시 -</TitleText>
       <ItemText>
-        {formattedStartTime}
-        <br /> ~ {formattedEndTime}
+        {startTime}
+        <br /> ~ {endTime}
       </ItemText>
       {location.length === 0 ? null : (
         <>
