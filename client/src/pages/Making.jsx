@@ -7,7 +7,7 @@ import styled from "styled-components";
 import Swal from "sweetalert2";
 import { FcCameraIdentification } from "react-icons/fc";
 
-import { postImage } from "../api/image";
+import { postImage, deleteImage } from "../api/image";
 import { postCard } from "../api/card";
 import CardView from "../components/CardView";
 
@@ -128,9 +128,9 @@ export default function Making() {
     textColor: "#0C0A09",
     location: "",
   });
-  console.log(card);
   const [disabled, setDisabled] = useState(false);
   const [openPostcode, setOpenPostcode] = useState(false);
+  console.log(card);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -138,9 +138,32 @@ export default function Making() {
   };
 
   const handleBoxChange = (key, value) => {
-    if (value !== card.key) {
-      setCard((previous) => ({ ...previous, [key]: value }));
+    setCard((previous) => ({ ...previous, [key]: value }));
+  };
+
+  const handleColorChange = (value) => {
+    // 이미 이미지 url이 들어 있다면 해당 이미지 삭제 후 색으로 변경
+    if (!card.background.startsWith("#")) {
+      deleteImage(card.background);
     }
+    setCard((previous) => ({ ...previous, background: value }));
+  };
+
+  const handleImageChange = (event) => {
+    const formData = new FormData();
+    formData.append("file", event.target.files[0]);
+    // 이미 이미지 url이 들어 있다면 해당 이미지 삭제 후 업로드 요청
+    if (!card.background.startsWith("#")) {
+      deleteImage(card.background);
+    }
+    postImage(formData).then((result) => {
+      if (result !== "fail") {
+        setCard((previous) => ({ ...previous, background: result.data }));
+      }
+      if (result === "fail") {
+        alert("이미지 등록에 실패했습니다.");
+      }
+    });
   };
 
   const handleClick = () => {
@@ -151,20 +174,6 @@ export default function Making() {
     setCard((previous) => ({ ...previous, location: data.address }));
   };
 
-  const handleImageUpload = (event) => {
-    const formData = new FormData();
-    formData.append("file", event.target.files[0]);
-    // 만약에 이미 url이 들어 있다면 해당 이미지 삭제 후 업로드 요청
-    postImage(formData).then((result) => {
-      if (result !== "fail") {
-        setCard((previous) => ({ ...previous, background: result.image }));
-      }
-      if (result === "fail") {
-        alert("이미지 등록에 실패했습니다.");
-      }
-    });
-  };
-
   const handleSubmit = (event) => {
     event.preventDefault();
     setDisabled(true);
@@ -172,7 +181,7 @@ export default function Making() {
     Swal.fire({
       text: "초대장을 만드는 중입니다.",
       showConfirmButton: false,
-      timer: 1500,
+      timer: 1200,
       timerProgressBar: true,
       padding: "20px 40px 40px",
     });
@@ -180,7 +189,6 @@ export default function Making() {
     setTimeout(() => {
       postCard(card).then((result) => {
         if (result !== "fail") {
-          // 데이터 오는 형식 임의로
           const cardId = result.data.id;
           navigate(`/card/${cardId}`);
           setDisabled(false);
@@ -190,7 +198,7 @@ export default function Making() {
           setDisabled(false);
         }
       });
-    }, 1500);
+    }, 1200);
   };
 
   const labels = [
@@ -249,12 +257,12 @@ export default function Making() {
       title: "배경 :",
       children: (
         <>
-          <ColorBox color="#F1CBD2" onClick={() => handleBoxChange("background", "#F1CBD2")} />
-          <ColorBox color="#F2C9B7" onClick={() => handleBoxChange("background", "#F2C9B7")} />
-          <ColorBox color="#EFDA92" onClick={() => handleBoxChange("background", "#EFDA92")} />
-          <ColorBox color="#B5D9CD" onClick={() => handleBoxChange("background", "#B5D9CD")} />
-          <ColorBox color="#C3D0D7" onClick={() => handleBoxChange("background", "#C3D0D7")} />
-          <ColorBox color="#B2B2CD" onClick={() => handleBoxChange("background", "#B2B2CD")} />
+          <ColorBox color="#F1CBD2" onClick={() => handleColorChange("#F1CBD2")} />
+          <ColorBox color="#F2C9B7" onClick={() => handleColorChange("#F2C9B7")} />
+          <ColorBox color="#EFDA92" onClick={() => handleColorChange("#EFDA92")} />
+          <ColorBox color="#B5D9CD" onClick={() => handleColorChange("#B5D9CD")} />
+          <ColorBox color="#C3D0D7" onClick={() => handleColorChange("#C3D0D7")} />
+          <ColorBox color="#B2B2CD" onClick={() => handleColorChange("#B2B2CD")} />
           <ColorInput
             id="background"
             type="color"
@@ -266,7 +274,7 @@ export default function Making() {
             <label htmlFor="imageInput">
               <FcCameraIdentification size="50px" />
             </label>
-            <input id="imageInput" type="file" accept="image/*" onChange={handleImageUpload} />
+            <input id="imageInput" type="file" accept="image/*" onChange={handleImageChange} />
           </ImageInput>
         </>
       ),
@@ -335,7 +343,9 @@ export default function Making() {
             onClick={handleClick}
             readOnly
           />
-          <button onClick={handleClick}>검색</button>
+          <button type="button" onClick={handleClick}>
+            검색
+          </button>
         </>
       ),
     },
@@ -355,10 +365,12 @@ export default function Making() {
           </InputWrapper>
         ))}
         {openPostcode && (
-          <DaumPostcode
-            onComplete={handleSelectAddress}
-            autoClose={true} // 값을 선택할 경우 자동 닫힘
-          />
+          <div>
+            <DaumPostcode
+              onComplete={handleSelectAddress}
+              autoClose={true} // 값을 선택할 경우 자동 닫힘
+            />
+          </div>
         )}
         <SubmitButtonWrapper>
           <button type="submit" disabled={disabled}>
