@@ -36,6 +36,7 @@ public class KakaoController {
         public ResponseEntity<?> createToken(@RequestBody Map<String, String> payload) throws JsonProcessingException {
 
         String code = payload.get("code");
+        log.info("code : {}", code);
 
         Map<String, String> tokens = getTokensFromKakao(code);
 
