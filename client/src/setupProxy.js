@@ -8,4 +8,18 @@ module.exports = function (app) {
       changeOrigin: true, //대상 서버 구성에 따라 호스트 헤더가 변경되도록 설정하는 부분
     })
   );
+  app.use(
+    "/image",
+    createProxyMiddleware({
+      target: `${process.env.REACT_APP_BASE_URL}`,
+      changeOrigin: true,
+    })
+  );
+  app.use(
+    "/making",
+    createProxyMiddleware({
+      target: `${process.env.REACT_APP_BASE_URL}`,
+      changeOrigin: true,
+    })
+  );
 };
