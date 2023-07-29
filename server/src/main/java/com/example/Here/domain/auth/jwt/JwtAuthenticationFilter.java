@@ -1,45 +1,55 @@
 package com.example.Here.domain.auth.jwt;
 
-import com.example.Here.domain.auth.repository.RefreshTokenRepository;
-import com.example.Here.domain.member.entity.Member;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final RefreshTokenRepository redisRepository;
+
+
+    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if(authentication != null && authentication instanceof OAuth2AuthenticationToken) {
-            OAuth2AuthenticationToken auth2AuthenticationToken = (OAuth2AuthenticationToken) authentication;
-            Member member = (Member) auth2AuthenticationToken.getPrincipal();
-
-            String accessToken = jwtTokenProvider.generateAccessToken(member);
-            String refreshToken = jwtTokenProvider.generateRefreshToken(member);
-
-            redisRepository.save(member.getEmail(), refreshToken);
-
-            response.setHeader("Authorization", "Bearer " + accessToken);
-            response.setHeader("Refresh", refreshToken);
-            response.setHeader("Access-Control-Expose-Headers", accessToken);
+        String token = resolveToken(request);
+        if (token != null && jwtTokenProvider.validateToken(token)) {
+            Authentication auth = jwtTokenProvider.getAuthentication(token);
+            SecurityContextHolder.getContext().setAuthentication(auth);
+        } else if (token != null) {
+            String refreshToken = request.getHeader("RefreshToken");
+            if (jwtTokenProvider.validateRefreshToken(refreshToken)) {
+                String newToken = jwtTokenProvider.createAccessTokenWithRefreshToken(refreshToken);
+                response.setHeader("Authorization", "Bearer " + newToken);
+            } else {
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or expired refresh token");
+                return;
+            }
+        } else {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or expired token");
+            return;
         }
-
         filterChain.doFilter(request, response);
     }
+
+
+    private String resolveToken(HttpServletRequest req) {
+        String bearerToken = req.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
 }
+

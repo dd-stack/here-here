@@ -2,6 +2,8 @@ package com.example.Here.domain.member.service;
 
 import com.example.Here.domain.member.entity.Member;
 import com.example.Here.domain.member.repository.MemberRepository;
+import com.example.Here.global.exception.BusinessLogicException;
+import com.example.Here.global.exception.ExcepotionCode;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -31,5 +33,9 @@ public class MemberService {
                     .build();
             return memberRepository.save(newMember);
         }
+    }
+
+    public Member getMember(String email) {
+        return memberRepository.findByEmail(email).orElseThrow(() -> new BusinessLogicException(ExcepotionCode.MEMBER_NOT_FOUND));
     }
 }

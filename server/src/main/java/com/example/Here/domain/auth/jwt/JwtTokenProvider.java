@@ -1,14 +1,19 @@
 package com.example.Here.domain.auth.jwt;
 
+import com.example.Here.domain.auth.repository.RefreshTokenRepository;
 import com.example.Here.domain.member.entity.Member;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.example.Here.domain.member.service.MemberService;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 
@@ -16,8 +21,11 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class JwtTokenProvider {
@@ -32,8 +40,17 @@ public class JwtTokenProvider {
     @Value("${jwt.refresh-token-expiration-minutes}")
     private int refreshTokenExpirationMinutes;
 
+    private final MemberService memberService;
 
-    public JwtTokenProvider(@Value("${jwt.key}") String secretKey){
+    private final RefreshTokenRepository refreshTokenRepository;
+
+    private final StringRedisTemplate stringRedisTemplate;
+
+
+    public JwtTokenProvider(@Value("${jwt.key}") String secretKey, MemberService memberService, RefreshTokenRepository refreshTokenRepository, StringRedisTemplate stringRedisTemplate){
+        this.memberService = memberService;
+        this.refreshTokenRepository = refreshTokenRepository;
+        this.stringRedisTemplate = stringRedisTemplate;
 
         String base64Key = Encoders.BASE64.encode(secretKey.getBytes(StandardCharsets.UTF_8));
         byte[] keyBytes = Decoders.BASE64.decode(base64Key);
@@ -48,7 +65,10 @@ public class JwtTokenProvider {
     }
 
     public String generateRefreshToken(Member member){
-        return buildToken(member, refreshTokenExpirationMinutes);
+        String refreshToken = buildToken(member, refreshTokenExpirationMinutes);
+        stringRedisTemplate.opsForValue().set(member.getEmail() + ":refresh", refreshToken, refreshTokenExpirationMinutes, TimeUnit.MINUTES);
+
+        return refreshToken;
     }
 
     private String buildToken(Member member, int expirationMinutes){
@@ -65,6 +85,77 @@ public class JwtTokenProvider {
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
+
+    public boolean validateToken(String token) {
+        try {
+            Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            if (claims.getBody().getExpiration().before(new Date())) {
+                return false;
+            }
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new RuntimeException("Expired or invalid JWT token");
+        }
+    }
+
+    public Authentication getAuthentication(String token) {
+        try {
+            Claims claims = parseClaims(token);
+            String email = claims.get("email", String.class);
+
+            if (email == null || email.isEmpty()) {
+                throw new IllegalArgumentException("Invalid token: no email claim");
+            }
+
+            Member member = memberService.getMember(email);
+
+            if (member == null) {
+                throw new UsernameNotFoundException("No user found with email: " + email);
+            }
+
+            return new UsernamePasswordAuthenticationToken(member, "", Collections.emptyList());
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new BadCredentialsException("Failed to decode token", e);
+        }
+    }
+
+
+    public String createAccessTokenWithRefreshToken(String refreshToken) {
+        if(!validateRefreshToken(refreshToken)) {
+            throw new RuntimeException("Invalid or expired refresh token");
+        }
+
+        Claims claims = parseClaims(refreshToken);
+        String email = claims.get("email", String.class);
+        Member member = memberService.getMember(email);
+        return generateAccessToken(member);
+    }
+
+    public boolean validateRefreshToken(String refreshToken) {
+        try {
+            Claims claims = parseClaims(refreshToken);
+            String email = claims.get("email", String.class);
+
+            // 토큰에 이메일이 없으면 false를 반환
+            if (email == null || email.isEmpty()) {
+                return false;
+            }
+
+            String redisRefreshToken = stringRedisTemplate.opsForValue().get(email + ":refresh");
+
+            // Redis에 저장된 토큰이 없으면 false를 반환
+            if (redisRefreshToken == null) {
+                return false;
+            }
+
+            // 클라이언트가 제출한 토큰이 Redis에 저장된 토큰과 일치하면 true를 반환
+            return refreshToken.equals(redisRefreshToken);
+        } catch (JwtException | IllegalArgumentException e) {
+            // 토큰 파싱 중 오류가 발생하면 false를 반환
+            return false;
+        }
+    }
+
 
     public Claims parseClaims(String jws){
         return Jwts.parserBuilder()

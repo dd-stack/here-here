@@ -1,9 +1,14 @@
 package com.example.Here.domain.card.entity;
 
+import com.example.Here.domain.invitation.entity.Invitation;
+import com.example.Here.domain.member.entity.Member;
 import com.example.Here.global.audit.BaseTime;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -38,6 +43,13 @@ public class Card extends BaseTime {
 
     @Column(nullable = true)
     private String location;
+
+    @ManyToOne
+    @JoinColumn(name = "creator_id")
+    private Member creator;
+
+    @OneToMany(mappedBy = "card")
+    private List<Invitation> invitations = new ArrayList<>();
 
 
     @Builder

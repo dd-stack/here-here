@@ -1,6 +1,6 @@
 package com.example.Here.domain.auth.config;
 
-import com.example.Here.domain.auth.hendler.Oauth2MemberSuccessHandler;
+import com.example.Here.domain.auth.jwt.JwtAuthenticationFilter;
 import com.example.Here.domain.auth.jwt.JwtTokenProvider;
 import com.example.Here.domain.auth.repository.RefreshTokenRepository;
 import com.example.Here.domain.member.repository.MemberRepository;
@@ -37,7 +37,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 
         http.csrf(csrf -> csrf.disable())
-            .headers(headers -> headers.frameOptions(frame -> frame.disable()));
+            .headers(headers -> headers.frameOptions(frame -> frame.disable()))
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), JwtAuthenticationFilter.class);
 
         return http.build();
 
