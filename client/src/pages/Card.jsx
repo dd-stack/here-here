@@ -46,6 +46,7 @@ const JoinButton = styled.button`
 export default function Card() {
   const navigate = useNavigate();
   const { id } = useParams();
+  sessionStorage.setItem("cardId", id);
 
   const isLogin = useSelector((state) => state.user?.userInfo);
 

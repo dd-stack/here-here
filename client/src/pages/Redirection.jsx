@@ -26,8 +26,12 @@ export default function Redirection() {
         // todo: 에러 코드에 따라 분기 처리
         alert("로그인에 실패했습니다. 자세한 내용은 사이트 관리자에게 문의해 주시기 바랍니다.");
       }
-      // 이전 화면으로 돌아가게 해야 하지 않을까?
-      navigate("/");
+      // 이후 페이지 이동
+      if (sessionStorage.getItem("cardId")) {
+        navigate(`/card/${sessionStorage.getItem("cardId")}`);
+      } else {
+        navigate("/");
+      }
     });
   }, []);
 
