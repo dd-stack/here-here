@@ -13,13 +13,13 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api")
 @Slf4j
-public class KakaoController {
+public class TokenController {
 
     private final JwtTokenProvider jwtTokenProvider;
 
     private final KakaoService kakaoService;
 
-    public KakaoController(JwtTokenProvider jwtTokenProvider, KakaoService kakaoService) {
+    public TokenController(JwtTokenProvider jwtTokenProvider, KakaoService kakaoService) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.kakaoService = kakaoService;
     }
@@ -58,6 +58,16 @@ public class KakaoController {
         httpHeaders.add("RefreshToken", "Bearer " + refreshJwtToken);
 
         return new ResponseEntity<>(httpHeaders, HttpStatus.OK);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refreshAccessToken(@RequestHeader("RefreshToken") String refreshToken) {
+        if (jwtTokenProvider.validateRefreshToken(refreshToken)) {
+            String newAccessToken = jwtTokenProvider.createAccessTokenWithRefreshToken(refreshToken);
+            return ResponseEntity.ok(newAccessToken);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 시간이 만료됐습니다. 다시 로그인해주세요.");
+        }
     }
 
 

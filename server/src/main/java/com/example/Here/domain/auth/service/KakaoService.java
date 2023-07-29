@@ -185,6 +185,29 @@ public class KakaoService {
         return objectMapper.readValue(responseEntity.getBody(), new TypeReference<Map<String, String>>() {});
     }
 
+    public void logoutKakaoToken(String email) {
+        // 이메일로 카카오 액세스 토큰을 가져오는 로직을 구현해야 합니다.
+        String kakaoAccessToken = getKakaoTokenByEmail(email);
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + kakaoAccessToken);
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        restTemplate.exchange("https://kapi.kakao.com/v1/user/logout", HttpMethod.POST, entity, String.class);
+    }
+
+    private String getKakaoTokenByEmail(String email) {
+        String encryptedRefreshToken = stringRedisTemplate.opsForValue().get(email + ":kakaoAccessToken");
+        return decryptToken(encryptedRefreshToken);
+    }
+
+    private void removeKakaoToken(String email) {
+        stringRedisTemplate.delete(email + ":kakaoAccessToken");
+        stringRedisTemplate.delete(email + ":kakaoRefreshToken");
+    }
+
 
 
 
