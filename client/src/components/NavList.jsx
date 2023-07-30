@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { clearToken, clearUserInfo } from "../store";
+import { clearUserInfo } from "../store";
 
 import styled from "styled-components";
 import { FcCloseUpMode, FcBusinesswoman, FcMinus } from "react-icons/fc";
@@ -37,10 +37,12 @@ export default function NavList({ isOpen, setIsOpen, onMakingNavClick, onMypageN
 
   // 로그아웃
   const handleClick = () => {
-    // 엑세스 토큰 & 유저 정보 삭제
-    dispatch(clearToken());
+    // 엑세스 토큰 & 리프레시 토큰 & 유저 정보 & 페이지 정보 삭제
+    sessionStorage.removeItem("accessToken");
+    sessionStorage.removeItem("refreshToken");
     dispatch(clearUserInfo());
-    // 홈 화면으로 라우팅(새로고침이 나으려나?), NavList 닫기
+    sessionStorage.removeItem("cardId");
+    // 홈 화면으로 라우팅, NavList 닫기
     navigate("/");
     setIsOpen(false);
   };

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setToken, setUserInfo } from "../store";
+import { setUserInfo } from "../store";
 
 import { getUserInfo } from "../api/user";
 import decodeJwtToken from "../utils/decodeJwtToken";
@@ -16,14 +16,17 @@ export default function Redirection() {
   useEffect(() => {
     getUserInfo(code).then((result) => {
       if (result !== "fail") {
-        const token = result.headers.authorization;
-        dispatch(setToken(token));
-        // 토큰을 디코딩하여 유저 정보 저장
-        const user = decodeJwtToken(token);
-        dispatch(setUserInfo(user));
+        // 엑세스 토큰 저장
+        const accessToken = result.headers.authorization;
+        sessionStorage.setItem("accessToken", accessToken);
+        // 엑세스 토큰을 디코딩하여 유저 정보 저장
+        const userInfo = decodeJwtToken(accessToken);
+        dispatch(setUserInfo(JSON.stringify(userInfo)));
+        // 리프레시 토큰 저장
+        const refreshToken = result.headers.refreshtoken;
+        sessionStorage.setItem("refreshToken", refreshToken);
       }
       if (result === "fail") {
-        // todo: 에러 코드에 따라 분기 처리
         alert("로그인에 실패했습니다. 자세한 내용은 사이트 관리자에게 문의해 주시기 바랍니다.");
       }
       // 이후 페이지 이동
