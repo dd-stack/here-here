@@ -73,7 +73,6 @@ export default function Card() {
   useEffect(() => {
     getCard(id).then((result) => {
       if (result !== "fail") {
-        console.log(result.data);
         setCard(result.data);
         // 날짜 포맷 변경
         const formattedStartTime = format(
@@ -123,7 +122,7 @@ export default function Card() {
         {startTime}
         <br /> ~ {endTime}
       </ItemText>
-      {location.length === 0 ? null : (
+      {location?.length === 0 ? null : (
         <>
           <TitleText>- 장소 -</TitleText>
           <KakaoMap location={location} />
