@@ -8,7 +8,9 @@ import Header from "./layouts/Header";
 import Info from "./pages/Info";
 import Login from "./pages/Login";
 import Redirection from "./pages/Redirection";
-import MyPage from "./pages/MyPage";
+import MyPage from "./pages/MyPage/MyPage";
+import SentCards from "./pages/MyPage/SentCards";
+import ReceivedCards from "./pages/MyPage/ReceivedCards";
 import Making from "./pages/Making";
 import Card from "./pages/Card";
 
@@ -31,6 +33,8 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/login/oauth2/code/kakao" element={<Redirection />} />
           <Route path="/mypage" element={<MyPage />} />
+          <Route path="/sent-cards" element={<SentCards />} />
+          <Route path="/received-cards" element={<ReceivedCards />} />
           <Route path="/making" element={<Making />} />
           <Route path="/card/:id" element={<Card />} />
           <Route path="/*" element={<Navigate to="/" />} />
