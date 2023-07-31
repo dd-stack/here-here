@@ -24,6 +24,9 @@ public class KakaoUser {
         @Data
         public static class Profile {
             private String nickname;
+
+            @JsonProperty("profile_image_url")
+            private String profileImageURL;
         }
     }
 }

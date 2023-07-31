@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@Where(clause = "deleted = false")
 public class Member extends BaseTime {
 
     @Id
@@ -29,18 +31,35 @@ public class Member extends BaseTime {
     @Column(nullable = false)
     private String nickName;
 
-    @OneToMany(mappedBy = "creator")
+    @Column(nullable = false)
+    private String profileImageURL;
+
+    @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY)
     private List<Card> createdCards = new ArrayList<>();
 
-    @OneToMany(mappedBy = "receiver")
+    @OneToMany(mappedBy = "receiver", fetch = FetchType.LAZY)
     private List<Invitation> receivedInvitations = new ArrayList<>();
 
+    @Column(nullable = false)
+    private boolean deleted = false;
+
     @Builder
-    public Member(String email, String nickName){
+    public Member(String email, String nickName, String profileImageURL){
         this.email = email;
         this.nickName = nickName;
+        this.profileImageURL = profileImageURL;
     }
 
 
+    @Override
+    public String toString() {
+        return "Member{" +
+                "memberId=" + memberId +
+                ", email='" + email + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", profileImageURL='" + profileImageURL + '\'' +
+                ", deleted=" + deleted +
+                '}';
+    }
 
 }

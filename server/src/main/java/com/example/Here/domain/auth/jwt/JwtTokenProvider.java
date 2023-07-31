@@ -1,6 +1,5 @@
 package com.example.Here.domain.auth.jwt;
 
-import com.example.Here.domain.auth.repository.RefreshTokenRepository;
 import com.example.Here.domain.member.entity.Member;
 import com.example.Here.domain.member.service.MemberService;
 import io.jsonwebtoken.*;
@@ -42,14 +41,11 @@ public class JwtTokenProvider {
 
     private final MemberService memberService;
 
-    private final RefreshTokenRepository refreshTokenRepository;
-
     private final StringRedisTemplate stringRedisTemplate;
 
 
-    public JwtTokenProvider(@Value("${jwt.key}") String secretKey, MemberService memberService, RefreshTokenRepository refreshTokenRepository, StringRedisTemplate stringRedisTemplate){
+    public JwtTokenProvider(@Value("${jwt.key}") String secretKey, MemberService memberService, StringRedisTemplate stringRedisTemplate){
         this.memberService = memberService;
-        this.refreshTokenRepository = refreshTokenRepository;
         this.stringRedisTemplate = stringRedisTemplate;
 
         String base64Key = Encoders.BASE64.encode(secretKey.getBytes(StandardCharsets.UTF_8));
@@ -77,6 +73,7 @@ public class JwtTokenProvider {
         Map<String, Object> claims = new HashMap<>();
         claims.put("email", member.getEmail());
         claims.put("nickname", member.getNickName());
+        claims.put("profileImageURL", member.getProfileImageURL());
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -89,12 +86,9 @@ public class JwtTokenProvider {
     public boolean validateToken(String token) {
         try {
             Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-            if (claims.getBody().getExpiration().before(new Date())) {
-                return false;
-            }
-            return true;
+            return !claims.getBody().getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException e) {
-            throw new RuntimeException("Expired or invalid JWT token");
+            return false;
         }
     }
 
@@ -150,6 +144,7 @@ public class JwtTokenProvider {
 
             // 클라이언트가 제출한 토큰이 Redis에 저장된 토큰과 일치하면 true를 반환
             return refreshToken.equals(redisRefreshToken);
+
         } catch (JwtException | IllegalArgumentException e) {
             // 토큰 파싱 중 오류가 발생하면 false를 반환
             return false;

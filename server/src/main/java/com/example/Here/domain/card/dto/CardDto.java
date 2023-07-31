@@ -27,6 +27,8 @@ public class CardDto {
 
     private String location;
 
+    private String email;
+
     public CardDto(String title, String startTime, String endTime, String background, String content, String textLocation, String textColor, String location) {
         this.title = title;
         this.startTime = startTime;

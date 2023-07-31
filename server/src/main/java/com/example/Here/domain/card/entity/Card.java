@@ -6,6 +6,7 @@ import com.example.Here.global.audit.BaseTime;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Where;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@Where(clause = "deleted = false")
 public class Card extends BaseTime {
 
     @Id
@@ -51,9 +53,12 @@ public class Card extends BaseTime {
     @OneToMany(mappedBy = "card")
     private List<Invitation> invitations = new ArrayList<>();
 
+    @Column(nullable = false)
+    private boolean deleted = false;
+
 
     @Builder
-    public Card(String title, String startTime, String endTime, String background, String content, String textLocation, String textColor, String location) {
+    public Card(String title, String startTime, String endTime, String background, String content, String textLocation, String textColor, String location, Member creator){
         this.title = title;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -62,6 +67,24 @@ public class Card extends BaseTime {
         this.textLocation = textLocation;
         this.textColor = textColor;
         this.location = location;
+        this.creator = creator;
+    }
+
+    @Override
+    public String toString() {
+        return "Card{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", background='" + background + '\'' +
+                ", content='" + content + '\'' +
+                ", textLocation='" + textLocation + '\'' +
+                ", textColor='" + textColor + '\'' +
+                ", location='" + location + '\'' +
+                ", creator=" + creator +
+                ", deleted=" + deleted +
+                '}';
     }
 
 }

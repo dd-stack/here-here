@@ -9,11 +9,10 @@ import org.springframework.security.crypto.encrypt.TextEncryptor;
 @Configuration
 public class EncryptConfig {
 
-    @Value("${ENCRTYPTION_SECRET}")
-    private String secret;
 
-    @Value("${ENCRTYPTION_SECRET}")
-    private String salt;
+    private final String secret = System.getenv("ENCRTYPTION_SECRET");
+
+    private final String salt = System.getenv("ENCRTYPTION_SALT");
 
     @Bean
     public TextEncryptor textEncryptor() {
