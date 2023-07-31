@@ -109,16 +109,18 @@ const SubmitButtonWrapper = styled.div`
 export default function Making() {
   const navigate = useNavigate();
 
-  const isLogin = useSelector((state) => state.user?.userInfo);
+  const userInfo = useSelector((state) => state.user?.userInfo);
+  const { email } = JSON.parse(userInfo);
 
   // 로그인이 되어 있지 않다면 로그인 화면으로
   useEffect(() => {
-    if (!isLogin) {
+    if (!userInfo) {
       navigate("/login");
     }
-  }, [isLogin, navigate]);
+  }, [userInfo, navigate]);
 
   const [card, setCard] = useState({
+    email: email,
     title: "",
     startTime: "",
     endTime: "",
