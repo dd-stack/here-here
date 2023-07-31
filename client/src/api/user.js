@@ -25,7 +25,7 @@ export const deleteUser = async () => {
 
 export const getSentCards = async (page, size) => {
   try {
-    const response = await authAxios.get(`/mypage/createcard?page=${page}&size=${size}`);
+    const response = await authAxios.get(`member/mypage/createcard?page=${page}&size=${size}`);
     return response;
   } catch (error) {
     console.log(error);
@@ -35,7 +35,7 @@ export const getSentCards = async (page, size) => {
 
 export const getReceivedCards = async (page, size) => {
   try {
-    const response = await authAxios.get(`/mypage/receivedcard?page=${page}&size=${size}`);
+    const response = await authAxios.get(`member/mypage/receivedcard?page=${page}&size=${size}`);
     return response;
   } catch (error) {
     console.log(error);
