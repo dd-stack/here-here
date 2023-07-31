@@ -19,6 +19,9 @@ export const fileAxios = axios.create({
 // 인증이 필요한 경우
 export const authAxios = axios.create({
   // baseURL: `${process.env.REACT_APP_BASE_URL}`,
+  headers: {
+    "ngrok-skip-browser-warning": "69420",
+  },
 });
 
 // 요청 전 헤더에 (엑세스) 토큰을 추가하는 인터셉터 추가
@@ -52,7 +55,7 @@ authAxios.interceptors.response.use(
             "ngrok-skip-browser-warning": "69420",
           },
         });
-        // 엑세스 토큰 성공적으로 발급되면 새로운 엑세스 토큰 세션 스토리지에 저장
+        // 성공 -> 새로운 엑세스 토큰을 세션 스토리지에 저장
         const newAccessToken = refreshResponse.data;
         sessionStorage.setItem("accessToken", newAccessToken);
         // 이전 요청을 재시도하기 위해 새로운 엑세스 토큰을 헤더에 추가
@@ -62,6 +65,7 @@ authAxios.interceptors.response.use(
       } catch (refreshError) {
         // 리프레시 토큰도 만료된 경우
         if (refreshError.response.status === 406) {
+          alert("토큰이 만료되었습니다. 다시 로그인해 주세요.");
           // 로그아웃 처리
           sessionStorage.removeItem("accessToken");
           sessionStorage.removeItem("refreshToken");
