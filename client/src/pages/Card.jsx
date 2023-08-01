@@ -7,6 +7,7 @@ import styled from "styled-components";
 import Swal from "sweetalert2";
 
 import { getCard } from "../api/card";
+import { postReceivedCard } from "../api/card";
 import CardView from "../components/CardView";
 import KakaoMap from "../components/KakaoMap";
 import SnsShare from "../components/SnsShare";
@@ -111,6 +112,35 @@ export default function Card() {
     if (isLogin) {
       // 1. 톡캘린더 일정 등록 요청
       // 2. 내가 받은 초대장 목록 업데이트 요청
+      postReceivedCard(id).then((result) => {
+        if (result === "success") {
+          Swal.fire({
+            text: "내가 받은 초대장 목록이 업데이트되었습니다.",
+            icon: "success",
+            confirmButtonColor: "var(--link-color)",
+            confirmButtonText: "확인",
+            padding: "20px 40px 40px",
+          });
+        }
+        if (result === "fail") {
+          Swal.fire({
+            text: "내가 받은 초대장 목록 업데이트에 실패했습니다.",
+            icon: "error",
+            confirmButtonColor: "var(--link-color)",
+            confirmButtonText: "확인",
+            padding: "20px 40px 40px",
+          });
+        }
+        if (result === "409-fail") {
+          Swal.fire({
+            text: "이미 수락한 초대장입니다.",
+            icon: "error",
+            confirmButtonColor: "var(--link-color)",
+            confirmButtonText: "확인",
+            padding: "20px 40px 40px",
+          });
+        }
+      });
     }
   };
 
