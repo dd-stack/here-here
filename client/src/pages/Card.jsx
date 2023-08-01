@@ -7,7 +7,7 @@ import styled from "styled-components";
 import Swal from "sweetalert2";
 
 import { getCard } from "../api/card";
-import { postReceivedCard } from "../api/card";
+import { postReceivedCard } from "../api/user";
 import CardView from "../components/CardView";
 import KakaoMap from "../components/KakaoMap";
 import SnsShare from "../components/SnsShare";
