@@ -13,7 +13,7 @@ export const postCard = async (card) => {
 
 export const getCard = async (id) => {
   try {
-    const response = await axios.get(`/making/getcard?id=${id}`);
+    const response = await axios.get(`/making/getcard?cardId=${id}`);
     return response;
   } catch (error) {
     console.log(error);
@@ -28,5 +28,15 @@ export const postReceivedCard = async (id) => {
   } catch (error) {
     console.log(error);
     return error.response.status === 409 ? "409-fail" : "fail";
+  }
+};
+
+export const deleteCard = async (id) => {
+  try {
+    await authAxios.delete(`/making/deletecard?cardId=${id}`);
+    return "success";
+  } catch (error) {
+    console.log(error);
+    return "fail";
   }
 };

@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 
 import { getSentCards } from "../../api/user";
+import { deleteCard } from "../../api/card";
 import CardList from "../../components/CardList";
 
 export default function SentCards() {
@@ -51,7 +52,23 @@ export default function SentCards() {
       padding: "20px 40px 40px",
     }).then(async () => {
       // 삭제 요청
-      console.log(id);
+      await deleteCard(id).then((result) => {
+        if (result === "success") {
+          Swal.fire({
+            text: "초대장이 삭제되었습니다.",
+            icon: "success",
+            confirmButtonColor: "var(--link-color)",
+            confirmButtonText: "확인",
+            padding: "20px 40px 40px",
+          }).then(() => {
+            // 페이지 새로고침
+            window.location.reload();
+          });
+        }
+        if (result === "fail") {
+          alert("초대장 삭제에 실패했습니다. 다시 시도해 주시기 바랍니다.");
+        }
+      });
     });
   };
 
