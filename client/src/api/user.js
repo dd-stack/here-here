@@ -11,7 +11,13 @@ export const getUserInfo = async (code) => {
   }
 };
 
-// todo: 로그아웃도 통신 필요?
+export const logout = async () => {
+  try {
+    await authAxios.post("/member/logout");
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const deleteUser = async () => {
   try {

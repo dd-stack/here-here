@@ -5,6 +5,8 @@ import { clearUserInfo } from "../store";
 import styled from "styled-components";
 import { FcCloseUpMode, FcBusinesswoman, FcMinus } from "react-icons/fc";
 
+import { logout } from "../api/user";
+
 const NavListContainer = styled.div`
   max-height: ${(props) => (props.open ? "250px" : "0")};
   overflow: hidden;
@@ -36,7 +38,8 @@ export default function NavList({ isOpen, setIsOpen, onMakingNavClick, onMypageN
   const dispatch = useDispatch();
 
   // 로그아웃
-  const handleClick = () => {
+  const handleClick = async () => {
+    await logout();
     // 엑세스 토큰 & 리프레시 토큰 & 유저 정보 & 페이지 정보 삭제
     sessionStorage.removeItem("accessToken");
     sessionStorage.removeItem("refreshToken");
