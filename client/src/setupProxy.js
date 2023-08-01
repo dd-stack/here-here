@@ -29,4 +29,11 @@ module.exports = function (app) {
       changeOrigin: true,
     })
   );
+  app.use(
+    "/invitation",
+    createProxyMiddleware({
+      target: `${process.env.REACT_APP_BASE_URL}`,
+      changeOrigin: true,
+    })
+  );
 };
