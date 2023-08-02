@@ -2,6 +2,10 @@ package com.example.Here.domain.auth.jwt;
 
 import com.example.Here.domain.member.entity.Member;
 import com.example.Here.domain.member.service.MemberService;
+import com.example.Here.global.exception.BusinessLogicException;
+import com.example.Here.global.exception.ExceptionCode;
+import com.example.Here.global.exception.SecurityAuthException;
+import com.example.Here.global.exception.SecurityAuthExceptionCode;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
@@ -92,6 +96,7 @@ public class JwtTokenProvider {
         }
     }
 
+    //to-do : 예외처리 수정
     public Authentication getAuthentication(String token) {
         try {
             Claims claims = parseClaims(token);
@@ -116,7 +121,7 @@ public class JwtTokenProvider {
 
     public String createAccessTokenWithRefreshToken(String refreshToken) {
         if(!validateRefreshToken(refreshToken)) {
-            throw new RuntimeException("Invalid or expired refresh token");
+            throw new SecurityAuthException(SecurityAuthExceptionCode.TOKEN_NOT_FOUND);
         }
 
         Claims claims = parseClaims(refreshToken);

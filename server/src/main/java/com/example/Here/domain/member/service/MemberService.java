@@ -4,7 +4,7 @@ package com.example.Here.domain.member.service;
 import com.example.Here.domain.member.entity.Member;
 import com.example.Here.domain.member.repository.MemberRepository;
 import com.example.Here.global.exception.BusinessLogicException;
-import com.example.Here.global.exception.ExcepotionCode;
+import com.example.Here.global.exception.ExceptionCode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,14 +24,14 @@ public class MemberService {
 
 
     public Member getMember(String email) {
-        return memberRepository.findByEmail(email).orElseThrow(() -> new BusinessLogicException(ExcepotionCode.MEMBER_NOT_FOUND));
+        return memberRepository.findByEmail(email).orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
     @Transactional
     public Member getOrCreateMember(String email, String nickname, String profileImageURL) {
 
         // 이메일을 통해 Member가 존재하는지 확인
-        Optional<Member> optionalMember = memberRepository.findByEmail(email);
+        Optional<Member> optionalMember = memberRepository.findByEmailIncludingDeleted(email);
 
         if (optionalMember.isPresent()) {
 
@@ -46,6 +46,11 @@ public class MemberService {
             // 프로필 이미지가 업데이트 되었다면 해당 정보를 변경하고 저장
             if (!Objects.equals(existingMember.getProfileImageURL(), profileImageURL)) {
                 existingMember.setProfileImageURL(profileImageURL);
+            }
+
+            // 탈퇴 처리한 회원 다시 활성화
+            if(existingMember.isDeleted()) {
+                existingMember.setDeleted(false);
             }
 
             return memberRepository.save(existingMember);

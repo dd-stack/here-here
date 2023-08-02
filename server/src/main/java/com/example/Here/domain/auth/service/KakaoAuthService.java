@@ -1,6 +1,6 @@
 package com.example.Here.domain.auth.service;
 
-import com.example.Here.domain.auth.KakaoUser;
+import com.example.Here.domain.auth.userdto.KakaoUser;
 import com.example.Here.domain.member.entity.Member;
 import com.example.Here.domain.member.service.MemberService;
 import com.fasterxml.jackson.core.JsonProcessingException;

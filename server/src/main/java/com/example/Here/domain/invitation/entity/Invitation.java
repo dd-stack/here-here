@@ -6,10 +6,12 @@ import com.example.Here.global.audit.BaseTime;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Getter
 @Setter
+@Where(clause = "deleted = false")
 public class Invitation extends BaseTime {
 
     @Id
@@ -23,4 +25,7 @@ public class Invitation extends BaseTime {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "card_id")
     private Card card;
+
+    @Column(nullable = false)
+    private boolean deleted = false;
 }

@@ -36,8 +36,13 @@ public class RedisService {
         return decryptToken(encryptedRefreshToken);
     }
 
-    private void removeKakaoToken(String email) {
+    public void removeKakaoToken(String email) {
         stringRedisTemplate.delete(email + ":kakaoAccessToken");
         stringRedisTemplate.delete(email + ":kakaoRefreshToken");
     }
+
+    public void removeRefreshToken(String email) {
+        stringRedisTemplate.delete(email + ":refresh");
+    }
+
 }

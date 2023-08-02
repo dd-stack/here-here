@@ -27,9 +27,10 @@ public class CardDto {
 
     private String location;
 
-    private String email;
+    private String creatorEmail;
 
-    public CardDto(String title, String startTime, String endTime, String background, String content, String textLocation, String textColor, String location) {
+
+    public CardDto(String title, String startTime, String endTime, String background, String content, String textLocation, String textColor, String location, String creatorEmail){
         this.title = title;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -38,6 +39,7 @@ public class CardDto {
         this.textLocation = textLocation;
         this.textColor = textColor;
         this.location = location;
+        this.creatorEmail = creatorEmail;
     }
 
     @Getter

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -17,4 +18,9 @@ public interface CardRepository extends JpaRepository<Card, String> {
 
     @Query("select i.card from Invitation i where i.receiver = :member")
     Page<Card> findCardsByReceiver(Member member, Pageable pageable);
+
+    @Modifying
+    @Query("UPDATE Card c SET c.deleted = :deleted WHERE c.creator = :member")
+    void updateDeletedStatusForCardsCreatedByMember(Member member, Boolean deleted);
+
 }

@@ -2,13 +2,11 @@ package com.example.Here.domain.member.controller;
 
 import com.example.Here.domain.card.dto.CardDtoListToPage;
 import com.example.Here.domain.card.dto.CardPageDto;
-import com.example.Here.domain.card.entity.Card;
 import com.example.Here.domain.card.service.CardService;
 import com.example.Here.domain.member.entity.Member;
 import com.example.Here.domain.member.service.MemberManageService;
-import com.example.Here.domain.member.service.MemberService;
 import com.example.Here.global.exception.BusinessLogicException;
-import com.example.Here.global.exception.ExcepotionCode;
+import com.example.Here.global.exception.ExceptionCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,6 +25,7 @@ public class MemberController {
 
     private final CardService cardService;
 
+
     public MemberController(MemberManageService memberManageService, CardService cardService) {
         this.memberManageService = memberManageService;
         this.cardService = cardService;
@@ -37,15 +35,21 @@ public class MemberController {
     public ResponseEntity<?> logout() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = ((UserDetails) authentication.getPrincipal()).getUsername();
 
-        if (email == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid access token.");
+        if (authentication != null && authentication.isAuthenticated()) {
+            Member member = (Member) authentication.getPrincipal();
+
+            String email = member.getEmail();
+
+            memberManageService.logout(email);
+            return ResponseEntity.status(HttpStatus.OK).body("로그아웃이 완료되었습니다.");
+
         }
 
-        memberManageService.logout(email);
+        else {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NO_PERMISSION);
+        }
 
-        return ResponseEntity.status(HttpStatus.OK).body("Logout successful.");
     }
 
     @GetMapping("/mypage/createcard")
@@ -56,12 +60,10 @@ public class MemberController {
 
             Page<CardDtoListToPage> createdCards = cardService.getCreatedCards(member, PageRequest.of(page, size));
 
-            log.info("createdCards : {}", createdCards.toString());
-
             return new CardPageDto(createdCards);
 
         } else {
-            throw new BusinessLogicException(ExcepotionCode.MEMBER_NO_PERMISSION);
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NO_PERMISSION);
         }
     }
 
@@ -78,21 +80,24 @@ public class MemberController {
         }
 
         else {
-            throw new BusinessLogicException(ExcepotionCode.MEMBER_NO_PERMISSION);
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NO_PERMISSION);
         }
     }
 
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteMember() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = ((UserDetails) authentication.getPrincipal()).getUsername();
 
-        if (email == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid access token.");
+        if (authentication != null && authentication.isAuthenticated()) {
+            Member member = (Member) authentication.getPrincipal();
+            memberManageService.deleteMember(member);
+            return ResponseEntity.status(HttpStatus.OK).body("회원탈퇴가 완료되었습니다.");
+
         }
 
-        memberManageService.deleteMember(email);
+        else {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NO_PERMISSION);
+        }
 
-        return ResponseEntity.status(HttpStatus.OK).body("Delete successful.");
     }
 }

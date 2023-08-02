@@ -24,7 +24,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String requestURI = request.getRequestURI();
-        if (requestURI.contains("/api/token") || requestURI.startsWith("/image") || requestURI.equals("/making/getcard") || requestURI.equals("/api/refresh")) {
+        if (requestURI.contains("/api/token") ||
+                requestURI.startsWith("/image") ||
+                requestURI.equals("/making/getcard") ||
+                requestURI.equals("/api/refresh") ||
+                requestURI.startsWith("/swagger-ui") ||
+                requestURI.startsWith("/v3/api-docs") ||
+                requestURI.startsWith("/swagger-resources") ||
+                requestURI.startsWith("/webjars")) {
             filterChain.doFilter(request, response);
         } else {
             String token = resolveToken(request);

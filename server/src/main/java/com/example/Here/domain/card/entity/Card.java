@@ -43,7 +43,6 @@ public class Card extends BaseTime {
 
     private String textColor;
 
-    @Column(nullable = true)
     private String location;
 
     @ManyToOne
