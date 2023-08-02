@@ -38,7 +38,7 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
 
-  html, body {
+  html {
     height: 100%;
   }
 
