@@ -330,7 +330,7 @@ export default function Making() {
     },
     {
       id: "location",
-      title: "장소(선택) :",
+      title: "장소 :",
       children: (
         <>
           <input
@@ -340,7 +340,7 @@ export default function Making() {
             placeholder="주소를 검색해 주세요."
             value={card.location}
             onClick={handleClick}
-            readOnly
+            required
           />
           <button type="button" onClick={handleClick}>
             검색
