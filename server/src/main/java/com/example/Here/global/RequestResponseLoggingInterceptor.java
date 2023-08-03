@@ -9,6 +9,7 @@ import org.springframework.http.client.ClientHttpResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 @Slf4j
 public class RequestResponseLoggingInterceptor implements ClientHttpRequestInterceptor {
@@ -25,12 +26,12 @@ public class RequestResponseLoggingInterceptor implements ClientHttpRequestInter
         log.info("URI: " + request.getURI());
         log.info("Method: " + request.getMethod());
         log.info("Headers: " + request.getHeaders());
-        log.info("Request Body: " + new String(body, "UTF-8"));
+        log.info("Request Body: " + new String(body, StandardCharsets.UTF_8));
     }
 
     private void logResponse(ClientHttpResponse response) throws IOException {
         StringBuilder inputStringBuilder = new StringBuilder();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(response.getBody(), "UTF-8"));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(response.getBody(), StandardCharsets.UTF_8));
         String line = bufferedReader.readLine();
         while (line != null) {
             inputStringBuilder.append(line);

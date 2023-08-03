@@ -57,7 +57,9 @@ public class KakaoCalendarService {
             String responseBody = response.getBody();
             log.info("Raw response body: " + responseBody);
             Map<String, Object> map = new ObjectMapper().readValue(responseBody, new TypeReference<Map<String, Object>>() {});
-            return Objects.requireNonNull(map.get("event_id")).toString();
+
+            return "톡캘린더 api 호출 성공";
+            //return Objects.requireNonNull(map.get("event_id")).toString();
         } else {
             throw new RuntimeException("Failed to create event: " + response.getBody());
         }
