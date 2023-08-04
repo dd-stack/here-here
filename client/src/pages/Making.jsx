@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import DaumPostcode from "react-daum-postcode";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { ko } from "date-fns/esm/locale";
 
 import styled from "styled-components";
 import Swal from "sweetalert2";
@@ -120,40 +123,40 @@ export default function Making() {
 
   const [card, setCard] = useState({
     title: "",
-    startTime: "",
-    endTime: "",
+    startTime: null,
+    endTime: null,
     background: "#fff",
     content: "",
     textLocation: "center",
     textColor: "#0C0A09",
     location: "",
   });
+  const { title, startTime, endTime, background, content, textColor, location } = card;
   const [disabled, setDisabled] = useState(false);
   const [openPostcode, setOpenPostcode] = useState(false);
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setCard((previous) => ({ ...previous, [name]: value }));
-  };
-
-  const handleBoxChange = (key, value) => {
+  const handleInputChange = (key, value) => {
     setCard((previous) => ({ ...previous, [key]: value }));
+    // 시작 날짜가 변경되면 종료 날짜를 초기화
+    if (key === "startTime") {
+      setCard((previous) => ({ ...previous, endTime: null }));
+    }
   };
 
-  const handleColorChange = (value) => {
+  const handleColorChange = (color) => {
     // 이미 이미지 url이 들어 있다면 해당 이미지 삭제 후 색으로 변경
-    if (!card.background.startsWith("#")) {
-      deleteImage(card.background);
+    if (!background.startsWith("#")) {
+      deleteImage(background);
     }
-    setCard((previous) => ({ ...previous, background: value }));
+    setCard((previous) => ({ ...previous, background: color }));
   };
 
   const handleImageChange = (event) => {
     const formData = new FormData();
     formData.append("file", event.target.files[0]);
     // 이미 이미지 url이 들어 있다면 해당 이미지 삭제 후 업로드 요청
-    if (!card.background.startsWith("#")) {
-      deleteImage(card.background);
+    if (!background.startsWith("#")) {
+      deleteImage(background);
     }
     postImage(formData).then((result) => {
       if (result !== "fail") {
@@ -165,7 +168,7 @@ export default function Making() {
     });
   };
 
-  const handleClick = () => {
+  const handleSearchButtonClick = () => {
     setOpenPostcode((current) => !current);
   };
 
@@ -208,11 +211,10 @@ export default function Making() {
         <input
           id="title"
           type="text"
-          name="title"
           placeholder="캘린더 등록 시 보이는 문구입니다."
           maxLength="20"
-          value={card.title}
-          onChange={handleInputChange}
+          value={title}
+          onChange={(event) => handleInputChange("title", event.target.value)}
           required
         />
       ),
@@ -221,16 +223,22 @@ export default function Making() {
       id: "startTime",
       title: "시작 날짜 :",
       children: (
-        <input
+        <DatePicker
           id="startTime"
-          type="datetime-local"
-          name="startTime"
-          value={card.startTime}
-          onChange={(event) => {
-            handleInputChange(event);
-            setCard((previous) => ({ ...previous, endTime: "" })); // 시작 날짜가 변경되면 종료 날짜를 초기화
-          }}
-          min={new Date().toISOString().slice(0, 16)} // 현재 시간 이후만 선택 가능
+          locale={ko}
+          placeholderText="시작 날짜/시간 선택"
+          dateFormat="yyyy-MM-dd HH:mm" // 날짜 형식
+          selected={startTime} // value 값
+          onChange={(value) => handleInputChange("startTime", value)}
+          showTimeSelect
+          timeFormat="HH:mm"
+          timeIntervals={10} // 10분 간격으로 시간 선택 가능
+          timeCaption="시간"
+          minDate={new Date()} // 현재 시간 이후만 선택 가능
+          filterTime={(time) => {
+            return new Date().getTime() < new Date(time).getTime();
+          }} // 현재 시간 이후만 선택 가능
+          closeOnScroll={true} // 스크롤을 움직였을 때 자동으로 닫히도록 설정
           required
         />
       ),
@@ -239,14 +247,23 @@ export default function Making() {
       id: "endTime",
       title: "종료 날짜 :",
       children: (
-        <input
+        <DatePicker
           id="endTime"
-          type="datetime-local"
-          name="endTime"
-          value={card.endTime}
-          onChange={handleInputChange}
-          disabled={!card.startTime} // 시작 날짜가 선택되지 않은 경우에는 비활성화
-          min={card.startTime} // 시작 날짜 이후만 선택 가능
+          locale={ko}
+          placeholderText="종료 날짜/시간 선택"
+          dateFormat="yyyy-MM-dd HH:mm" // 날짜 형식
+          selected={endTime} // value 값
+          onChange={(value) => handleInputChange("endTime", value)}
+          showTimeSelect
+          timeFormat="HH:mm"
+          timeIntervals={30} // 30분 간격으로 시간 선택 가능
+          timeCaption="시간"
+          minDate={startTime} // 시작 날짜 이후만 선택 가능
+          filterTime={(time) => {
+            return startTime.getTime() < new Date(time).getTime();
+          }} // 시작 시간 10분 이후만 선택 가능
+          closeOnScroll={true} // 스크롤을 움직였을 때 자동으로 닫히도록 설정
+          disabled={!startTime} // 시작 날짜가 선택되지 않은 경우에는 비활성화
           required
         />
       ),
@@ -265,9 +282,8 @@ export default function Making() {
           <ColorInput
             id="background"
             type="color"
-            name="background"
-            value={card.background}
-            onChange={handleInputChange}
+            value={background}
+            onChange={(event) => handleInputChange("background", event.target.value)}
           />
           <ImageInput>
             <label htmlFor="imageInput">
@@ -285,11 +301,10 @@ export default function Making() {
         <Textarea
           id="content"
           type="text"
-          name="content"
           placeholder="일정, 준비물, 초대 문구 등 상세 내용을 적어주세요. (최대 150자)"
           maxLength="150"
-          value={card.content}
-          onChange={handleInputChange}
+          value={content}
+          onChange={(event) => handleInputChange("content", event.target.value)}
         />
       ),
     },
@@ -298,13 +313,13 @@ export default function Making() {
       title: "텍스트 위치 :",
       children: (
         <>
-          <TextLocationBox onClick={() => handleBoxChange("textLocation", "top")}>
+          <TextLocationBox onClick={() => handleInputChange("textLocation", "top")}>
             위
           </TextLocationBox>
-          <TextLocationBox onClick={() => handleBoxChange("textLocation", "center")}>
+          <TextLocationBox onClick={() => handleInputChange("textLocation", "center")}>
             중간
           </TextLocationBox>
-          <TextLocationBox onClick={() => handleBoxChange("textLocation", "bottom")}>
+          <TextLocationBox onClick={() => handleInputChange("textLocation", "bottom")}>
             아래
           </TextLocationBox>
         </>
@@ -315,15 +330,14 @@ export default function Making() {
       title: "텍스트 색 :",
       children: (
         <>
-          <ColorBox color="#fdfcfa" onClick={() => handleBoxChange("textColor", "#fdfcfa")} />
-          <ColorBox color="#9E9E9E" onClick={() => handleBoxChange("textColor", "#9E9E9E")} />
-          <ColorBox color="#0C0A09" onClick={() => handleBoxChange("textColor", "#0C0A09")} />
+          <ColorBox color="#fdfcfa" onClick={() => handleInputChange("textColor", "#fdfcfa")} />
+          <ColorBox color="#9E9E9E" onClick={() => handleInputChange("textColor", "#9E9E9E")} />
+          <ColorBox color="#0C0A09" onClick={() => handleInputChange("textColor", "#0C0A09")} />
           <ColorInput
             id="textColor"
             type="color"
-            name="textColor"
-            value={card.textColor}
-            onChange={handleInputChange}
+            value={textColor}
+            onChange={(event) => handleInputChange("textColor", event.target.value)}
           />
         </>
       ),
@@ -336,13 +350,12 @@ export default function Making() {
           <input
             id="location"
             type="text"
-            name="location"
             placeholder="주소를 검색해 주세요."
-            value={card.location}
-            onClick={handleClick}
+            value={location}
+            onClick={handleSearchButtonClick}
             required
           />
-          <button type="button" onClick={handleClick}>
+          <button type="button" onClick={handleSearchButtonClick}>
             검색
           </button>
         </>
@@ -356,7 +369,7 @@ export default function Making() {
         <span>(미리 보기)</span>
         <CardView card={card} />
       </CardContainer>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} autocomplete="off">
         {labels.map((label) => (
           <InputWrapper key={label.id}>
             <label htmlFor={label.id}>{label.title}</label>
