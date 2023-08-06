@@ -2,15 +2,15 @@ import axios from "axios";
 
 // 인증이 필요없는 경우
 export const instance = axios.create({
-  // baseURL: `${process.env.REACT_APP_BASE_URL}`,
-  headers: { "Content-Type": "application/json", "ngrok-skip-browser-warning": "69420" },
+  baseURL: `${process.env.REACT_APP_BASE_URL}`,
+  headers: { "Content-Type": "application/json" },
 });
 
 export default instance;
 
 // form-data 의 경우
 export const fileAxios = axios.create({
-  // baseURL: `${process.env.REACT_APP_BASE_URL}`,
+  baseURL: `${process.env.REACT_APP_BASE_URL}`,
   headers: {
     "Content-Type": "multipart/form-data",
   },
@@ -18,10 +18,7 @@ export const fileAxios = axios.create({
 
 // 인증이 필요한 경우
 export const authAxios = axios.create({
-  // baseURL: `${process.env.REACT_APP_BASE_URL}`,
-  headers: {
-    "ngrok-skip-browser-warning": "69420",
-  },
+  baseURL: `${process.env.REACT_APP_BASE_URL}`,
 });
 
 // 요청 전 헤더에 (엑세스) 토큰을 추가하는 인터셉터 추가
@@ -52,7 +49,6 @@ authAxios.interceptors.response.use(
         const refreshResponse = await axios.get("/api/refresh", {
           headers: {
             RefreshToken: `${refreshToken}`,
-            "ngrok-skip-browser-warning": "69420",
           },
         });
         // 성공 -> 새로운 엑세스 토큰을 세션 스토리지에 저장
