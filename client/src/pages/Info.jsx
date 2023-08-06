@@ -144,7 +144,10 @@ export default function Info() {
         </MoreInfo>
         <MoreInfo>
           <p>💡 오류 제보, 피드백, 문의 사항은?</p>
-          <a className="emailLink" href="mailto:herehereproject@gmail.com">
+          <a
+            className="emailLink"
+            href="mailto:herehereproject@gmail.com?body=사용하시는 기기, 캡처 화면 등을 함께 보내주시면 저희가 더 정확하게 문제를 파악할 수 있어요!"
+          >
             herehereproject@gmail.com
           </a>
         </MoreInfo>
