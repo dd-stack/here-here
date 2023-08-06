@@ -58,7 +58,7 @@ const NotificationText = styled.span`
 `;
 
 export default function SnsShare({ cardId }) {
-  const url = `https://here-here.co.kr/card/${cardId}`;
+  const url = `https://www.here-here.co.kr/card/${cardId}`;
   const [isCopied, setIsCopied] = useState(false);
 
   useEffect(() => {
