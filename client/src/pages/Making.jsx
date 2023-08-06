@@ -256,7 +256,7 @@ export default function Making() {
           onChange={(value) => handleInputChange("endTime", value)}
           showTimeSelect
           timeFormat="HH:mm"
-          timeIntervals={30} // 30분 간격으로 시간 선택 가능
+          timeIntervals={10} // 10분 간격으로 시간 선택 가능
           timeCaption="시간"
           minDate={startTime} // 시작 날짜 이후만 선택 가능
           filterTime={(time) => {
