@@ -93,9 +93,9 @@ export default function MyPage() {
       confirmButtonText: "예",
       cancelButtonText: "아니오",
       padding: "20px 40px 40px",
-    }).then(async (result) => {
+    }).then((result) => {
       if (result.isConfirmed) {
-        await deleteUser().then((result) => {
+        deleteUser().then((result) => {
           if (result === "success") {
             Swal.fire({
               text: "회원 탈퇴가 완료되었습니다.",

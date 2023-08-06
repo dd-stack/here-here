@@ -50,9 +50,9 @@ export default function SentCards() {
       confirmButtonText: "예",
       cancelButtonText: "아니오",
       padding: "20px 40px 40px",
-    }).then(async () => {
+    }).then(() => {
       // 삭제 요청
-      await deleteCard(id).then((result) => {
+      deleteCard(id).then((result) => {
         if (result === "success") {
           Swal.fire({
             text: "초대장이 삭제되었습니다.",
@@ -61,7 +61,7 @@ export default function SentCards() {
             confirmButtonText: "확인",
             padding: "20px 40px 40px",
           }).then(() => {
-            // 페이지 새로고침
+            // 삭제 후 새로고침
             window.location.reload();
           });
         }

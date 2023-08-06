@@ -50,9 +50,9 @@ export default function ReceivedCards() {
       confirmButtonText: "예",
       cancelButtonText: "아니오",
       padding: "20px 40px 40px",
-    }).then(async () => {
+    }).then(() => {
       // 삭제 요청
-      await deleteReceivedCard(id).then((result) => {
+      deleteReceivedCard(id).then((result) => {
         if (result === "success") {
           Swal.fire({
             text: "초대장이 리스트에서 삭제되었습니다.",
