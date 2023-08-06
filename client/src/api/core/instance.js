@@ -2,15 +2,15 @@ import axios from "axios";
 
 // 인증이 필요없는 경우
 export const instance = axios.create({
-  // baseURL: `${process.env.REACT_APP_BASE_URL}`,
-  headers: { "Content-Type": "application/json", "ngrok-skip-browser-warning": "69420" },
+  baseURL: `${process.env.REACT_APP_BASE_URL}`,
+  headers: { "Content-Type": "application/json" },
 });
 
 export default instance;
 
 // form-data 의 경우
 export const fileAxios = axios.create({
-  // baseURL: `${process.env.REACT_APP_BASE_URL}`,
+  baseURL: `${process.env.REACT_APP_BASE_URL}`,
   headers: {
     "Content-Type": "multipart/form-data",
   },
@@ -18,17 +18,14 @@ export const fileAxios = axios.create({
 
 // 인증이 필요한 경우
 export const authAxios = axios.create({
-  // baseURL: `${process.env.REACT_APP_BASE_URL}`,
+  baseURL: `${process.env.REACT_APP_BASE_URL}`,
 });
 
-// 요청 전 헤더에 토큰을 추가하는 인터셉터 추가
-// next stage: 인터셉터 추가로 공부해 보기.
-// 왜 그냥 헤더에 넣었을 땐 토큰 상태가 최신화되지 못했을까?
+// 요청 전 헤더에 (엑세스) 토큰을 추가하는 인터셉터 추가
 authAxios.interceptors.request.use(
   (config) => {
-    const token = JSON.parse(localStorage.getItem("token"));
-    const tokenData = token?.data;
-    config.headers.Authorization = `Bearer ${tokenData}`;
+    const accessToken = sessionStorage.getItem("accessToken");
+    config.headers.Authorization = `${accessToken}`;
     return config;
   },
   (error) => {
@@ -36,6 +33,45 @@ authAxios.interceptors.request.use(
   }
 );
 
-// useSelector는 컴포넌트 내부에서만 사용할 수 있으므로
-// 만들어둔 리덕스 상태값을 사용할 수 없었다.
-// refactor point: 다른 방법이 더 있는지 찾아보기
+// 응답 인터셉터 추가 (리프레시 토큰 사용 로직)
+authAxios.interceptors.response.use(
+  (response) => {
+    // 응답이 성공적으로 도착했을 경우에는 그대로 반환
+    return response;
+  },
+  async (error) => {
+    // 응답에 에러가 있을 경우에는 에러 처리
+    const { response } = error;
+    if (response && response.status === 401) {
+      try {
+        // 리프레시 토큰을 사용하여 새로운 엑세스 토큰 발급 요청
+        const refreshToken = sessionStorage.getItem("refreshToken");
+        const refreshResponse = await axios.get("/api/refresh", {
+          headers: {
+            RefreshToken: `${refreshToken}`,
+          },
+        });
+        // 성공 -> 새로운 엑세스 토큰을 세션 스토리지에 저장
+        const newAccessToken = refreshResponse.data;
+        sessionStorage.setItem("accessToken", newAccessToken);
+        // 이전 요청을 재시도하기 위해 새로운 엑세스 토큰을 헤더에 추가
+        error.config.headers.Authorization = `${newAccessToken}`;
+        // 새로운 엑세스 토큰을 사용하여 이전 요청 재시도
+        return axios(error.config);
+      } catch (refreshError) {
+        // 리프레시 토큰도 만료된 경우
+        if (refreshError.response.status === 406) {
+          alert("토큰이 만료되었습니다. 다시 로그인해 주세요.");
+          // 로그아웃 처리
+          sessionStorage.removeItem("accessToken");
+          sessionStorage.removeItem("refreshToken");
+          sessionStorage.removeItem("userInfo");
+          sessionStorage.removeItem("cardId");
+          // 로그인 페이지로 이동
+          window.location.href = "/";
+        }
+      }
+    }
+    return Promise.reject(error);
+  }
+);

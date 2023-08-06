@@ -13,8 +13,18 @@ export const postCard = async (card) => {
 
 export const getCard = async (id) => {
   try {
-    const response = await axios.get(`/making/getcard?id=${id}`);
+    const response = await axios.get(`/making/getcard?cardId=${id}`);
     return response;
+  } catch (error) {
+    console.log(error);
+    return "fail";
+  }
+};
+
+export const deleteCard = async (id) => {
+  try {
+    await authAxios.delete(`/making/deletecard?cardId=${id}`);
+    return "success";
   } catch (error) {
     console.log(error);
     return "fail";

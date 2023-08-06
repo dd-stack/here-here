@@ -58,8 +58,7 @@ const NotificationText = styled.span`
 `;
 
 export default function SnsShare({ cardId }) {
-  // 실제 도메인 주소로 변경해야 함
-  const url = `http://localhost:3000/card/${cardId}`;
+  const url = `https://www.here-here.co.kr/card/${cardId}`;
   const [isCopied, setIsCopied] = useState(false);
 
   useEffect(() => {
