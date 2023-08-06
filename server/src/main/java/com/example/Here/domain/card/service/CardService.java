@@ -23,11 +23,9 @@ public class CardService {
 
     private final CardRepository cardRepository;
 
-    private final MemberService memberService;
 
-    public CardService(CardRepository cardRepository, MemberService memberService) {
+    public CardService(CardRepository cardRepository) {
         this.cardRepository = cardRepository;
-        this.memberService = memberService;
     }
 
     public InvitationRepository invitationRepository;

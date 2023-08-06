@@ -1,13 +1,8 @@
 spring:
   data:
     redis:
-      host: aws_redis_host
+      host: hereredis.ho9d7r.clustercfg.apn2.cache.amazonaws.com:6379
       port: 6379
-  datasource:
-    url: jdbc:mysql://{RDS_MySQL_Endpoint}:{port}/{database}
-    username: { username }
-    password: { password }
-    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -20,7 +15,8 @@ spring:
           kakao:
             client-id: ${CLIENT_ID}
             client-secret: ${CLIENT_SECRET}
-            redirect-uri: http://localhost:3000/login/oauth2/code/kakao
+            redirect-uri: http://localhost:3000/login/oauth2/code/kakao, https://www.here-here.co.kr/login/oauth2/code/kakao
+
             client-name: Kakao
             client-authentication-method: post
             authorization-grant-type: authorization_code

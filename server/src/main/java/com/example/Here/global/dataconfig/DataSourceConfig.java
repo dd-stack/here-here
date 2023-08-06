@@ -22,7 +22,7 @@ public class DataSourceConfig {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
 
-        String secretName = "sercretName";
+        String secretName = "rds!db-b0a3f295-0802-415a-9b27-7415796322d0";
         AWSSecretsManager client = AWSSecretsManagerClientBuilder.standard().build();
         GetSecretValueRequest request = new GetSecretValueRequest().withSecretId(secretName);
         GetSecretValueResult result = client.getSecretValue(request);
@@ -48,6 +48,9 @@ public class DataSourceConfig {
         return dataSource;
     }
 
+
+
 }
+
 
 

@@ -4,6 +4,8 @@ import com.example.Here.domain.card.entity.Card;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 public class CardDtoListToPage {
@@ -12,9 +14,9 @@ public class CardDtoListToPage {
 
     private String title;
 
-    private String startTime;
+    private LocalDateTime startTime;
 
-    private String endTime;
+    private LocalDateTime endTime;
 
     private String location;
 

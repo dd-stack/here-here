@@ -8,6 +8,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Where;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,9 +30,11 @@ public class Card extends BaseTime {
     @Column(nullable = false, length = 20)
     private String title;
 
-    private String startTime;
+    @Column(nullable = false, columnDefinition = "DATETIME")
+    private LocalDateTime startTime;
 
-    private String endTime;
+    @Column(nullable = false, columnDefinition = "DATETIME")
+    private LocalDateTime endTime;
 
     private String background;
     //이미지URL 혹은 배경색깔
@@ -57,7 +60,7 @@ public class Card extends BaseTime {
 
 
     @Builder
-    public Card(String title, String startTime, String endTime, String background, String content, String textLocation, String textColor, String location, Member creator){
+    public Card(String title, LocalDateTime startTime, LocalDateTime endTime, String background, String content, String textLocation, String textColor, String location, Member creator){
         this.title = title;
         this.startTime = startTime;
         this.endTime = endTime;
