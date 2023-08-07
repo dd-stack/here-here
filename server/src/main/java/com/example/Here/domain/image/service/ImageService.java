@@ -1,9 +1,11 @@
-/*package com.example.Here.domain.image.service;
+package com.example.Here.domain.image.service;
 
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.DeleteObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetUrlRequest;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import com.example.Here.domain.image.config.AmazonConfig;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,20 +18,21 @@ import java.util.UUID;
 @Service
 public class ImageService {
 
-    private final AmazonS3 amazonS3;
+    private final S3Client s3Client;
     private final String bucketName;
 
-    public ImageService(AmazonS3 amazonS3, AmazonConfig amazonConfig) {
-        this.amazonS3 = amazonS3;
+    public ImageService(S3Client s3Client, AmazonConfig amazonConfig) {
+        this.s3Client = s3Client;
         this.bucketName = amazonConfig.getBucketName();
     }
 
     public String uploadImage(MultipartFile multipartFile) throws IOException {
-        File fileObj = convertMultiPartFileToFile(multipartFile);
-        String fileName = UUID.randomUUID().toString() + "_" + fileObj.getName();
-        amazonS3.putObject(new PutObjectRequest(bucketName, fileName, fileObj));
-        fileObj.delete();
-        return amazonS3.getUrl(bucketName, fileName).toString();
+        File file = convertMultiPartFileToFile(multipartFile);
+        String fileName = UUID.randomUUID().toString() + "_" + file.getName();
+        s3Client.putObject(PutObjectRequest.builder().bucket(bucketName).key(fileName).build(),
+                RequestBody.fromFile(file));
+        file.delete();
+        return s3Client.utilities().getUrl(GetUrlRequest.builder().bucket(bucketName).key(fileName).build()).toString();
     }
 
     public String deleteImage(String fileUrl) throws IllegalArgumentException {
@@ -38,7 +41,7 @@ public class ImageService {
         }
 
         String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
-        amazonS3.deleteObject(new DeleteObjectRequest(bucketName, fileName));
+        s3Client.deleteObject(DeleteObjectRequest.builder().bucket(bucketName).key(fileName).build());
         return fileName;
     }
 
@@ -49,8 +52,6 @@ public class ImageService {
         }
         return fileObj;
     }
-
-
 }
 
- */
+

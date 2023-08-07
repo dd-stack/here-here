@@ -1,4 +1,4 @@
-/*package com.example.Here.domain.image.controller;
+package com.example.Here.domain.image.controller;
 
 import com.example.Here.domain.image.service.ImageService;
 import org.springframework.http.ResponseEntity;
@@ -29,4 +29,3 @@ public class ImageController {
 }
 
 
- */
