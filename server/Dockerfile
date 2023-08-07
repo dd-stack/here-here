@@ -4,7 +4,7 @@ FROM openjdk:17-jdk-alpine
 WORKDIR /app
 
 # 빌드한 JAR 파일을 Docker 컨테이너에 복사
-COPY build/libs/Here-0.0.1-SNAPSHOT-plain.jar /app/here.jar
+COPY build/libs/Here-0.0.1-SNAPSHOT.jar /app/here.jar
 
 # 애플리케이션 실행에 필요한 포트
 EXPOSE 8080

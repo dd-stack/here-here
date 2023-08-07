@@ -1,4 +1,4 @@
-package com.example.Here.domain.image.service;
+/*package com.example.Here.domain.image.service;
 
 
 import com.amazonaws.services.s3.AmazonS3;
@@ -52,3 +52,5 @@ public class ImageService {
 
 
 }
+
+ */

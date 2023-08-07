@@ -1,3 +1,4 @@
+/*
 package com.example.Here.global.dataconfig;
 
 import com.amazonaws.services.secretsmanager.AWSSecretsManager;
@@ -20,7 +21,6 @@ public class DataSourceConfig {
     public DataSource dataSource() throws JsonProcessingException {
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-
 
         String secretName = "rds!db-b0a3f295-0802-415a-9b27-7415796322d0";
         AWSSecretsManager client = AWSSecretsManagerClientBuilder.standard().build();
@@ -51,6 +51,8 @@ public class DataSourceConfig {
 
 
 }
+
+ */
 
 
 

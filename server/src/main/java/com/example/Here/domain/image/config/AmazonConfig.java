@@ -1,4 +1,4 @@
-package com.example.Here.domain.image.config;
+/*package com.example.Here.domain.image.config;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -42,3 +42,5 @@ public class AmazonConfig {
         return bucketName;
     }
 }
+
+ */
