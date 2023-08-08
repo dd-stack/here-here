@@ -19,9 +19,9 @@ import GlobalStyles from "./styles/GlobalStyles";
 
 export default function App() {
   // 배포 환경에서 console.log 지우기
-  if (process.env.NODE_ENV === "production") {
-    console.log = function no_console() {};
-  }
+  // if (process.env.NODE_ENV === "production") {
+  //   console.log = function no_console() {};
+  // }
 
   return (
     <div className="App">
