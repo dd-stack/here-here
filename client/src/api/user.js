@@ -4,7 +4,6 @@ import { authAxios } from "./core/instance";
 export const getUserInfo = async (code) => {
   try {
     const response = await axios.post("/api/token", { code });
-    console.log(response);
     return response;
   } catch (error) {
     console.log(error);

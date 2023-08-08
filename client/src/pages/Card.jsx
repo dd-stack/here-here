@@ -60,8 +60,8 @@ export default function Card() {
   const [card, setCard] = useState({
     creatorEmail: "",
     title: "",
-    startTime: null,
-    endTime: null,
+    startTime: "",
+    endTime: "",
     background: "#fff",
     content: "",
     textLocation: "center",
@@ -83,6 +83,7 @@ export default function Card() {
   });
 
   const { location } = card;
+  // 화면 표시용
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
 
@@ -96,16 +97,19 @@ export default function Card() {
       if (result !== "fail") {
         setCard(result.data);
         // 날짜 포맷 변경
-        const formattedStartTime = format(result.data.startTime, "yyyy년 MM월 dd일 a hh:mm");
-        const formattedEndTime = format(result.data.endTime, "yyyy년 MM월 dd일 a hh:mm");
+        const formattedStartTime = format(
+          new Date(result.data.startTime),
+          "yyyy년 MM월 dd일 a hh:mm"
+        );
+        const formattedEndTime = format(new Date(result.data.endTime), "yyyy년 MM월 dd일 a hh:mm");
         setStartTime(formattedStartTime);
         setEndTime(formattedEndTime);
         // 톡캘린더 전송용 상태 업데이트
         setCalendarinfo({
           title: result.data.title,
           time: {
-            start_at: format(result.data.startTime, "yyyy-MM-dd'T'HH:mm:00'Z'"),
-            end_at: format(result.data.endTime, "yyyy-MM-dd'T'HH:mm:00'Z'"),
+            start_at: result.data.startTime,
+            end_at: result.data.endTime,
             time_zone: "Asia/Seoul",
           },
           description: "[여기 여기 붙어라]를 통해 등록된 일정입니다.",

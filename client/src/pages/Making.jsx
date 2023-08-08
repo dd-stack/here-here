@@ -5,6 +5,7 @@ import DaumPostcode from "react-daum-postcode";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
+import { format } from "date-fns";
 
 import styled from "styled-components";
 import Swal from "sweetalert2";
@@ -180,6 +181,15 @@ export default function Making() {
     event.preventDefault();
     setDisabled(true);
 
+    // Date 객체를 UTC, RFC5545의 DATE-TIME 형식으로 변환
+    const formattedStartTime = format(startTime, "yyyy-MM-dd'T'HH:mm:ss");
+    const formattedEndTime = format(endTime, "yyyy-MM-dd'T'HH:mm:ss");
+    const updatedCard = {
+      ...card,
+      startTime: formattedStartTime,
+      endTime: formattedEndTime,
+    };
+
     Swal.fire({
       text: "초대장을 만드는 중입니다.",
       showConfirmButton: false,
@@ -189,7 +199,7 @@ export default function Making() {
     });
 
     setTimeout(() => {
-      postCard(card).then((result) => {
+      postCard(updatedCard).then((result) => {
         if (result !== "fail") {
           const cardId = result.data.id;
           navigate(`/card/${cardId}`);
