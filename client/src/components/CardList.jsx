@@ -135,8 +135,8 @@ export default function CardList({
                 <TiDelete size={30} onClick={() => onDeleteCard(item.id)} />
               </ItemTitle>
               <span>
-                {format(item.startTime, "yy년 MM월 dd일")} ~{" "}
-                {format(item.endTime, "yy년 MM월 dd일")}
+                {format(new Date(item.startTime), "yy년 MM월 dd일")} ~{" "}
+                {format(new Date(item.endTime), "yy년 MM월 dd일")}
               </span>
             </CardItem>
           ))}
