@@ -30,11 +30,11 @@ public class Card extends BaseTime {
     @Column(nullable = false, length = 20)
     private String title;
 
-    @Column(nullable = false, columnDefinition = "DATETIME")
-    private LocalDateTime startTime;
+    @Column(nullable = false)
+    private String startTime;
 
-    @Column(nullable = false, columnDefinition = "DATETIME")
-    private LocalDateTime endTime;
+    @Column(nullable = false)
+    private String endTime;
 
     private String background;
     //이미지URL 혹은 배경색깔
@@ -60,7 +60,7 @@ public class Card extends BaseTime {
 
 
     @Builder
-    public Card(String title, LocalDateTime startTime, LocalDateTime endTime, String background, String content, String textLocation, String textColor, String location, Member creator){
+    public Card(String title, String startTime, String endTime, String background, String content, String textLocation, String textColor, String location, Member creator){
         this.title = title;
         this.startTime = startTime;
         this.endTime = endTime;

@@ -1,16 +1,16 @@
 spring:
   data:
     redis:
-      host: hereredis.ho9d7r.clustercfg.apn2.cache.amazonaws.com:6379
+      host: hereredis.ho9d7r.clustercfg.apn2.cache.amazonaws.com
       port: 6379
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://database-herehere.cuhj2gphxrym.ap-northeast-2.rds.amazonaws.com:3306/heredb
+    url: jdbc:mysql://database-herehere.cuhj2gphxrym.ap-northeast-2.rds.amazonaws.com:3306/heredb?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
   jpa:
     database: mysql
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: update # 서버 실행시 스키마를 자동으로 생성해주지만 서버 종료시 그대로 유지함
   security:
@@ -20,8 +20,7 @@ spring:
           kakao:
             client-id: ${CLIENT_ID}
             client-secret: ${CLIENT_SECRET}
-            redirect-uri: http://localhost:3000/login/oauth2/code/kakao, https://www.here-here.co.kr/login/oauth2/code/kakao
-
+            redirect-uri: http://localhost:3000/login/oauth2/code/kakao, https://here-here.co.kr/login/oauth2/code/kakao
             client-name: Kakao
             client-authentication-method: post
             authorization-grant-type: authorization_code

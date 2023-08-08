@@ -14,9 +14,9 @@ public class CardDto {
 
     private String title;
 
-    private LocalDateTime startTime;
+    private String startTime;
 
-    private LocalDateTime endTime;
+    private String endTime;
 
     private String background;
     //이미지URL 혹은 배경색깔
@@ -32,7 +32,7 @@ public class CardDto {
     private String creatorEmail;
 
 
-    public CardDto(String title, LocalDateTime startTime, LocalDateTime endTime, String background, String content, String textLocation, String textColor, String location, String creatorEmail){
+    public CardDto(String title, String startTime, String endTime, String background, String content, String textLocation, String textColor, String location, String creatorEmail){
         this.title = title;
         this.startTime = startTime;
         this.endTime = endTime;

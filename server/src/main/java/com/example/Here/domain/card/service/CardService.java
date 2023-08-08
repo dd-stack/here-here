@@ -23,13 +23,9 @@ public class CardService {
 
     private final CardRepository cardRepository;
 
-
     public CardService(CardRepository cardRepository) {
         this.cardRepository = cardRepository;
     }
-
-    public InvitationRepository invitationRepository;
-
 
     @Transactional
     public CardDto.Response createCard(CardDto cardDto, Member creator) {

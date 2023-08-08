@@ -1,5 +1,6 @@
 package com.example.Here.domain.image.config;
 
+import lombok.Getter;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AmazonConfig {
 
+    @Getter
     @Value("${AWS_BUCKETNAME}")
     private String bucketName;
 
@@ -33,9 +35,6 @@ public class AmazonConfig {
                 .build();
     }
 
-    public String getBucketName() {
-        return bucketName;
-    }
 }
 
 
