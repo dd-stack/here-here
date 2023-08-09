@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import { getCard } from "../api/card";
 import { postReceivedCard } from "../api/user";
 import { postCalendar } from "../api/calendar";
+import { deleteReceivedCard } from "../api/user";
 import CardView from "../components/CardView";
 import KakaoMap from "../components/KakaoMap";
 import SnsShare from "../components/SnsShare";
@@ -52,6 +53,7 @@ const JoinButton = styled.button`
 export default function Card() {
   const navigate = useNavigate();
   const { id } = useParams();
+  // 다시 돌아오기 위해 카드 id 저장
   sessionStorage.setItem("cardId", id);
 
   const userInfo = useSelector((state) => state.user?.userInfo);
@@ -82,7 +84,7 @@ export default function Card() {
   });
 
   const { location } = card;
-  // 화면 표시용
+  // 포맷 변경된 화면 표시용 날짜
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
 
@@ -184,7 +186,7 @@ export default function Card() {
               break;
             case "402-fail":
               Swal.fire({
-                text: "톡캘린더 접근 권한 동의가 필요합니다. 동의하시겠습니까?",
+                text: "톡캘린더 접근 권한 동의가 필요합니다. 동의하시겠습니까? (동의 후, 다시 수락하기 버튼을 눌러주세요.)",
                 icon: "info",
                 showCancelButton: true,
                 confirmButtonColor: "var(--link-color)",
@@ -193,7 +195,18 @@ export default function Card() {
                 padding: "20px 40px 40px",
               }).then((result) => {
                 if (result.isConfirmed) {
-                  window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code&scope=talk_calendar`;
+                  deleteReceivedCard(id).then((result) => {
+                    if (result === "fail") {
+                      Swal.fire({
+                        text: "내가 받은 초대장 목록에서 이 초대장을 삭제해 주셔야 다시 수락하기 버튼을 누를 수 있습니다.",
+                        icon: "info",
+                        confirmButtonColor: "var(--link-color)",
+                        confirmButtonText: "확인",
+                        padding: "20px 40px 40px",
+                      });
+                    }
+                    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code&scope=talk_calendar`;
+                  });
                 }
               });
               break;
