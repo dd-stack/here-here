@@ -27,7 +27,7 @@ export default function Redirection() {
         sessionStorage.setItem("refreshToken", refreshToken);
       }
       if (result === "fail") {
-        alert("로그인에 실패했습니다. 자세한 내용은 사이트 관리자에게 문의해 주시기 바랍니다.");
+        alert("로그인에 실패했습니다. 잠시 후 다시 시도해 주시기 바랍니다.");
       }
       // 이후 페이지 이동
       if (sessionStorage.getItem("cardId")) {
