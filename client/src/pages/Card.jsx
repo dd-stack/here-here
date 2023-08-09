@@ -74,7 +74,6 @@ export default function Card() {
     time: {
       start_at: "",
       end_at: "",
-      time_zone: "",
     },
     description: "",
     location: {
@@ -110,7 +109,6 @@ export default function Card() {
           time: {
             start_at: result.data.startTime,
             end_at: result.data.endTime,
-            time_zone: "Asia/Seoul",
           },
           description: "[여기 여기 붙어라]를 통해 등록된 일정입니다.",
           location: {
@@ -157,7 +155,9 @@ export default function Card() {
             break;
           default:
             // 기타 에러 처리
-            showErrorModal("알 수 없는 오류가 발생했습니다.");
+            showErrorModal(
+              "알 수 없는 오류가 발생했습니다. 자세한 내용은 사이트 관리자에게 문의해 주시기 바랍니다."
+            );
         }
       });
     }
@@ -175,11 +175,33 @@ export default function Card() {
     }).then((result) => {
       if (result.isConfirmed) {
         postCalendar(calendarinfo).then((result) => {
-          if (result !== "fail") {
-            showSuccessModal("톡캘린더에 일정이 등록되었습니다.");
-          }
-          if (result === "fail") {
-            showErrorModal("톡캘린더 일정 등록에 실패했습니다.");
+          switch (result) {
+            case "success":
+              showSuccessModal("톡캘린더에 일정이 등록되었습니다.");
+              break;
+            case "fail":
+              showErrorModal("톡캘린더 일정 등록에 실패했습니다.");
+              break;
+            case "402-fail":
+              Swal.fire({
+                text: "톡캘린더 접근 권한 동의가 필요합니다. 동의하시겠습니까?",
+                icon: "info",
+                showCancelButton: true,
+                confirmButtonColor: "var(--link-color)",
+                confirmButtonText: "예",
+                cancelButtonText: "아니오",
+                padding: "20px 40px 40px",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code&scope=talk_calendar`;
+                }
+              });
+              break;
+            default:
+              // 기타 에러 처리
+              showErrorModal(
+                "알 수 없는 오류가 발생했습니다. 자세한 내용은 사이트 관리자에게 문의해 주시기 바랍니다."
+              );
           }
         });
       }
