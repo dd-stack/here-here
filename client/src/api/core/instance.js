@@ -66,9 +66,10 @@ authAxios.interceptors.response.use(
           sessionStorage.removeItem("accessToken");
           sessionStorage.removeItem("refreshToken");
           sessionStorage.removeItem("userInfo");
-          sessionStorage.removeItem("cardId");
           // 로그인 페이지로 이동
-          window.location.href = "/";
+          window.location.href = "/login";
+          // 페이지 정보 삭제
+          sessionStorage.removeItem("cardId");
         }
       }
     }

@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import { getCard } from "../api/card";
 import { postReceivedCard } from "../api/user";
 import { postCalendar } from "../api/calendar";
+import { deleteReceivedCard } from "../api/user";
 import CardView from "../components/CardView";
 import KakaoMap from "../components/KakaoMap";
 import SnsShare from "../components/SnsShare";
@@ -52,6 +53,7 @@ const JoinButton = styled.button`
 export default function Card() {
   const navigate = useNavigate();
   const { id } = useParams();
+  // 다시 돌아오기 위해 카드 id 저장
   sessionStorage.setItem("cardId", id);
 
   const userInfo = useSelector((state) => state.user?.userInfo);
@@ -74,7 +76,6 @@ export default function Card() {
     time: {
       start_at: "",
       end_at: "",
-      time_zone: "",
     },
     description: "",
     location: {
@@ -83,7 +84,7 @@ export default function Card() {
   });
 
   const { location } = card;
-  // 화면 표시용
+  // 포맷 변경된 화면 표시용 날짜
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
 
@@ -110,7 +111,6 @@ export default function Card() {
           time: {
             start_at: result.data.startTime,
             end_at: result.data.endTime,
-            time_zone: "Asia/Seoul",
           },
           description: "[여기 여기 붙어라]를 통해 등록된 일정입니다.",
           location: {
@@ -157,7 +157,9 @@ export default function Card() {
             break;
           default:
             // 기타 에러 처리
-            showErrorModal("알 수 없는 오류가 발생했습니다.");
+            showErrorModal(
+              "알 수 없는 오류가 발생했습니다. 자세한 내용은 사이트 관리자에게 문의해 주시기 바랍니다."
+            );
         }
       });
     }
@@ -175,11 +177,44 @@ export default function Card() {
     }).then((result) => {
       if (result.isConfirmed) {
         postCalendar(calendarinfo).then((result) => {
-          if (result !== "fail") {
-            showSuccessModal("톡캘린더에 일정이 등록되었습니다.");
-          }
-          if (result === "fail") {
-            showErrorModal("톡캘린더 일정 등록에 실패했습니다.");
+          switch (result) {
+            case "success":
+              showSuccessModal("톡캘린더에 일정이 등록되었습니다.");
+              break;
+            case "fail":
+              showErrorModal("톡캘린더 일정 등록에 실패했습니다.");
+              break;
+            case "402-fail":
+              Swal.fire({
+                text: "톡캘린더 접근 권한 동의가 필요합니다. 동의하시겠습니까? (동의 후, 다시 수락하기 버튼을 눌러주세요.)",
+                icon: "info",
+                showCancelButton: true,
+                confirmButtonColor: "var(--link-color)",
+                confirmButtonText: "예",
+                cancelButtonText: "아니오",
+                padding: "20px 40px 40px",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  deleteReceivedCard(id).then((result) => {
+                    if (result === "fail") {
+                      Swal.fire({
+                        text: "내가 받은 초대장 목록에서 이 초대장을 삭제해 주셔야 다시 수락하기 버튼을 누를 수 있습니다.",
+                        icon: "info",
+                        confirmButtonColor: "var(--link-color)",
+                        confirmButtonText: "확인",
+                        padding: "20px 40px 40px",
+                      });
+                    }
+                    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code&scope=talk_calendar`;
+                  });
+                }
+              });
+              break;
+            default:
+              // 기타 에러 처리
+              showErrorModal(
+                "알 수 없는 오류가 발생했습니다. 자세한 내용은 사이트 관리자에게 문의해 주시기 바랍니다."
+              );
           }
         });
       }
