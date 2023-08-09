@@ -138,9 +138,11 @@ export default function Making() {
 
   const handleInputChange = (key, value) => {
     setCard((previous) => ({ ...previous, [key]: value }));
-    // 시작 날짜가 변경되면 종료 날짜를 초기화
+    // 시작 날짜가 변경되면 종료 날짜를 그 10분 후로 변경
     if (key === "startTime") {
-      setCard((previous) => ({ ...previous, endTime: null }));
+      const updatedEndTime = new Date(value); // 시작 날짜로 새로운 Date 객체 생성
+      updatedEndTime.setMinutes(updatedEndTime.getMinutes() + 10); // 10분 추가
+      setCard((previous) => ({ ...previous, endTime: updatedEndTime }));
     }
   };
 
