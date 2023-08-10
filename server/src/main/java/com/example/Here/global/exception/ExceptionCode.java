@@ -16,12 +16,16 @@ public enum ExceptionCode {
 
     CARD_NOT_FOUND(404, "초대장이 존재하지 않습니다."),
 
+    INVITATION_NOT_FOUND(404, "초대를 찾을 수 없습니다."),
+
     MEMBER_NICKNAME_EXISTS(409, "이미 존재하는 닉네임 입니다."),
 
     MEMBER_EXISTS(409, "이미 존재하는 회원 입니다."),
 
     ALREADY_ACCEPTED(409, "이미 수락한 초대장 입니다."),
-    INVITATION_NOT_FOUND(404, "초대장이 존재하지 않습니다.");
+
+    FILE_SIZE_EXCEEDED(417, "파일 사이즈가 초과되었습니다.");
+
 
     @Getter
     private int status;
