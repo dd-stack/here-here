@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { format } from "date-fns";
+import { format, subHours } from "date-fns";
 
 import styled from "styled-components";
 import Swal from "sweetalert2";
@@ -88,6 +88,9 @@ export default function Card() {
   // 포맷 변경된 화면 표시용 날짜
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
+  // 톡캘린더 전송용 날짜(UTC)
+  const [calendarStartTime, setCalendarStartTime] = useState("");
+  const [calendarEndTime, setCalendarEndTime] = useState("");
 
   useEffect(() => {
     // 컴포넌트가 처음 로드될 때 스크롤을 페이지 제일 위로 이동
@@ -107,11 +110,21 @@ export default function Card() {
         setStartTime(formattedStartTime);
         setEndTime(formattedEndTime);
         // 톡캘린더 전송용 상태 업데이트
+        const formattedCalendarStartTime = format(
+          subHours(new Date(result.data.startTime), 9),
+          "yyyy-MM-dd'T'HH:mm:ss'Z'"
+        );
+        const formattedCalendarEndTime = format(
+          subHours(new Date(result.data.endTime), 9),
+          "yyyy-MM-dd'T'HH:mm:ss'Z'"
+        );
+        setCalendarStartTime(formattedCalendarStartTime);
+        setCalendarEndTime(formattedCalendarEndTime);
         setCalendarinfo({
           title: result.data.title,
           time: {
-            start_at: `${result.data.startTime}Z`,
-            end_at: `${result.data.endTime}Z`,
+            start_at: calendarStartTime,
+            end_at: calendarEndTime,
             time_zone: "UTC",
           },
           description: "[여기 여기 붙어라]를 통해 등록된 일정입니다.",
