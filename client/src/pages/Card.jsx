@@ -88,9 +88,6 @@ export default function Card() {
   // 포맷 변경된 화면 표시용 날짜
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  // 톡캘린더 전송용 날짜(UTC)
-  const [calendarStartTime, setCalendarStartTime] = useState("");
-  const [calendarEndTime, setCalendarEndTime] = useState("");
 
   useEffect(() => {
     // 컴포넌트가 처음 로드될 때 스크롤을 페이지 제일 위로 이동
@@ -110,16 +107,14 @@ export default function Card() {
         setStartTime(formattedStartTime);
         setEndTime(formattedEndTime);
         // 톡캘린더 전송용 상태 업데이트
-        const formattedCalendarStartTime = format(
+        const calendarStartTime = format(
           subHours(new Date(result.data.startTime), 9),
           "yyyy-MM-dd'T'HH:mm:ss'Z'"
         );
-        const formattedCalendarEndTime = format(
+        const calendarEndTime = format(
           subHours(new Date(result.data.endTime), 9),
           "yyyy-MM-dd'T'HH:mm:ss'Z'"
         );
-        setCalendarStartTime(formattedCalendarStartTime);
-        setCalendarEndTime(formattedCalendarEndTime);
         setCalendarinfo({
           title: result.data.title,
           time: {
