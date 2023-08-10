@@ -187,8 +187,8 @@ export default function Making() {
     setDisabled(true);
 
     // Date 객체를 UTC, RFC5545의 DATE-TIME 형식으로 변환
-    const formattedStartTime = format(startTime, "yyyy-MM-dd'T'HH:mm:ss");
-    const formattedEndTime = format(endTime, "yyyy-MM-dd'T'HH:mm:ss");
+    const formattedStartTime = format(startTime, "yyyy-MM-dd'T'HH:mm:ss'Z'");
+    const formattedEndTime = format(endTime, "yyyy-MM-dd'T'HH:mm:ss'Z'");
     const updatedCard = {
       ...card,
       startTime: formattedStartTime,
