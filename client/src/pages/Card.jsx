@@ -76,6 +76,7 @@ export default function Card() {
     time: {
       start_at: "",
       end_at: "",
+      time_zone: "",
     },
     description: "",
     location: {
@@ -111,6 +112,7 @@ export default function Card() {
           time: {
             start_at: result.data.startTime,
             end_at: result.data.endTime,
+            time_zone: "UTC*",
           },
           description: "[여기 여기 붙어라]를 통해 등록된 일정입니다.",
           location: {
