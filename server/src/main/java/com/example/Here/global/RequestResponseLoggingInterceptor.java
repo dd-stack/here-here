@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
+//http요청 오류 발생 시 로그를 확인하기 위한 클래스 - 현재 버전에선 사용하지 않음
 @Slf4j
 public class RequestResponseLoggingInterceptor implements ClientHttpRequestInterceptor {
 

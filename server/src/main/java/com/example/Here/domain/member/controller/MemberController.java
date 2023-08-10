@@ -10,6 +10,7 @@ import com.example.Here.global.exception.ExceptionCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -58,7 +59,8 @@ public class MemberController {
         if (authentication != null && authentication.isAuthenticated()) {
             Member member = (Member) authentication.getPrincipal();
 
-            Page<CardDtoListToPage> createdCards = cardService.getCreatedCards(member, PageRequest.of(page, size));
+            PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+            Page<CardDtoListToPage> createdCards = cardService.getCreatedCards(member, pageRequest);
 
             return new CardPageDto(createdCards);
 
@@ -73,7 +75,8 @@ public class MemberController {
         if (authentication != null && authentication.isAuthenticated()) {
             Member member = (Member) authentication.getPrincipal();
 
-            Page<CardDtoListToPage> receivedCards = cardService.getReceivedCards(member, PageRequest.of(page, size));
+            PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+            Page<CardDtoListToPage> receivedCards = cardService.getReceivedCards(member, pageRequest);
             return new CardPageDto(receivedCards);
 
 

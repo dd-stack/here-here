@@ -14,7 +14,6 @@ public class Event {
         private String description;
         private Location location;
 
-
     @Getter
     @Setter
     public static class Time {
@@ -28,9 +27,8 @@ public class Event {
         public String toString() {
             return "Time{" +
                     "start_at='" + start_at + '\'' +
-                    ", end_at='" + end_at + '\'' +
-                    ", time_zone='" + time_zone + '\'' +
-                    '}';
+                    ", end_at='" + end_at  + '\'' +
+                    ", time_zone='" + time_zone + '}';
         }
 
     }
@@ -41,13 +39,10 @@ public class Event {
 
         private String name;
 
-        private String address;
-
         @Override
         public String toString() {
             return "Location{" +
                     "name='" + name + '\'' +
-                    "address='" + address + '\'' +
                     '}';
         }
 
