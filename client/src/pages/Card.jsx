@@ -110,9 +110,9 @@ export default function Card() {
         setCalendarinfo({
           title: result.data.title,
           time: {
-            start_at: result.data.startTime,
-            end_at: result.data.endTime,
-            time_zone: "Asia/Seoul",
+            start_at: `${result.data.startTime}Z`,
+            end_at: `${result.data.endTime}Z`,
+            time_zone: "UTC",
           },
           description: "[여기 여기 붙어라]를 통해 등록된 일정입니다.",
           location: {
