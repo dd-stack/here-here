@@ -157,10 +157,13 @@ export default function Making() {
   const handleImageChange = (event) => {
     const formData = new FormData();
     formData.append("file", event.target.files[0]);
+    event.target.value = null; // 이미지 선택 초기화
+
     // 이미 이미지 url이 들어 있다면 해당 이미지 삭제 후 업로드 요청
     if (!background.startsWith("#")) {
       deleteImage(background);
     }
+
     postImage(formData).then((result) => {
       if (result !== "fail") {
         setCard((previous) => ({ ...previous, background: result.data }));
