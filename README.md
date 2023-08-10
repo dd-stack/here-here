@@ -14,6 +14,8 @@
 ### 관련 문서
 
 [ API 명세서 ]
+다음 링크에서 확인하세요!
+<https://chojuyeon94.github.io/herehere-docs/herehere-api-docs.html>
 
 [ 초대장 예시 화면 ] <br>
 ![초대장 예시 화면](https://github.com/dd-stack/here-here/assets/117844745/5c26f2a5-37e4-42fe-8365-a56444d6674c)
