@@ -90,6 +90,7 @@ export default function SnsShare({ cardId }) {
             "https://github.com/dd-stack/here-here/blob/fe/client/src/img/letter.png?raw=true",
           link: {
             webUrl: url,
+            mobileWebUrl: url,
           },
         },
         buttonTitle: "자세히 보기",

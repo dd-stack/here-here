@@ -86,13 +86,12 @@ export default function MyPage() {
 
   const handleDeleteUser = () => {
     Swal.fire({
-      text: "저장되었던 초대장 정보가 모두 사라집니다. 정말로 탈퇴하시겠습니까?",
+      html: "저장되었던 초대장 정보가 모두 사라집니다.<br/>정말로 탈퇴하시겠습니까?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "var(--error-color)",
       confirmButtonText: "예",
       cancelButtonText: "아니오",
-      padding: "20px 40px 40px",
     }).then((result) => {
       if (result.isConfirmed) {
         deleteUser().then((result) => {
@@ -102,7 +101,6 @@ export default function MyPage() {
               icon: "success",
               confirmButtonColor: "var(--link-color)",
               confirmButtonText: "확인",
-              padding: "20px 40px 40px",
             }).then((result) => {
               if (result.isConfirmed) {
                 // 로그아웃 처리

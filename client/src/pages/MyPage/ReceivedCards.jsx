@@ -43,13 +43,12 @@ export default function ReceivedCards() {
 
   const onDeleteCard = (id) => {
     Swal.fire({
-      text: "해당 초대장을 삭제하시겠습니까? 받은 초대장은 내가 받은 초대장 목록에서만 삭제됩니다.",
+      html: "해당 초대장을 삭제하시겠습니까?<br/>받은 초대장은 내가 받은 초대장 목록에서만 삭제됩니다.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "var(--error-color)",
       confirmButtonText: "예",
       cancelButtonText: "아니오",
-      padding: "20px 40px 40px",
     }).then((result) => {
       if (result.isConfirmed) {
         // 삭제 요청
@@ -60,7 +59,6 @@ export default function ReceivedCards() {
               icon: "success",
               confirmButtonColor: "var(--link-color)",
               confirmButtonText: "확인",
-              padding: "20px 40px 40px",
             }).then(() => {
               // 삭제 후 새로고침
               window.location.reload();
