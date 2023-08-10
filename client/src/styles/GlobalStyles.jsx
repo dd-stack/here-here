@@ -67,6 +67,10 @@ const GlobalStyles = createGlobalStyle`
   a {
   text-decoration: none;
   }
+
+  input {
+    width: 170px;
+  }
 `;
 
 export default GlobalStyles;
