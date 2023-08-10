@@ -46,7 +46,7 @@ authAxios.interceptors.response.use(
       try {
         // 리프레시 토큰을 사용하여 새로운 엑세스 토큰 발급 요청
         const refreshToken = sessionStorage.getItem("refreshToken");
-        const refreshResponse = await axios.get("/api/refresh", {
+        const refreshResponse = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/refresh`, {
           headers: {
             RefreshToken: `${refreshToken}`,
           },
