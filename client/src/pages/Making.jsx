@@ -260,7 +260,6 @@ export default function Making() {
           filterTime={(time) => {
             return new Date().getTime() < new Date(time).getTime();
           }} // 현재 시간 이후만 선택 가능
-          closeOnScroll={true} // 스크롤을 움직였을 때 자동으로 닫히도록 설정
           required
         />
       ),
@@ -284,7 +283,6 @@ export default function Making() {
           filterTime={(time) => {
             return startTime.getTime() < new Date(time).getTime();
           }} // 시작 시간 10분 이후만 선택 가능
-          closeOnScroll={true} // 스크롤을 움직였을 때 자동으로 닫히도록 설정
           disabled={!startTime} // 시작 날짜가 선택되지 않은 경우에는 비활성화
           required
         />
