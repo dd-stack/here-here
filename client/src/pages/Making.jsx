@@ -141,7 +141,7 @@ export default function Making() {
     // 시작 날짜가 변경되면 종료 날짜를 그 10분 후로 변경
     if (key === "startTime") {
       const updatedEndTime = new Date(value); // 시작 날짜로 새로운 Date 객체 생성
-      updatedEndTime.setMinutes(updatedEndTime.getMinutes() + 10); // 10분 추가
+      updatedEndTime.setMinutes(updatedEndTime.getMinutes() + 30); // 30분 추가
       setCard((previous) => ({ ...previous, endTime: updatedEndTime }));
     }
   };
