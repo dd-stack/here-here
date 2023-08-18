@@ -23,6 +23,16 @@ const EntireContainer = styled.div`
   background-color: var(--background-color);
 `;
 
+const CardTitle = styled.div`
+  max-width: 330px;
+  margin-bottom: 60px;
+  border-bottom: 1px solid var(--gray-color);
+  padding-bottom: 10px;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+`;
+
 const TitleText = styled.span`
   margin: 70px 0 20px 0;
   font-size: 20px;
@@ -84,7 +94,7 @@ export default function Card() {
     },
   });
 
-  const { location } = card;
+  const { title, location } = card;
   // 포맷 변경된 화면 표시용 날짜
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
@@ -251,6 +261,7 @@ export default function Card() {
 
   return (
     <EntireContainer>
+      <CardTitle>{title}</CardTitle>
       <CardView card={card} />
       <TitleText>- 일시 -</TitleText>
       <ItemText>
