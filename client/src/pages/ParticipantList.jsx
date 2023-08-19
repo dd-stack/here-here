@@ -74,6 +74,7 @@ export default function ParticipantList() {
         alert("리스트를 불러오는데 실패했습니다.");
       } else if (result === "402-fail") {
         alert("접근 권한이 없습니다.");
+        navigate(-1);
       } else {
         setList(result.data);
       }
