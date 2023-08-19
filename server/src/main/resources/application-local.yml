@@ -22,7 +22,7 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
 jwt:
-  key: chojuyeon123456789123456789123456789123456789123456789
+  key: ${JWT_KEY}
   access-token-expiration-minutes: 30
   refresh-token-expiration-minutes: 20160
 

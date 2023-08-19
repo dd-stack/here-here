@@ -28,4 +28,15 @@ public class CardDtoListToPage {
         this.location = card.getLocation();
     }
 
+    @Override
+    public String toString() {
+        return "CardDtoListToPage{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", location='" + location + '\'' +
+                '}';
+    }
+
 }

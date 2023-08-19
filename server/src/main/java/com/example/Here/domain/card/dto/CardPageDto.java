@@ -21,4 +21,14 @@ public class CardPageDto {
         this.currentPage = page.getNumber();
         this.size = page.getSize();
     }
+
+    @Override
+    public String toString() {
+        return "CardPageDto{" +
+                "cards=" + cards +
+                ", totalElements=" + totalElements +
+                ", currentPage=" + currentPage +
+                ", size=" + size +
+                '}';
+    }
 }
