@@ -23,6 +23,9 @@ public interface InvitationRepository extends JpaRepository<Invitation, Long> {
 
     Optional<Invitation> findByCardIdAndReceiver(String cardId, Member receiver);
 
+    @EntityGraph(attributePaths = {"receiver"})
+    List<Invitation> findByCardId(String cardId);
+
     @Modifying
     @Query("UPDATE Invitation i SET i.deleted = :deleted WHERE i.receiver = :member")
     void updateDeletedStatusForInvitationsReceivedByMember(Member member, Boolean deleted);

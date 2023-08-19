@@ -4,15 +4,19 @@ import com.example.Here.domain.card.entity.Card;
 import com.example.Here.domain.card.repository.CardRepository;
 import com.example.Here.domain.invitation.entity.Invitation;
 import com.example.Here.domain.invitation.repository.InvitationRepository;
+import com.example.Here.domain.member.dto.MemberDtoToAcceptList;
 import com.example.Here.domain.member.entity.Member;
 import com.example.Here.domain.member.repository.MemberRepository;
 import com.example.Here.global.exception.BusinessLogicException;
 import com.example.Here.global.exception.ExceptionCode;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -20,13 +24,11 @@ public class InvitationService {
 
     private final InvitationRepository invitationRepository;
 
-    private final MemberRepository memberRepository;
 
     private final CardRepository cardRepository;
 
-    public InvitationService(InvitationRepository invitationRepository, MemberRepository memberRepository, CardRepository cardRepository) {
+    public InvitationService(InvitationRepository invitationRepository,CardRepository cardRepository) {
         this.invitationRepository = invitationRepository;
-        this.memberRepository = memberRepository;
         this.cardRepository = cardRepository;
     }
 
@@ -67,5 +69,38 @@ public class InvitationService {
 
 
     }
+
+    @Transactional
+    public List<MemberDtoToAcceptList> getAcceptedMembersByCardId(String cardId) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            Member member = (Member) authentication.getPrincipal();
+
+            String loginEmail = member.getEmail();
+            Card card = cardRepository.findById(cardId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.CARD_NOT_FOUND));
+            String creatorEmail = card.getCreator().getEmail();
+
+            if(!loginEmail.equals(creatorEmail)) throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_FOR_CHECKING_MEMBER);
+
+            List<Invitation> invitations = invitationRepository.findByCardId(cardId);
+            return invitations.stream()
+                    .map(invitation -> {
+                        Member acceptMember = invitation.getReceiver();
+                        MemberDtoToAcceptList dto = new MemberDtoToAcceptList();
+                        dto.setNickname(acceptMember.getNickName());
+                        dto.setProfileImageURL(acceptMember.getProfileImageURL());
+                        return dto;
+                    })
+                    .collect(Collectors.toList());
+        } else {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NO_PERMISSION);
+        }
+
+    }
+
+
+
+
 
 }

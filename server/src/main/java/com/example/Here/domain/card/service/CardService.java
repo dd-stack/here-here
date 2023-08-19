@@ -82,7 +82,9 @@ public class CardService {
     public Page<CardDtoListToPage> getReceivedCards(Member member, Pageable pageable) {
        Page<Card> receivedCards = cardRepository.findCardsByReceiver(member, pageable);
 
-       return receivedCards.map(CardDtoListToPage::new);
+       log.info("service - Received Cards: {}", receivedCards);
+
+        return receivedCards.map(CardDtoListToPage::new);
     }
 
 }

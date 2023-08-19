@@ -38,6 +38,8 @@ public class KakaoAuthService {
         final String requestUrl = UriComponentsBuilder.fromHttpUrl("https://kauth.kakao.com/oauth/token")
                 .queryParam("grant_type", "authorization_code")
                 .queryParam("client_id", clientId)
+                //로컬 테스트용 URI
+                //.queryParam("redirect_uri", "http://localhost:3000/login/oauth2/code/kakao")
                 .queryParam("redirect_uri", "https://here-here.co.kr/login/oauth2/code/kakao")
                 .queryParam("code", code)
                 .queryParam("client_secret", clietnSecret)

@@ -71,13 +71,21 @@ public class MemberController {
 
     @GetMapping("/mypage/receivedcard")
     public CardPageDto getReceivedCard(@RequestParam int page, @RequestParam int size) {
+
+        log.info("Received request for page: {}, size: {}", page, size);
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
             Member member = (Member) authentication.getPrincipal();
 
             PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
             Page<CardDtoListToPage> receivedCards = cardService.getReceivedCards(member, pageRequest);
-            return new CardPageDto(receivedCards);
+
+            CardPageDto result = new CardPageDto(receivedCards);
+
+            log.info("Result: {}", result);
+
+            return result;
 
 
         }
