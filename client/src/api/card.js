@@ -30,3 +30,13 @@ export const deleteCard = async (id) => {
     return "fail";
   }
 };
+
+export const getParticipant = async (id) => {
+  try {
+    const response = await authAxios.get(`/invitation/checkmember/${id}`);
+    return response;
+  } catch (error) {
+    console.log(error);
+    return error.response.status === 402 ? "402-fail" : "fail";
+  }
+};

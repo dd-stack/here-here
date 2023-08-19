@@ -13,6 +13,7 @@ import SentCards from "./pages/MyPage/SentCards";
 import ReceivedCards from "./pages/MyPage/ReceivedCards";
 import Making from "./pages/Making";
 import Card from "./pages/Card";
+import ParticipantList from "./pages/ParticipantList";
 
 // import etc
 import GlobalStyles from "./styles/GlobalStyles";
@@ -37,6 +38,7 @@ export default function App() {
           <Route path="/received-cards" element={<ReceivedCards />} />
           <Route path="/making" element={<Making />} />
           <Route path="/card/:id" element={<Card />} />
+          <Route path="/participant-list" element={<ParticipantList />} />
           <Route path="/*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>
