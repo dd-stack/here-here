@@ -60,10 +60,12 @@ const JoinButton = styled.button`
     0 2px 8px hsla(0, 0%, 0%, 0.05);
 `;
 
+const ParticipantListButton = styled(JoinButton)``;
+
 export default function Card() {
   const navigate = useNavigate();
   const { id } = useParams();
-  // 다시 돌아오기 위해 카드 id 저장
+  // 다시 돌아오기 위해 카드 id 저장, 참석자 명단 불러올 때도 사용
   sessionStorage.setItem("cardId", id);
 
   const userInfo = useSelector((state) => state.user?.userInfo);
@@ -272,7 +274,11 @@ export default function Card() {
       <KakaoMapWrapper>
         <KakaoMap location={location} />
       </KakaoMapWrapper>
-      {email === card.creatorEmail ? null : (
+      {email === card.creatorEmail ? (
+        <ParticipantListButton type="button" onClick={() => navigate("/participant-list")}>
+          참석자 명단 보기
+        </ParticipantListButton>
+      ) : (
         <JoinButton type="button" onClick={handleClick}>
           수락하기
         </JoinButton>
