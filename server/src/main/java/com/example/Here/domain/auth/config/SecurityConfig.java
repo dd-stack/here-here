@@ -23,7 +23,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-
     private final JwtTokenProvider jwtTokenProvider;
 
     @Bean

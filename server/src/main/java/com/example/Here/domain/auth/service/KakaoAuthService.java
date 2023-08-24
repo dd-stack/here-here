@@ -21,6 +21,7 @@ import java.util.Map;
 public class KakaoAuthService {
 
     private final static String clientId = System.getenv("CLIENT_ID");
+
     private final static String clientSecret = System.getenv("CLIENT_SECRET");
 
     private final MemberService memberService;
@@ -122,7 +123,7 @@ public class KakaoAuthService {
     }
 
     public void logoutKakaoToken(String email) {
-        // 이메일로 카카오 액세스 토큰을 가져오는 로직을 구현해야 합니다.
+
         String kakaoAccessToken = redisService.getKakaoTokenByEmail(email);
 
         RestTemplate restTemplate = new RestTemplate();

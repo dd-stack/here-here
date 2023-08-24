@@ -8,7 +8,6 @@ import org.springframework.security.crypto.encrypt.TextEncryptor;
 @Configuration
 public class EncryptConfig {
 
-
     private final String secret = System.getenv("ENCRYPTION_SECRET");
 
     private final String salt = System.getenv("ENCRYPTION_SALT");

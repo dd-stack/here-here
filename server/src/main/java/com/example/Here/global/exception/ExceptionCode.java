@@ -8,6 +8,8 @@ public enum ExceptionCode {
 
     TOKEN_NOT_VALID(401, "유효하지 않은 토큰입니다."),
 
+    IMAGEURL_NOT_VALID(401, "유효하지 않은 이미지 URL입니다."),
+
     NO_PERMISSION_FOR_CALENDAR(402, "톡캘린더 api호출 권한이 없습니다."),
 
     NO_PERMISSION_FOR_CHECKING_MEMBER(402, "수락한 명단 조회 권한이 없습니다."),
@@ -26,7 +28,9 @@ public enum ExceptionCode {
 
     ALREADY_ACCEPTED(409, "이미 수락한 초대장 입니다."),
 
-    FILE_SIZE_EXCEEDED(417, "파일 사이즈가 초과되었습니다.");
+    FILE_SIZE_EXCEEDED(417, "파일 사이즈가 초과되었습니다."),
+
+    FILE_UPLOAD_FAILED(500, "파일 업로드에 실패했습니다.");
 
 
     @Getter

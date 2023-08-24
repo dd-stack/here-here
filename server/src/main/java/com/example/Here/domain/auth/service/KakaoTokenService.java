@@ -42,7 +42,6 @@ public class KakaoTokenService {
 
             //리프레시 토큰 복호화
             String kakaoRefreshToken = redisService.decryptToken(encryptedRefreshToken);
-
             Map<String, String> refreshedTokens = kakaoAuthService.refreshKakaoTokens(kakaoRefreshToken);
 
             // 새로운 토큰과 리프레시 토큰을 저장
@@ -51,10 +50,12 @@ public class KakaoTokenService {
 
             // 저장 후 새로운 액세스 토큰 반환
             return refreshedTokens.get("access_token");
-        } else {
-            // 여전히 유효한 토큰이면 그대로 반환
-            return kakaoAccessToken;
         }
+
+        // 여전히 유효한 토큰이면 그대로 반환
+        else
+            return kakaoAccessToken;
+
     }
 
 

@@ -2,6 +2,7 @@ package com.example.Here.domain.calendar.service;
 
 import com.example.Here.domain.auth.service.KakaoTokenService;
 import com.example.Here.domain.calendar.dto.Event;
+import com.example.Here.domain.calendar.processor.KakaoCalenderProcessor;
 import com.example.Here.domain.member.entity.Member;
 import com.example.Here.global.exception.BusinessLogicException;
 import com.example.Here.global.exception.ExceptionCode;
@@ -30,32 +31,19 @@ public class KakaoCalendarService {
 
     private static final String URL = "https://kapi.kakao.com/v2/api/calendar/create/event";
 
-    private final KakaoTokenService kakaoTokenService;
+    private final KakaoCalenderProcessor kakaoCalenderProcessor;
 
     public String createEvent(Event event) throws JsonProcessingException {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated())
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NO_PERMISSION);
+
         Member member = (Member) authentication.getPrincipal();
 
-        String email = member.getEmail();
-        String accessToken = kakaoTokenService.verifyAndRefreshKakaoToken(email);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + accessToken);
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-        String eventJson = new ObjectMapper().writeValueAsString(event);
-        log.info("eventJson: " + eventJson);
-
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("event", eventJson);
-
-        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(body, headers);
-
-        RestTemplate restTemplate = new RestTemplate();
-
         try {
-            ResponseEntity<String> response = restTemplate.postForEntity(URL, entity, String.class);
+            ResponseEntity<String> response = kakaoCalenderProcessor.postForEntity(URL, member, event);
 
             if (response.getStatusCode().is2xxSuccessful()) {
                 String responseBody = response.getBody();
