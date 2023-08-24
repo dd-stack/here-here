@@ -1,15 +1,13 @@
 package com.example.Here.domain.card.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class CardDto {
 
     private String title;
@@ -31,18 +29,6 @@ public class CardDto {
 
     private String creatorEmail;
 
-
-    public CardDto(String title, String startTime, String endTime, String background, String content, String textLocation, String textColor, String location, String creatorEmail){
-        this.title = title;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.background = background;
-        this.content = content;
-        this.textLocation = textLocation;
-        this.textColor = textColor;
-        this.location = location;
-        this.creatorEmail = creatorEmail;
-    }
 
     @Getter
     @Setter

@@ -5,6 +5,7 @@ import com.example.Here.domain.member.dto.MemberDtoToAcceptList;
 import com.example.Here.domain.member.entity.Member;
 import com.example.Here.global.exception.BusinessLogicException;
 import com.example.Here.global.exception.ExceptionCode;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,14 +14,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/invitation")
 public class InvitationController {
 
     private final InvitationService invitationService;
-
-    public InvitationController(InvitationService invitationService) {
-        this.invitationService = invitationService;
-    }
 
     @PostMapping("/accept/{cardId}")
     public ResponseEntity<Void> acceptInvitation(@PathVariable String cardId) {
@@ -32,7 +30,6 @@ public class InvitationController {
         } else {
             throw new BusinessLogicException(ExceptionCode.MEMBER_NO_PERMISSION);
         }
-
 
     }
 

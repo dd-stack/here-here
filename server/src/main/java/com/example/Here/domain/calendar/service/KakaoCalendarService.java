@@ -8,8 +8,11 @@ import com.example.Here.global.exception.ExceptionCode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -21,6 +24,7 @@ import java.util.Map;
 
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class KakaoCalendarService {
 
@@ -28,12 +32,10 @@ public class KakaoCalendarService {
 
     private final KakaoTokenService kakaoTokenService;
 
-    public KakaoCalendarService(KakaoTokenService kakaoTokenService) {
-        this.kakaoTokenService = kakaoTokenService;
-    }
+    public String createEvent(Event event) throws JsonProcessingException {
 
-    public String createEvent(Member member, Event event) throws JsonProcessingException {
-        RestTemplate restTemplate = new RestTemplate();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Member member = (Member) authentication.getPrincipal();
 
         String email = member.getEmail();
         String accessToken = kakaoTokenService.verifyAndRefreshKakaoToken(email);
@@ -49,6 +51,8 @@ public class KakaoCalendarService {
         body.add("event", eventJson);
 
         HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(body, headers);
+
+        RestTemplate restTemplate = new RestTemplate();
 
         try {
             ResponseEntity<String> response = restTemplate.postForEntity(URL, entity, String.class);

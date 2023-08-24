@@ -1,34 +1,27 @@
 package com.example.Here.domain.card.dto;
 
-import com.example.Here.domain.card.entity.Card;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 @Getter
 @Setter
+@ToString
 public class CardPageDto {
-    private List<CardDtoListToPage> cards;
+    private List<CardDtoToPage> cards;
     private long totalElements;
     private int currentPage;
     private int size;
 
-    public CardPageDto(Page<CardDtoListToPage> page) {
+    public CardPageDto(Page<CardDtoToPage> page) {
         this.cards = page.getContent();
         this.totalElements = page.getTotalElements();
         this.currentPage = page.getNumber();
         this.size = page.getSize();
     }
 
-    @Override
-    public String toString() {
-        return "CardPageDto{" +
-                "cards=" + cards +
-                ", totalElements=" + totalElements +
-                ", currentPage=" + currentPage +
-                ", size=" + size +
-                '}';
-    }
+
 }

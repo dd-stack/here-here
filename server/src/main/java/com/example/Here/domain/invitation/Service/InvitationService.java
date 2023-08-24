@@ -9,6 +9,7 @@ import com.example.Here.domain.member.entity.Member;
 import com.example.Here.domain.member.repository.MemberRepository;
 import com.example.Here.global.exception.BusinessLogicException;
 import com.example.Here.global.exception.ExceptionCode;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class InvitationService {
 
@@ -26,11 +28,6 @@ public class InvitationService {
 
 
     private final CardRepository cardRepository;
-
-    public InvitationService(InvitationRepository invitationRepository,CardRepository cardRepository) {
-        this.invitationRepository = invitationRepository;
-        this.cardRepository = cardRepository;
-    }
 
     @Transactional
     public void acceptInvitation(String cardId, Member member) {

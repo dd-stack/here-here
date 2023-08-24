@@ -5,12 +5,14 @@ import com.example.Here.domain.auth.service.RedisService;
 import com.example.Here.domain.card.repository.CardRepository;
 import com.example.Here.domain.invitation.repository.InvitationRepository;
 import com.example.Here.domain.member.entity.Member;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class MemberManageService {
 
@@ -21,16 +23,6 @@ public class MemberManageService {
     private final InvitationRepository invitationRepository;
 
     private final RedisService redisService;
-
-
-    public MemberManageService(KakaoAuthService kakaoAuthService, CardRepository cardRepository, InvitationRepository invitationRepository, RedisService redisService) {
-
-        this.kakaoAuthService = kakaoAuthService;
-
-        this.cardRepository = cardRepository;
-        this.invitationRepository = invitationRepository;
-        this.redisService = redisService;
-    }
 
     public void logout(String email) {
 

@@ -6,6 +6,7 @@ import com.example.Here.domain.member.service.MemberService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -15,21 +16,16 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class KakaoAuthService {
 
     private final static String clientId = System.getenv("CLIENT_ID");
-    private final static String clietnSecret = System.getenv("CLIENT_SECRET");
+    private final static String clientSecret = System.getenv("CLIENT_SECRET");
 
     private final MemberService memberService;
 
     private final RedisService redisService;
-
-    public KakaoAuthService(MemberService memberService, RedisService redisService) {
-        this.memberService = memberService;
-        this.redisService = redisService;
-    }
-
 
     public Map<String, String> getTokensFromKakao(String code) throws JsonProcessingException {
 
@@ -42,7 +38,7 @@ public class KakaoAuthService {
                 //.queryParam("redirect_uri", "http://localhost:3000/login/oauth2/code/kakao")
                 .queryParam("redirect_uri", "https://here-here.co.kr/login/oauth2/code/kakao")
                 .queryParam("code", code)
-                .queryParam("client_secret", clietnSecret)
+                .queryParam("client_secret", clientSecret)
                 .toUriString();
 
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(requestUrl, HttpEntity.EMPTY, String.class);
@@ -79,7 +75,7 @@ public class KakaoAuthService {
                 .queryParam("grant_type", "refresh_token")
                 .queryParam("client_id", clientId)
                 .queryParam("refresh_token", refreshToken)
-                .queryParam("client_secret", clietnSecret)
+                .queryParam("client_secret", clientSecret)
                 .toUriString();
 
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(requestUrl, HttpEntity.EMPTY, String.class);

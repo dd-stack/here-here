@@ -1,12 +1,13 @@
 package com.example.Here.domain.member.controller;
 
-import com.example.Here.domain.card.dto.CardDtoListToPage;
+import com.example.Here.domain.card.dto.CardDtoToPage;
 import com.example.Here.domain.card.dto.CardPageDto;
 import com.example.Here.domain.card.service.CardService;
 import com.example.Here.domain.member.entity.Member;
 import com.example.Here.domain.member.service.MemberManageService;
 import com.example.Here.global.exception.BusinessLogicException;
 import com.example.Here.global.exception.ExceptionCode;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,18 +20,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
+@RequiredArgsConstructor
 @RequestMapping("/member")
 public class MemberController {
 
     private final MemberManageService memberManageService;
 
     private final CardService cardService;
-
-
-    public MemberController(MemberManageService memberManageService, CardService cardService) {
-        this.memberManageService = memberManageService;
-        this.cardService = cardService;
-    }
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout() {
@@ -60,7 +56,7 @@ public class MemberController {
             Member member = (Member) authentication.getPrincipal();
 
             PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
-            Page<CardDtoListToPage> createdCards = cardService.getCreatedCards(member, pageRequest);
+            Page<CardDtoToPage> createdCards = cardService.getCreatedCards(member, pageRequest);
 
             return new CardPageDto(createdCards);
 
@@ -79,7 +75,7 @@ public class MemberController {
             Member member = (Member) authentication.getPrincipal();
 
             PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
-            Page<CardDtoListToPage> receivedCards = cardService.getReceivedCards(member, pageRequest);
+            Page<CardDtoToPage> receivedCards = cardService.getReceivedCards(member, pageRequest);
 
             CardPageDto result = new CardPageDto(receivedCards);
 

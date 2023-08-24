@@ -1,5 +1,6 @@
 package com.example.Here.domain.auth.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.stereotype.Service;
@@ -7,16 +8,12 @@ import org.springframework.stereotype.Service;
 import java.util.concurrent.TimeUnit;
 
 @Service
+@RequiredArgsConstructor
 public class RedisService {
 
     private final StringRedisTemplate stringRedisTemplate;
 
     private final TextEncryptor textEncryptor;
-
-    public RedisService(StringRedisTemplate stringRedisTemplate, TextEncryptor textEncryptor) {
-        this.stringRedisTemplate = stringRedisTemplate;
-        this.textEncryptor = textEncryptor;
-    }
 
     public void saveKakaoToken(String email, String kakaoAccessToken, String kakaoRefreshToken, Integer expiresIn, Integer refreshTokenExpiresIn) {
         stringRedisTemplate.opsForValue().set(email + ":kakaoAccessToken", encryptToken(kakaoAccessToken), expiresIn, TimeUnit.SECONDS);

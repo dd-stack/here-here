@@ -1,16 +1,15 @@
 package com.example.Here.domain.card.service;
 
 import com.example.Here.domain.card.dto.CardDto;
-import com.example.Here.domain.card.dto.CardDtoListToPage;
+import com.example.Here.domain.card.dto.CardDtoToPage;
 import com.example.Here.domain.card.entity.Card;
 import com.example.Here.domain.card.repository.CardRepository;
-import com.example.Here.domain.invitation.repository.InvitationRepository;
 import com.example.Here.domain.member.entity.Member;
-import com.example.Here.domain.member.service.MemberService;
 import com.example.Here.global.exception.BusinessLogicException;
 import com.example.Here.global.exception.ExceptionCode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,14 +17,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class CardService {
 
     private final CardRepository cardRepository;
-
-    public CardService(CardRepository cardRepository) {
-        this.cardRepository = cardRepository;
-    }
 
     @Transactional
     public CardDto.Response createCard(CardDto cardDto, Member creator) {
@@ -73,18 +69,18 @@ public class CardService {
 
     }
 
-    public Page<CardDtoListToPage> getCreatedCards(Member member, Pageable pageable) {
+    public Page<CardDtoToPage> getCreatedCards(Member member, Pageable pageable) {
         Page<Card> createdCards = cardRepository.findByCreator(member, pageable);
 
-        return createdCards.map(CardDtoListToPage::new);
+        return createdCards.map(CardDtoToPage::new);
     }
 
-    public Page<CardDtoListToPage> getReceivedCards(Member member, Pageable pageable) {
+    public Page<CardDtoToPage> getReceivedCards(Member member, Pageable pageable) {
        Page<Card> receivedCards = cardRepository.findCardsByReceiver(member, pageable);
 
        log.info("service - Received Cards: {}", receivedCards);
 
-        return receivedCards.map(CardDtoListToPage::new);
+        return receivedCards.map(CardDtoToPage::new);
     }
 
 }

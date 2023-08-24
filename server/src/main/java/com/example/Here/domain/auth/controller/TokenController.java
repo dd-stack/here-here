@@ -5,6 +5,7 @@ import com.example.Here.domain.auth.service.KakaoAuthService;
 import com.example.Here.domain.auth.service.RedisService;
 import com.example.Here.domain.member.entity.Member;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api")
 @Slf4j
 public class TokenController {
@@ -21,13 +23,6 @@ public class TokenController {
     private final KakaoAuthService kakaoAuthService;
 
     private final RedisService redisService;
-
-
-    public TokenController(JwtTokenProvider jwtTokenProvider, KakaoAuthService kakaoAuthService, RedisService redisService) {
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.kakaoAuthService = kakaoAuthService;
-        this.redisService = redisService;
-    }
 
     @PostMapping("/token")
         public ResponseEntity<?> createToken(@RequestBody Map<String, String> payload) throws JsonProcessingException {

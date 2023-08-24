@@ -1,6 +1,7 @@
 package com.example.Here.domain.auth.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class KakaoTokenService {
 
@@ -16,13 +18,6 @@ public class KakaoTokenService {
     private final StringRedisTemplate stringRedisTemplate;
 
     private final RedisService redisService;
-
-    public KakaoTokenService(KakaoAuthService kakaoAuthService, StringRedisTemplate stringRedisTemplate, RedisService redisService) {
-        this.kakaoAuthService = kakaoAuthService;
-        this.stringRedisTemplate = stringRedisTemplate;
-        this.redisService = redisService;
-    }
-
 
     public String verifyAndRefreshKakaoToken(String email) throws JsonProcessingException {
         // 암호화된 토큰을 가져옴
