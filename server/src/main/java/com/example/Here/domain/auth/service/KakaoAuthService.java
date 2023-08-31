@@ -52,6 +52,7 @@ public class KakaoAuthService {
 
 
     public boolean validateKakaoAccessToken(String accessToken) {
+
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
@@ -61,7 +62,6 @@ public class KakaoAuthService {
 
         try {
             ResponseEntity<String> responseEntity = restTemplate.exchange("https://kapi.kakao.com/v1/user/access_token_info", HttpMethod.GET, entity, String.class);
-
             return responseEntity.getStatusCode() == HttpStatus.OK;
         } catch (Exception e) {
             log.error("Error occurred: ", e);
@@ -70,6 +70,7 @@ public class KakaoAuthService {
     }
 
     public Map<String, String> refreshKakaoTokens(String refreshToken) throws JsonProcessingException {
+
         RestTemplate restTemplate = new RestTemplate();
 
         final String requestUrl = UriComponentsBuilder.fromHttpUrl("https://kauth.kakao.com/oauth/token")
@@ -86,7 +87,7 @@ public class KakaoAuthService {
         return objectMapper.readValue(responseEntity.getBody(), new TypeReference<Map<String, String>>() {});
     }
 
-    public Member kakaoUserInfo(String kakaoAccessToken) throws JsonProcessingException {
+    public Member kakaoUserInfo(String kakaoAccessToken) {
 
         try {
 

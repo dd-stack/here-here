@@ -1,5 +1,6 @@
 package com.example.Here.domain.invitation.repository;
 
+import com.example.Here.domain.card.entity.Card;
 import com.example.Here.domain.invitation.entity.Invitation;
 import com.example.Here.domain.member.entity.Member;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,10 @@ public interface InvitationRepository extends JpaRepository<Invitation, Long> {
     @Modifying
     @Query("UPDATE Invitation i SET i.deleted = :deleted WHERE i.receiver = :member")
     void updateDeletedStatusForInvitationsReceivedByMember(Member member, Boolean deleted);
+
+    @Modifying
+    @Query("UPDATE Invitation i SET i.deleted = :deleted WHERE i.card = :card")
+    void updateDeletedStatusForInvitationsByCard(Card card, Boolean deleted);
 
 
 }

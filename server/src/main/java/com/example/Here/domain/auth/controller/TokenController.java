@@ -38,10 +38,6 @@ public class TokenController {
         Integer expiresIn = Integer.parseInt(tokens.get("expires_in"));
         Integer refreshTokenExpiresIn = Integer.parseInt(tokens.get("refresh_token_expires_in"));
 
-        log.info("kakaoAccessToken : {}", kakaoAccessToken);
-        log.info("kakaoRefreshToken : {}", kakaoRefreshToken);
-        log.info("expiresIn : {}", expiresIn);
-        log.info("refreshTokenExpiresIn : {}", refreshTokenExpiresIn);
 
         Member authMember = kakaoAuthService.kakaoUserInfo(kakaoAccessToken);
 
