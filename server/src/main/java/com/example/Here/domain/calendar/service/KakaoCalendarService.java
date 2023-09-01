@@ -1,11 +1,13 @@
 package com.example.Here.domain.calendar.service;
 
+import com.example.Here.domain.auth.service.AuthenticationService;
 import com.example.Here.domain.auth.service.KakaoTokenService;
 import com.example.Here.domain.calendar.dto.Event;
 import com.example.Here.domain.calendar.processor.KakaoCalenderProcessor;
 import com.example.Here.domain.member.entity.Member;
 import com.example.Here.global.exception.BusinessLogicException;
 import com.example.Here.global.exception.ExceptionCode;
+import com.example.Here.global.utils.HttpUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,17 +35,20 @@ public class KakaoCalendarService {
 
     private final KakaoCalenderProcessor kakaoCalenderProcessor;
 
+    private final AuthenticationService authenticationService;
+
     public String createEvent(Event event) throws JsonProcessingException {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication == null || !authentication.isAuthenticated())
-            throw new BusinessLogicException(ExceptionCode.MEMBER_NO_PERMISSION);
-
-        Member member = (Member) authentication.getPrincipal();
+        Member member = authenticationService.getAuthenticatedMember();
 
         try {
+
+            ResponseEntity<String> response = HttpUtils.sendRequest(URL, HttpMethod.POST, kakaoCalenderProcessor.createEntity(member, event), String.class);
+
+            /*
+            HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(kakaoCalenderProcessor.createBody(event), kakaoCalenderProcessor.createHeader(member));
             ResponseEntity<String> response = kakaoCalenderProcessor.postForEntity(URL, member, event);
+             */
 
             if (response.getStatusCode().is2xxSuccessful()) {
                 String responseBody = response.getBody();
@@ -60,8 +65,6 @@ public class KakaoCalendarService {
             }
 
         } catch (HttpClientErrorException e) {
-
-            // to-do : 예외처리 세분화 필요
 
             log.error("Failed to create event: " + e.getResponseBodyAsString());
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_FOR_CALENDAR);

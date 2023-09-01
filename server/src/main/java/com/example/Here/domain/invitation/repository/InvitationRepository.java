@@ -17,10 +17,7 @@ import java.util.Optional;
 @Repository
 public interface InvitationRepository extends JpaRepository<Invitation, Long> {
 
-    @EntityGraph(attributePaths = {"card", "receiver"})
-    Page<Invitation> findByReceiver(Member receiver, Pageable pageable);
-
-    List<Invitation> findByReceiver(Member receiver);
+    Optional<Invitation> findByReceiverAndCard(Member receiver, Card card);
 
     Optional<Invitation> findByCardIdAndReceiver(String cardId, Member receiver);
 

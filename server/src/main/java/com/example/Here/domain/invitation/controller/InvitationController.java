@@ -1,5 +1,6 @@
 package com.example.Here.domain.invitation.controller;
 
+import com.example.Here.domain.auth.service.AuthenticationService;
 import com.example.Here.domain.invitation.Service.InvitationService;
 import com.example.Here.domain.member.dto.MemberDtoToAcceptList;
 import com.example.Here.domain.member.entity.Member;
@@ -22,27 +23,17 @@ public class InvitationController {
 
     @PostMapping("/accept/{cardId}")
     public ResponseEntity<Void> acceptInvitation(@PathVariable String cardId) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            Member member = (Member) authentication.getPrincipal();
-            invitationService.acceptInvitation(cardId, member);
-            return ResponseEntity.ok().build();
-        } else {
-            throw new BusinessLogicException(ExceptionCode.MEMBER_NO_PERMISSION);
-        }
+
+        invitationService.acceptInvitation(cardId);
+        return ResponseEntity.ok().build();
 
     }
 
     @DeleteMapping("/delete/{cardId}")
     public ResponseEntity<Void> deleteInvitation(@PathVariable String cardId) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            Member member = (Member) authentication.getPrincipal();
-            invitationService.deleteInvitation(cardId, member);
-            return ResponseEntity.ok().build();
-        } else {
-            throw new BusinessLogicException(ExceptionCode.MEMBER_NO_PERMISSION);
-        }
+
+        invitationService.deleteInvitation(cardId);
+        return ResponseEntity.ok().build();
 
     }
 
@@ -51,8 +42,6 @@ public class InvitationController {
 
         return ResponseEntity.ok(invitationService.getAcceptedMembersByCardId(cardId));
     }
-
-
 
 
 }

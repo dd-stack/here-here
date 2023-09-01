@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 public class AuthenticationService {
 
     public Member getAuthenticatedMember() {
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated()) {

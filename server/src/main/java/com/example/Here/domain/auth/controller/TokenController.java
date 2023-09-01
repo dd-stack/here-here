@@ -25,7 +25,7 @@ public class TokenController {
     private final RedisService redisService;
 
     @PostMapping("/token")
-        public ResponseEntity<?> createToken(@RequestBody Map<String, String> payload) throws JsonProcessingException {
+    public ResponseEntity<?> createToken(@RequestBody Map<String, String> payload) throws JsonProcessingException {
 
         String code = payload.get("code");
         log.info("code : {}", code);

@@ -45,7 +45,7 @@ public class KakaoCalenderProcessor {
 
         return body;
     }
-
+/*
     public ResponseEntity<String> postForEntity(String url, Member member, Event event) throws JsonProcessingException {
 
         RestTemplate restTemplate = new RestTemplate();
@@ -54,6 +54,11 @@ public class KakaoCalenderProcessor {
         return restTemplate.postForEntity(url, entity, String.class);
     }
 
+*/
 
+    public HttpEntity<MultiValueMap<String, String>> createEntity(Member member, Event event) throws JsonProcessingException {
+
+        return new HttpEntity<>(createBody(event), createHeader(member));
+    }
 
 }

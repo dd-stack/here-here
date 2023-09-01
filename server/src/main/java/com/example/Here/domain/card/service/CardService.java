@@ -3,16 +3,20 @@ package com.example.Here.domain.card.service;
 import com.example.Here.domain.auth.service.AuthenticationService;
 import com.example.Here.domain.card.dto.CardDto;
 import com.example.Here.domain.card.dto.CardDtoToPage;
+import com.example.Here.domain.card.dto.CardPageDto;
 import com.example.Here.domain.card.entity.Card;
 import com.example.Here.domain.card.processor.CardProcessor;
 import com.example.Here.domain.card.repository.CardRepository;
+import com.example.Here.domain.invitation.repository.InvitationRepository;
 import com.example.Here.domain.member.entity.Member;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +27,8 @@ public class CardService {
 
     private final CardRepository cardRepository;
 
+    private final InvitationRepository invitationRepository;
+
     private final CardProcessor cardProcessor;
 
     private final AuthenticationService authenticationService;
@@ -30,14 +36,14 @@ public class CardService {
     @Transactional
     public CardDto.Response createCard(CardDto cardDto) {
 
-            Member creator = authenticationService.getAuthenticatedMember();
+        Member creator = authenticationService.getAuthenticatedMember();
 
-            Card newCard = new Card(cardDto.getTitle(), cardDto.getStartTime(), cardDto.getEndTime(), cardDto.getBackground(), cardDto.getContent(), cardDto.getTextLocation(), cardDto.getTextColor(), cardDto.getLocation(), creator);
-            newCard = cardRepository.save(newCard);
+        Card newCard = new Card(cardDto.getTitle(), cardDto.getStartTime(), cardDto.getEndTime(), cardDto.getBackground(), cardDto.getContent(), cardDto.getTextLocation(), cardDto.getTextColor(), cardDto.getLocation(), creator);
+        newCard = cardRepository.save(newCard);
 
-            return new CardDto.Response(newCard.getId());
+        return new CardDto.Response(newCard.getId());
 
-        }
+    }
 
     public CardDto getCard(String id) throws JsonProcessingException {
 
@@ -57,27 +63,37 @@ public class CardService {
     @Transactional
     public void deleteCard(String id) {
 
-            Member member = authenticationService.getAuthenticatedMember();
-            Card deleteCard = cardProcessor.findCardById(id);
+        Member member = authenticationService.getAuthenticatedMember();
+        Card deleteCard = cardProcessor.findCardById(id);
 
-            cardProcessor.checkCardCreator(member, deleteCard);
-            cardProcessor.softDeleteInvitation(deleteCard);
-            cardProcessor.softDeleteCard(deleteCard);
+        cardProcessor.checkCardCreator(member, deleteCard);
+
+        deleteCard.setDeleted(true);
+        cardRepository.save(deleteCard);
+        invitationRepository.updateDeletedStatusForInvitationsByCard(deleteCard, true);
+
     }
 
-    public Page<CardDtoToPage> getCreatedCards(Member member, Pageable pageable) {
+    public CardPageDto getCreatedCards(int page, int size) {
 
-        Page<Card> createdCards = cardRepository.findByCreator(member, pageable);
+        Member member = authenticationService.getAuthenticatedMember();
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
 
-        return createdCards.map(CardDtoToPage::new);
+        Page<CardDtoToPage> createdCards = cardProcessor.getCreatedCardsPage(member, pageRequest);
+
+        return new CardPageDto(createdCards);
+
     }
 
-    public Page<CardDtoToPage> getReceivedCards(Member member, Pageable pageable) {
+    public CardPageDto getReceivedCards(int page, int size) {
 
-       Page<Card> receivedCards = cardRepository.findCardsByReceiver(member, pageable);
-       log.info("service - Received Cards: {}", receivedCards);
+        Member member = authenticationService.getAuthenticatedMember();
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
 
-        return receivedCards.map(CardDtoToPage::new);
+        Page<CardDtoToPage> receivedCards = cardProcessor.getReceivedCardsPage(member, pageRequest);
+
+        return new CardPageDto(receivedCards);
+
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.Here.domain.card.processor;
 
+import com.example.Here.domain.card.dto.CardDtoToPage;
 import com.example.Here.domain.card.entity.Card;
 import com.example.Here.domain.card.repository.CardRepository;
 import com.example.Here.domain.invitation.repository.InvitationRepository;
@@ -7,8 +8,8 @@ import com.example.Here.domain.member.entity.Member;
 import com.example.Here.global.exception.BusinessLogicException;
 import com.example.Here.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -32,16 +33,16 @@ public class CardProcessor {
         }
     }
 
-    public void softDeleteCard(Card card) {
+    public Page<CardDtoToPage> getCreatedCardsPage(Member member, Pageable pageable) {
 
-        card.setDeleted(true);
-        cardRepository.save(card);
+        Page<Card> createdCards = cardRepository.findByCreator(member, pageable);
+        return createdCards.map(CardDtoToPage::new);
     }
 
-    public void softDeleteInvitation(Card card){
+    public Page<CardDtoToPage> getReceivedCardsPage(Member member, Pageable pageable) {
 
-        invitationRepository.updateDeletedStatusForInvitationsByCard(card, true);
+        Page<Card> receivedCards = cardRepository.findCardsByReceiver(member, pageable);
+        return receivedCards.map(CardDtoToPage::new);
     }
-
 
 }

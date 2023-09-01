@@ -1,6 +1,7 @@
 package com.example.Here.domain.auth.jwt;
 
 import com.example.Here.domain.member.entity.Member;
+import com.example.Here.domain.member.processor.MemberProcessor;
 import com.example.Here.domain.member.service.MemberService;
 import com.example.Here.global.exception.BusinessLogicException;
 import com.example.Here.global.exception.ExceptionCode;
@@ -43,13 +44,13 @@ public class JwtTokenProvider {
     @Value("${jwt.refresh-token-expiration-minutes}")
     private int refreshTokenExpirationMinutes;
 
-    private final MemberService memberService;
+    private final MemberProcessor memberProcessor;
 
     private final StringRedisTemplate stringRedisTemplate;
 
 
-    public JwtTokenProvider(@Value("${jwt.key}") String secretKey, MemberService memberService, StringRedisTemplate stringRedisTemplate){
-        this.memberService = memberService;
+    public JwtTokenProvider(@Value("${jwt.key}") String secretKey, MemberProcessor memberProcessor, StringRedisTemplate stringRedisTemplate){
+        this.memberProcessor = memberProcessor;
         this.stringRedisTemplate = stringRedisTemplate;
 
         String base64Key = Encoders.BASE64.encode(secretKey.getBytes(StandardCharsets.UTF_8));
@@ -106,7 +107,7 @@ public class JwtTokenProvider {
                 throw new IllegalArgumentException("Invalid token: no email claim");
             }
 
-            Member member = memberService.getMember(email);
+            Member member = memberProcessor.getMember(email);
 
             if (member == null) {
                 throw new UsernameNotFoundException("No user found with email: " + email);
@@ -126,7 +127,7 @@ public class JwtTokenProvider {
 
         Claims claims = parseClaims(refreshToken);
         String email = claims.get("email", String.class);
-        Member member = memberService.getMember(email);
+        Member member = memberProcessor.getMember(email);
         return generateAccessToken(member);
     }
 
