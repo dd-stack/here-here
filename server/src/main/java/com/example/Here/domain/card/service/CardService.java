@@ -9,13 +9,12 @@ import com.example.Here.domain.card.processor.CardProcessor;
 import com.example.Here.domain.card.repository.CardRepository;
 import com.example.Here.domain.invitation.repository.InvitationRepository;
 import com.example.Here.domain.member.entity.Member;
+import com.example.Here.global.utils.ObjectMapperUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,8 +52,11 @@ public class CardService {
         // 만든 사람이 초대를 수락할 수 없게 클라이언트에서 수락버튼을 안보이게 함
         CardDto cardDto = new CardDto(card.getTitle(), card.getStartTime(), card.getEndTime(), card.getBackground(), card.getContent(), card.getTextLocation(), card.getTextColor(), card.getLocation(), card.getCreator().getEmail());
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(cardDto);
+        //ObjectMapper objectMapper = new ObjectMapper();
+        //String json = objectMapper.writeValueAsString(cardDto);
+
+        String json = ObjectMapperUtil.writeValueAsString(cardDto);
+
         log.info("json : {}", json);
 
         return cardDto;

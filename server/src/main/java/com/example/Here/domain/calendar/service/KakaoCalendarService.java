@@ -8,6 +8,7 @@ import com.example.Here.domain.member.entity.Member;
 import com.example.Here.global.exception.BusinessLogicException;
 import com.example.Here.global.exception.ExceptionCode;
 import com.example.Here.global.utils.HttpUtils;
+import com.example.Here.global.utils.ObjectMapperUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -53,8 +54,8 @@ public class KakaoCalendarService {
             if (response.getStatusCode().is2xxSuccessful()) {
                 String responseBody = response.getBody();
                 log.info("Raw response body: " + responseBody);
-                Map<String, Object> map = new ObjectMapper().readValue(responseBody, new TypeReference<Map<String, Object>>() {
-                });
+                //Map<String, Object> map = new ObjectMapper().readValue(responseBody, new TypeReference<Map<String, Object>>() {});
+                Map<String, Object> map = ObjectMapperUtil.readValue(responseBody, new TypeReference<Map<String, Object>>() {});
 
                 return "톡캘린더 api 호출 성공";
             }

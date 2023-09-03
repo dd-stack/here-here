@@ -2,9 +2,11 @@ package com.example.Here.global.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Slf4j
 public class HttpUtils {
@@ -18,4 +20,30 @@ public class HttpUtils {
             throw new RuntimeException("Failed to send HTTP request.");
         }
     }
+
+    public static HttpHeaders createHeader(String accessToken) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+        return headers;
+    }
+
+    public static String createRequestUrlToGetToken(String url, String grantType, String clientId, String redirectUri, String code, String clientSecret) {
+        return UriComponentsBuilder.fromHttpUrl(url)
+                .queryParam("grant_type", grantType)
+                .queryParam("client_id", clientId)
+                .queryParam("redirect_uri", redirectUri)
+                .queryParam("code", code)
+                .queryParam("client_secret", clientSecret)
+                .toUriString();
+    }
+
+    public static String createRequestUrlToGetTokenWithRefreshToken(String url, String grantType, String clientId, String refreshToken, String clientSecret) {
+        return UriComponentsBuilder.fromHttpUrl(url)
+                .queryParam("grant_type", grantType)
+                .queryParam("client_id", clientId)
+                .queryParam("refresh_token", refreshToken)
+                .queryParam("client_secret", clientSecret)
+                .toUriString();
+    }
+
 }

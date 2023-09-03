@@ -28,7 +28,6 @@ public class TokenController {
     public ResponseEntity<?> createToken(@RequestBody Map<String, String> payload) throws JsonProcessingException {
 
         String code = payload.get("code");
-        log.info("code : {}", code);
 
         Map<String, String> tokens = kakaoAuthService.getTokensFromKakao(code);
 
@@ -46,8 +45,6 @@ public class TokenController {
         String jwtToken = jwtTokenProvider.generateAccessToken(authMember);
         String refreshJwtToken = jwtTokenProvider.generateRefreshToken(authMember);
 
-        log.info("jwtToken : {}", jwtToken);
-        log.info("refreshJwtToken : {}", refreshJwtToken);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Authorization", "Bearer " + jwtToken);

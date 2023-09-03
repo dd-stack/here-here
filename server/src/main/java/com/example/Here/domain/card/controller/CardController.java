@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/making")
+@RequestMapping("/card")
 @Slf4j
 public class CardController {
 
     private final CardService cardService;
 
-    @PostMapping("/card")
+    @PostMapping("/createcard")
     public ResponseEntity<?> createCard(@RequestBody CardDto cardDto) {
 
         return new ResponseEntity<>(cardService.createCard(cardDto), HttpStatus.OK);
