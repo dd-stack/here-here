@@ -8,6 +8,8 @@ import com.example.Here.domain.member.dto.MemberDtoToAcceptList;
 import com.example.Here.domain.member.entity.Member;
 import com.example.Here.global.exception.BusinessLogicException;
 import com.example.Here.global.exception.ExceptionCode;
+import com.example.Here.global.exception.SecurityAuthException;
+import com.example.Here.global.exception.SecurityAuthExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -51,7 +53,7 @@ public class InvitationProcessor {
         String memberEmail = member.getEmail();
 
         if (!receiverEmail.equals(memberEmail)) {
-            throw new BusinessLogicException(ExceptionCode.MEMBER_NO_PERMISSION);
+            throw new SecurityAuthException(SecurityAuthExceptionCode.MEMBER_NO_PERMISSION);
         }
     }
 

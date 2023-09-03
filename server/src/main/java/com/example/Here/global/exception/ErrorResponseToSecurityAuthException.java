@@ -8,17 +8,20 @@ import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
-public class ErrorResponse {
+public class ErrorResponseToSecurityAuthException {
 
     private final int status;
+
     private final String error;
+
     private final String message;
+
     private final String timeStamp;
 
-    public ErrorResponse(ExceptionCode exceptionCode) {
-        this.status = exceptionCode.getStatus();
-        this.error = exceptionCode.name();
-        this.message = exceptionCode.getMessage();
+    public ErrorResponseToSecurityAuthException(SecurityAuthExceptionCode securityAuthExceptionCode) {
+        this.status = securityAuthExceptionCode.getStatus();
+        this.error = securityAuthExceptionCode.name();
+        this.message = securityAuthExceptionCode.getMessage();
         this.timeStamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 }

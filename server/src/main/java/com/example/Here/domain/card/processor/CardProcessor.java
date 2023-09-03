@@ -7,6 +7,8 @@ import com.example.Here.domain.invitation.repository.InvitationRepository;
 import com.example.Here.domain.member.entity.Member;
 import com.example.Here.global.exception.BusinessLogicException;
 import com.example.Here.global.exception.ExceptionCode;
+import com.example.Here.global.exception.SecurityAuthException;
+import com.example.Here.global.exception.SecurityAuthExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +31,7 @@ public class CardProcessor {
     public void checkCardCreator(Member member, Card card) {
 
         if (!card.getCreator().getEmail().equals(member.getEmail())) {
-            throw new BusinessLogicException(ExceptionCode.MEMBER_NO_PERMISSION);
+            throw new SecurityAuthException(SecurityAuthExceptionCode.MEMBER_NO_PERMISSION);
         }
     }
 

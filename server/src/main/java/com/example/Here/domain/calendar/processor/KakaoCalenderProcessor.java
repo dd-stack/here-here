@@ -1,6 +1,6 @@
 package com.example.Here.domain.calendar.processor;
 
-import com.example.Here.domain.auth.service.KakaoTokenService;
+import com.example.Here.domain.auth.service.KakaoAuthService;
 import com.example.Here.domain.calendar.dto.Event;
 import com.example.Here.domain.member.entity.Member;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -10,23 +10,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class KakaoCalenderProcessor {
 
-    private final KakaoTokenService kakaoTokenService;
+    private final KakaoAuthService kakaoAuthService;
 
     public HttpHeaders createHeader(Member member) throws JsonProcessingException {
 
         String email = member.getEmail();
-        String accessToken = kakaoTokenService.verifyAndRefreshKakaoToken(email);
+        String accessToken = kakaoAuthService.verifyAndRefreshKakaoToken(email);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);

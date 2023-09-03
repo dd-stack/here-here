@@ -21,9 +21,21 @@ public class HttpUtils {
         }
     }
 
-    public static HttpHeaders createHeader(String accessToken) {
+    public static HttpEntity<?> createEntity(String accessToken) {
+
+        return new HttpEntity<>(createHeaderWithAccessToken(accessToken));
+    }
+
+    public static HttpHeaders createHeaderWithAccessToken(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessToken);
+        return headers;
+    }
+
+    public static HttpHeaders createHeaderWithRefreshToken(String accessToken, String refreshToken){
+
+        HttpHeaders headers = createHeaderWithAccessToken(accessToken);
+        headers.add("RefreshToken", refreshToken);
         return headers;
     }
 

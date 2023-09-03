@@ -1,27 +1,22 @@
 package com.example.Here.domain.calendar.service;
 
 import com.example.Here.domain.auth.service.AuthenticationService;
-import com.example.Here.domain.auth.service.KakaoTokenService;
 import com.example.Here.domain.calendar.dto.Event;
 import com.example.Here.domain.calendar.processor.KakaoCalenderProcessor;
 import com.example.Here.domain.member.entity.Member;
 import com.example.Here.global.exception.BusinessLogicException;
 import com.example.Here.global.exception.ExceptionCode;
+import com.example.Here.global.exception.InvalidJsonFormatException;
 import com.example.Here.global.utils.HttpUtils;
 import com.example.Here.global.utils.ObjectMapperUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
 
@@ -38,7 +33,7 @@ public class KakaoCalendarService {
 
     private final AuthenticationService authenticationService;
 
-    public String createEvent(Event event) throws JsonProcessingException {
+    public String createEvent(Event event) {
 
         Member member = authenticationService.getAuthenticatedMember();
 
@@ -69,6 +64,11 @@ public class KakaoCalendarService {
 
             log.error("Failed to create event: " + e.getResponseBodyAsString());
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_FOR_CALENDAR);
+        }
+
+        catch (JsonProcessingException e) {
+            log.error("Failed to create event: " + e.getMessage());
+            throw new InvalidJsonFormatException("Invalid JSON format", e);
         }
 
 

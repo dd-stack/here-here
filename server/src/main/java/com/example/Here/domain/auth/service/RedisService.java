@@ -16,29 +16,41 @@ public class RedisService {
     private final TextEncryptor textEncryptor;
 
     public void saveKakaoToken(String email, String kakaoAccessToken, String kakaoRefreshToken, Integer expiresIn, Integer refreshTokenExpiresIn) {
+
         stringRedisTemplate.opsForValue().set(email + ":kakaoAccessToken", encryptToken(kakaoAccessToken), expiresIn, TimeUnit.SECONDS);
         stringRedisTemplate.opsForValue().set(email + ":kakaoRefreshToken", encryptToken(kakaoRefreshToken), refreshTokenExpiresIn, TimeUnit.SECONDS);
     }
 
     public String encryptToken(String token) {
+
         return textEncryptor.encrypt(token);
     }
 
     public String decryptToken(String encryptedToken) {
+
         return textEncryptor.decrypt(encryptedToken);
     }
 
     public String getKakaoTokenByEmail(String email) {
+
         String encryptedRefreshToken = stringRedisTemplate.opsForValue().get(email + ":kakaoAccessToken");
         return decryptToken(encryptedRefreshToken);
     }
 
+    public String getKakaoRefreshTokenByEmail(String email) {
+
+        String encryptedRefreshToken = stringRedisTemplate.opsForValue().get(email + ":kakaoRefreshToken");
+        return decryptToken(encryptedRefreshToken);
+    }
+
     public void removeKakaoToken(String email) {
+
         stringRedisTemplate.delete(email + ":kakaoAccessToken");
         stringRedisTemplate.delete(email + ":kakaoRefreshToken");
     }
 
     public void removeRefreshToken(String email) {
+
         stringRedisTemplate.delete(email + ":refresh");
     }
 

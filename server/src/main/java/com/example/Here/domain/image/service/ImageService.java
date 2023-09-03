@@ -3,8 +3,6 @@ package com.example.Here.domain.image.service;
 
 import com.example.Here.global.exception.BusinessLogicException;
 import com.example.Here.global.exception.ExceptionCode;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -56,7 +54,7 @@ public class ImageService {
     public String deleteImage(String fileUrl) throws IllegalArgumentException {
 
         if (!fileUrl.contains("/"))
-            throw new BusinessLogicException(ExceptionCode.IMAGEURL_NOT_VALID);
+            throw new BusinessLogicException(ExceptionCode.IMAGE_URL_NOT_VALID);
 
 
         String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
