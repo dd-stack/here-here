@@ -3,7 +3,7 @@ import { authAxios } from "./core/instance";
 
 export const postCard = async (card) => {
   try {
-    const response = await authAxios.post("/making/card", card);
+    const response = await authAxios.post("/card/createCard", card);
     return response;
   } catch (error) {
     console.log(error);
@@ -13,7 +13,7 @@ export const postCard = async (card) => {
 
 export const getCard = async (id) => {
   try {
-    const response = await axios.get(`/making/getcard?cardId=${id}`);
+    const response = await axios.get(`/card/getCard?cardId=${id}`);
     return response;
   } catch (error) {
     console.log(error);
@@ -23,7 +23,7 @@ export const getCard = async (id) => {
 
 export const deleteCard = async (id) => {
   try {
-    await authAxios.delete(`/making/deletecard?cardId=${id}`);
+    await authAxios.delete(`/card/deleteCard?cardId=${id}`);
     return "success";
   } catch (error) {
     console.log(error);
@@ -33,7 +33,7 @@ export const deleteCard = async (id) => {
 
 export const getParticipant = async (id) => {
   try {
-    const response = await authAxios.get(`/invitation/checkmember/${id}`);
+    const response = await authAxios.get(`/invitation/checkMember/${id}`);
     return response;
   } catch (error) {
     console.log(error);
