@@ -37,7 +37,7 @@ public class InvitationController {
 
     }
 
-    @GetMapping("/checkmember/{cardId}")
+    @GetMapping("/checkMember/{cardId}")
     public ResponseEntity<List<MemberDtoToAcceptList>> checkInvitationMember(@PathVariable String cardId) {
 
         return ResponseEntity.ok(invitationService.getAcceptedMembersByCardId(cardId));

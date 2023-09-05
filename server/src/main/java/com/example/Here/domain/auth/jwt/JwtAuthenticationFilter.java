@@ -23,7 +23,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String requestURI = request.getRequestURI();
         if (requestURI.contains("/api/token") ||
                 requestURI.startsWith("/image") ||
-                requestURI.equals("/making/getcard") ||
+                requestURI.equals("/card/getCard") ||
                 requestURI.equals("/api/refresh") ||
                 requestURI.startsWith("/swagger-ui") ||
                 requestURI.startsWith("/v3/api-docs") ||

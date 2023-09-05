@@ -52,14 +52,11 @@ public class CardService {
         // 만든 사람이 초대를 수락할 수 없게 클라이언트에서 수락버튼을 안보이게 함
         CardDto cardDto = new CardDto(card.getTitle(), card.getStartTime(), card.getEndTime(), card.getBackground(), card.getContent(), card.getTextLocation(), card.getTextColor(), card.getLocation(), card.getCreator().getEmail());
 
-        //ObjectMapper objectMapper = new ObjectMapper();
-        //String json = objectMapper.writeValueAsString(cardDto);
-
         String json = ObjectMapperUtil.writeValueAsString(cardDto);
-
         log.info("json : {}", json);
 
         return cardDto;
+
     }
 
     @Transactional

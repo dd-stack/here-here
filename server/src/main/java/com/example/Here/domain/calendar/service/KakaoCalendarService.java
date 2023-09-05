@@ -21,7 +21,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import java.util.Map;
 
 
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -41,16 +40,12 @@ public class KakaoCalendarService {
 
             ResponseEntity<String> response = HttpUtils.sendRequest(URL, HttpMethod.POST, kakaoCalenderProcessor.createEntity(member, event), String.class);
 
-            /*
-            HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(kakaoCalenderProcessor.createBody(event), kakaoCalenderProcessor.createHeader(member));
-            ResponseEntity<String> response = kakaoCalenderProcessor.postForEntity(URL, member, event);
-             */
-
             if (response.getStatusCode().is2xxSuccessful()) {
                 String responseBody = response.getBody();
                 log.info("Raw response body: " + responseBody);
-                //Map<String, Object> map = new ObjectMapper().readValue(responseBody, new TypeReference<Map<String, Object>>() {});
+
                 Map<String, Object> map = ObjectMapperUtil.readValue(responseBody, new TypeReference<Map<String, Object>>() {});
+                log.info("Parsed response body: " + map);
 
                 return "톡캘린더 api 호출 성공";
             }
@@ -60,7 +55,9 @@ public class KakaoCalendarService {
                 throw new BusinessLogicException(ExceptionCode.NOT_VALID_REQUEST);
             }
 
-        } catch (HttpClientErrorException e) {
+        }
+
+        catch (HttpClientErrorException e) {
 
             log.error("Failed to create event: " + e.getResponseBodyAsString());
             throw new BusinessLogicException(ExceptionCode.NO_PERMISSION_FOR_CALENDAR);

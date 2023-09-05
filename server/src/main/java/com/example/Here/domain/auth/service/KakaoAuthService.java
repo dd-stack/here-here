@@ -26,21 +26,21 @@ public class KakaoAuthService {
 
     private final KakaoAuthProcessor kakaoAuthProcessor;
 
-    public Map<String, String> getTokensFromKakao(String code) throws JsonProcessingException {
+    public Map<String, String> getTokensFromKakao(String code) {
 
         try {
 
-            final String requestUrl = HttpUtils.createRequestUrlToGetToken("https://kauth.kakao.com/oauth/token", "authorization_code", clientId, "http://localhost:3000/login/oauth2/code/kakao", code, clientSecret);
-            //final String requestUrl = HttpUtils.createRequestUrlToGetToken("https://kauth.kakao.com/oauth/token", "authorization_code", clientId, "https://here-here.co.kr/login/oauth2/code/kakao", code, clientSecret);
+            //final String requestUrl = HttpUtils.createRequestUrlToGetToken("https://kauth.kakao.com/oauth/token", "authorization_code", clientId, "http://localhost:3000/login/oauth2/code/kakao", code, clientSecret);
+            final String requestUrl = HttpUtils.createRequestUrlToGetToken("https://kauth.kakao.com/oauth/token", "authorization_code", clientId, "https://here-here.co.kr/login/oauth2/code/kakao", code, clientSecret);
             ResponseEntity<String> responseEntity = HttpUtils.sendRequest(requestUrl, HttpMethod.POST, HttpEntity.EMPTY, String.class);
 
             return ObjectMapperUtil.readValue(responseEntity.getBody(), new TypeReference<Map<String, String>>() {});
         }
 
         catch (JsonProcessingException e) {
+
             log.error("Error occurred while processing JSON: ", e);
             throw new InvalidJsonFormatException("Invalid JSON format", e);
-
         }
 
 

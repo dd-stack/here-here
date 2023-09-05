@@ -28,15 +28,15 @@ public class MemberController {
 
     }
 
-    @GetMapping("/mypage/createcard")
-    public ResponseEntity<CardPageDto> getCreatedCard(@RequestParam int page, @RequestParam int size) {
+    @GetMapping("/mypage/createCards")
+    public ResponseEntity<CardPageDto> getCreateCard(@RequestParam int page, @RequestParam int size) {
 
         CardPageDto cardPageDto = cardService.getCreatedCards(page, size);
         return new ResponseEntity<>(cardPageDto, HttpStatus.OK);
     }
 
-    @GetMapping("/mypage/receivedcard")
-    public ResponseEntity<CardPageDto> getReceivedCard(@RequestParam int page, @RequestParam int size) {
+    @GetMapping("/mypage/receiveCards")
+    public ResponseEntity<CardPageDto> getReceiveCard(@RequestParam int page, @RequestParam int size) {
 
         CardPageDto cardPageDto = cardService.getReceivedCards(page, size);
         return new ResponseEntity<>(cardPageDto, HttpStatus.OK);

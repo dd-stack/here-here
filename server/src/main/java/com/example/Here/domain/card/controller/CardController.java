@@ -17,19 +17,19 @@ public class CardController {
 
     private final CardService cardService;
 
-    @PostMapping("/createcard")
+    @PostMapping("/createCard")
     public ResponseEntity<?> createCard(@RequestBody CardDto cardDto) {
 
         return new ResponseEntity<>(cardService.createCard(cardDto), HttpStatus.OK);
     }
 
-    @GetMapping("/getcard")
+    @GetMapping("/getCard")
     public ResponseEntity<?> getCard(@RequestParam String cardId) throws JsonProcessingException {
         //카드 생성시에 줬던 카드id를 다시 받아서 카드를 불러옴
         return new ResponseEntity<>(cardService.getCard(cardId), HttpStatus.OK);
     }
 
-    @DeleteMapping("/deletecard")
+    @DeleteMapping("/deleteCard")
     public ResponseEntity<?> deleteCard(@RequestParam String cardId) throws JsonProcessingException {
 
         cardService.deleteCard(cardId);
