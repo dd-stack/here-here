@@ -3,12 +3,12 @@ package com.example.Here.domain.card.dto;
 import com.example.Here.domain.card.entity.Card;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
+import lombok.ToString;
 
 @Getter
 @Setter
-public class CardDtoListToPage {
+@ToString
+public class CardDtoToPage {
 
     private String id;
 
@@ -20,23 +20,12 @@ public class CardDtoListToPage {
 
     private String location;
 
-    public CardDtoListToPage(Card card){
+    public CardDtoToPage(Card card){
         this.id = card.getId();
         this.title = card.getTitle();
         this.startTime = card.getStartTime();
         this.endTime = card.getEndTime();
         this.location = card.getLocation();
-    }
-
-    @Override
-    public String toString() {
-        return "CardDtoListToPage{" +
-                "id='" + id + '\'' +
-                ", title='" + title + '\'' +
-                ", startTime='" + startTime + '\'' +
-                ", endTime='" + endTime + '\'' +
-                ", location='" + location + '\'' +
-                '}';
     }
 
 }

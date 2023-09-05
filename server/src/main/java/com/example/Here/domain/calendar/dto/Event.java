@@ -3,9 +3,11 @@ package com.example.Here.domain.calendar.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Event {
 
@@ -16,46 +18,24 @@ public class Event {
 
     @Getter
     @Setter
+    @ToString
     public static class Time {
+
         private String start_at;
 
         private String end_at;
 
         private String time_zone;
 
-        @Override
-        public String toString() {
-            return "Time{" +
-                    "start_at='" + start_at + '\'' +
-                    ", end_at='" + end_at  + '\'' +
-                    ", time_zone='" + time_zone + '}';
-        }
-
     }
 
     @Getter
     @Setter
+    @ToString
     public static class Location {
 
         private String name;
 
-        @Override
-        public String toString() {
-            return "Location{" +
-                    "name='" + name + '\'' +
-                    '}';
-        }
-
-    }
-
-    @Override
-    public String toString() {
-        return "Event{" +
-                "title='" + title + '\'' +
-                ", time=" + time +
-                ", description='" + description + '\'' +
-                ", location=" + location +
-                '}';
     }
 
 }
