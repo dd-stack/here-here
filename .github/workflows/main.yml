@@ -1,0 +1,69 @@
+name: Here CI/CD
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'server/**'
+
+env:
+  ECR_REPOSITORY: here-repo  # ECR repository name
+  AWS_ACCESSKEY: ${{ secrets.AWS_ACCESSKEY }}
+  AWS_BUCKETNAME: ${{ secrets.AWS_BUCKETNAME }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  AWS_SECRETKEY: ${{ secrets.AWS_SECRETKEY }}
+  CLIENT_ID: ${{ secrets.CLIENT_ID }}
+  CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  DB_USERNAME: ${{ secrets.DB_USERNAME }}
+  ENCRYPTION_SALT: ${{ secrets.ENCRYPTION_SALT }}
+  ENCRYPTION_SECRET: ${{ secrets.ENCRYPTION_SECRET }}
+  JWT_KEY: ${{ secrets.JWT_KEY }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+
+      - name: Build with Gradle
+        run: ./gradlew build --project-dir server
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESSKEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRETKEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./server
+          push: true
+          tags: ${{ env.ECR_REPOSITORY }}:latest
+
+      - name: Deploy to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.SSH_HOST }} << 'ENDSSH'
+          sudo docker pull ${{ env.ECR_REPOSITORY }}:latest
+          sudo docker stop HereContainer
+          sudo docker rm HereContainer
+          sudo docker run --env-file env.list -p 80:8080 -d -e "SPRING_PROFILES_ACTIVE=prod" --name HereContainer ${{ env.ECR_REPOSITORY }}:latest
+          ENDSSH
