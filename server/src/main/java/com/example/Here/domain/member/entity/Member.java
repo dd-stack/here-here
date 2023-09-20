@@ -49,16 +49,4 @@ public class Member extends BaseTime {
         this.profileImageURL = profileImageURL;
     }
 
-
-    @Override
-    public String toString() {
-        return "Member{" +
-                "memberId=" + memberId +
-                ", email='" + email + '\'' +
-                ", nickName='" + nickName + '\'' +
-                ", profileImageURL='" + profileImageURL + '\'' +
-                ", deleted=" + deleted +
-                '}';
-    }
-
 }
