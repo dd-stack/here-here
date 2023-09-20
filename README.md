@@ -22,8 +22,7 @@
 <https://chojuyeon94.github.io/herehere-docs/herehere-api-docs.html><br><br>
 
 [ 서버 구성도 ]
-![아키텍처](https://github.com/dd-stack/here-here/assets/110347822/ed2c0828-83cb-4bba-b09a-d788dd55aa96)
-
+![아키텍처](https://github.com/dd-stack/here-here/assets/110347822/ed2c0828-83cb-4bba-b09a-d788dd55aa96)<br><br>
 
 [ 초대장 예시 화면 ]
 
