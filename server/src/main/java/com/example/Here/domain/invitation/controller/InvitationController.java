@@ -4,7 +4,6 @@ import com.example.Here.domain.invitation.Service.InvitationService;
 import com.example.Here.domain.member.dto.MemberDtoToAcceptList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
