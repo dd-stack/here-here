@@ -8,9 +8,9 @@ public enum ExceptionCode {
 
     IMAGE_URL_NOT_VALID(401, "유효하지 않은 이미지 URL입니다."),
 
-    NO_PERMISSION_FOR_CALENDAR(402, "톡캘린더 api호출 권한이 없습니다."),
+    NO_PERMISSION_FOR_CALENDAR(403, "톡캘린더 api호출 권한이 없습니다."),
 
-    NO_PERMISSION_FOR_CHECKING_MEMBER(402, "수락한 명단 조회 권한이 없습니다."),
+    NO_PERMISSION_FOR_CHECKING_MEMBER(403, "수락한 명단 조회 권한이 없습니다."),
 
     MEMBER_NOT_FOUND(404, "회원이 존재하지 않습니다."),
 

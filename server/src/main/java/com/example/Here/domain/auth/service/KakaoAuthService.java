@@ -29,7 +29,6 @@ public class KakaoAuthService {
     public Map<String, String> getTokensFromKakao(String code) {
 
         try {
-
             //final String requestUrl = HttpUtils.createRequestUrlToGetToken("https://kauth.kakao.com/oauth/token", "authorization_code", clientId, "http://localhost:3000/login/oauth2/code/kakao", code, clientSecret);
             final String requestUrl = HttpUtils.createRequestUrlToGetToken("https://kauth.kakao.com/oauth/token", "authorization_code", clientId, "https://here-here.co.kr/login/oauth2/code/kakao", code, clientSecret);
             ResponseEntity<String> responseEntity = HttpUtils.sendRequest(requestUrl, HttpMethod.POST, HttpEntity.EMPTY, String.class);
@@ -59,14 +58,12 @@ public class KakaoAuthService {
         }
 
         catch (Exception e) {
-            log.error("Unexpected Error occurred: ", e);
+            log.error("토큰 값이 잘못되었거나 유효하지 않은 토큰입니다.", e);
             return false;
         }
     }
 
-    public Map<String, String> refreshKakaoTokens(String refreshToken) throws JsonProcessingException {
-
-
+    public Map<String, String> refreshKakaoTokens(String refreshToken) {
 
         try {
 
@@ -82,7 +79,7 @@ public class KakaoAuthService {
 
     }
 
-    public String verifyAndRefreshKakaoToken(String email) throws JsonProcessingException {
+    public String verifyAndRefreshKakaoToken(String email) {
 
         String kakaoAccessToken = kakaoAuthProcessor.getKakaoToken(email);
 

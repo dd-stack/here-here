@@ -19,17 +19,8 @@ public class ImageController {
 
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
-        try {
-            return ResponseEntity.ok(imageService.uploadImage(file));
-        }
-        catch (MaxUploadSizeExceededException e){
-            return new ResponseEntity<>("파일이 5MB를 초과할 수 없습니다.", HttpStatus.EXPECTATION_FAILED);
-        }
-        catch (IOException e){
-            return new ResponseEntity<>("파일 업로드에 실패했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
 
-
+        return ResponseEntity.ok(imageService.uploadImage(file));
     }
 
     @DeleteMapping("/delete")

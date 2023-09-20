@@ -23,7 +23,7 @@ public class CalendarController {
     private final KakaoCalendarService kakaoCalendarService;
 
     @PostMapping("/event")
-    public ResponseEntity<?> createEvent(@RequestBody Event event) throws JsonProcessingException {
+    public ResponseEntity<?> createEvent(@RequestBody Event event) {
 
         log.info("request : {}", event);
 

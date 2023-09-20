@@ -30,11 +30,11 @@ public class ImageService {
         this.bucketName = amazonConfig.getBucketName();
     }
 
-    public String uploadImage(MultipartFile multipartFile) throws IOException {
+    public String uploadImage(MultipartFile multipartFile) {
 
         try {
             File file = convertMultiPartFileToFile(multipartFile);
-            String fileName = UUID.randomUUID().toString() + "_" + file.getName();
+            String fileName = UUID.randomUUID() + "_" + file.getName();
             s3Client.putObject(PutObjectRequest.builder().bucket(bucketName).key(fileName).build(),
                     RequestBody.fromFile(file));
             file.delete();
