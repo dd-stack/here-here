@@ -3,7 +3,6 @@ package com.example.Here.domain.member.entity;
 import com.example.Here.domain.card.entity.Card;
 import com.example.Here.domain.invitation.entity.Invitation;
 import com.example.Here.global.audit.BaseTime;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
