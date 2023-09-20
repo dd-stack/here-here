@@ -35,7 +35,9 @@ jobs:
           distribution: 'adopt'
 
       - name: Build with Gradle
-        run: ./gradlew build --project-dir server
+        run: |
+          cd server
+          ./gradlew build
 
   deploy:
     needs: build
