@@ -56,6 +56,9 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
+      - name: List directories
+        run: ls -al
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
