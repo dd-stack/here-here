@@ -42,7 +42,7 @@ public class RequestResponseLoggingInterceptor implements ClientHttpRequestInter
         }
         log.info("Status code: " + response.getStatusCode());
         log.info("Status text: " + response.getStatusText());
-        log.info("Response Body: " + inputStringBuilder.toString());
+        log.info("Response Body: " + inputStringBuilder);
     }
 
 }
