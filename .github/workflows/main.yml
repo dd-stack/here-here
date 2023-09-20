@@ -20,7 +20,8 @@ env:
   ENCRYPTION_SALT: ${{ secrets.ENCRYPTION_SALT }}
   ENCRYPTION_SECRET: ${{ secrets.ENCRYPTION_SECRET }}
   JWT_KEY: ${{ secrets.JWT_KEY }}
-
+  ECR_REGISTRY :  ${{ secrets.ECR_REGISTRY }}
+  
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
@@ -45,7 +46,7 @@ jobs:
           cd ..
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v3
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESSKEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRETKEY }}
@@ -58,8 +59,8 @@ jobs:
       - name: Build and push Docker image
         run : |
           cd server
-          docker build -t ${{ secrets.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest .
-          docker push ${{ secrets.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest
+          docker build -t ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest .
+          docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest
 
       - name: Deploy to EC2
         run: |
