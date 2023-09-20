@@ -70,7 +70,7 @@ jobs:
       - name: Deploy to EC2
         run: |
           ssh -v -o StrictHostKeyChecking=no -i private_key.pem ${{ secrets.SSH_HOST }} << 'ENDSSH'
-          aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com
+          aws ecr get-login-password --region ap-northeast-2 | sudo docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com
           sudo docker pull ${{ env.ECR_REPOSITORY }}:latest
           sudo docker stop HereContainer
           sudo docker rm HereContainer
