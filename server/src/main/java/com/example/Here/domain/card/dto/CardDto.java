@@ -2,8 +2,6 @@ package com.example.Here.domain.card.dto;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @RequiredArgsConstructor
