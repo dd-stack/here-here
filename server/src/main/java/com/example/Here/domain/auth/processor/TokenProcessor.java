@@ -20,7 +20,7 @@ public class TokenProcessor {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    public Map<String, String> setTokens(String code) throws JsonProcessingException {
+    public Map<String, String> setTokens(String code) {
 
         return kakaoAuthService.getTokensFromKakao(code);
     }
@@ -50,6 +50,5 @@ public class TokenProcessor {
 
         return jwtTokenProvider.generateRefreshToken(authMember);
     }
-
 
 }
