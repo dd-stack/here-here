@@ -20,8 +20,6 @@ public class CardProcessor {
 
     private final CardRepository cardRepository;
 
-    private final InvitationRepository invitationRepository;
-
     public Card findCardById(String cardId) {
 
         return cardRepository.findById(cardId)
