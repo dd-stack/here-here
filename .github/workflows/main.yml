@@ -62,11 +62,16 @@ jobs:
           docker build -t ${{ env.ECR_REGISTRY }}:latest .
           docker push ${{ env.ECR_REGISTRY }}:latest
 
+      - name: Setup SSH keys
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
+          chmod 600 private_key.pem
+
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.SSH_HOST }} << 'ENDSSH'
-          sudo docker pull ${{ env.ECR_REGISTRY }}:latest
+          ssh -v -o StrictHostKeyChecking=no -i private_key.pem ${{ secrets.SSH_HOST }} << 'ENDSSH'
+          sudo docker pull ${{ env.ECR_REPOSITORY }}:latest
           sudo docker stop HereContainer
           sudo docker rm HereContainer
-          sudo docker run --env-file env.list -p 80:8080 -d -e "SPRING_PROFILES_ACTIVE=prod" --name HereContainer ${{ env.ECR_REGISTRY }}:latest
+          sudo docker run --env-file env.list -p 80:8080 -d -e "SPRING_PROFILES_ACTIVE=prod" --name HereContainer ${{ env.ECR_REPOSITORY }}:latest
           ENDSSH
