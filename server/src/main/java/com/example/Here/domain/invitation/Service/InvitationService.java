@@ -2,24 +2,17 @@ package com.example.Here.domain.invitation.Service;
 
 import com.example.Here.domain.auth.service.AuthenticationService;
 import com.example.Here.domain.card.entity.Card;
-import com.example.Here.domain.card.repository.CardRepository;
 import com.example.Here.domain.invitation.entity.Invitation;
 import com.example.Here.domain.invitation.processor.InvitationProcessor;
 import com.example.Here.domain.invitation.repository.InvitationRepository;
 import com.example.Here.domain.member.dto.MemberDtoToAcceptList;
 import com.example.Here.domain.member.entity.Member;
-import com.example.Here.domain.member.repository.MemberRepository;
-import com.example.Here.global.exception.BusinessLogicException;
-import com.example.Here.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
