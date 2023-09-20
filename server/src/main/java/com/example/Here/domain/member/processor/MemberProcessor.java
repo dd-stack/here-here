@@ -1,6 +1,5 @@
 package com.example.Here.domain.member.processor;
 
-import com.example.Here.domain.auth.service.KakaoAuthService;
 import com.example.Here.domain.auth.service.RedisService;
 import com.example.Here.domain.member.entity.Member;
 import com.example.Here.domain.member.repository.MemberRepository;
