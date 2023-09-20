@@ -37,6 +37,7 @@ jobs:
       - name: Build with Gradle
         run: |
           cd server
+          chmod +x ./gradlew  # 실행 권한 추가
           ./gradlew build
 
   deploy:
