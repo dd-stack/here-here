@@ -71,21 +71,4 @@ public class Card extends BaseTime {
         this.creator = creator;
     }
 
-    @Override
-    public String toString() {
-        return "Card{" +
-                "id='" + id + '\'' +
-                ", title='" + title + '\'' +
-                ", startTime='" + startTime + '\'' +
-                ", endTime='" + endTime + '\'' +
-                ", background='" + background + '\'' +
-                ", content='" + content + '\'' +
-                ", textLocation='" + textLocation + '\'' +
-                ", textColor='" + textColor + '\'' +
-                ", location='" + location + '\'' +
-                ", creator=" + creator +
-                ", deleted=" + deleted +
-                '}';
-    }
-
 }
