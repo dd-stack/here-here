@@ -74,5 +74,5 @@ jobs:
           sudo docker pull ${{ env.ECR_REGISTRY }}:latest
           sudo docker stop HereContainer
           sudo docker rm HereContainer
-          sudo docker run --env-file env.list -p 80:8080 -d -e "SPRING_PROFILES_ACTIVE=prod" --name HereContainer ${{ env.ECR_REGISTRY }}:latest
+          sudo docker run --env-file env.list -p 8080:8080 -d -e "SPRING_PROFILES_ACTIVE=prod" --name HereContainer ${{ env.ECR_REGISTRY }}:latest
           ENDSSH
