@@ -21,6 +21,10 @@
 다음 링크에서 확인하세요!<br>
 <https://chojuyeon94.github.io/herehere-docs/herehere-api-docs.html><br><br>
 
+[ 서버 구성도 ]
+![아키텍처](https://github.com/dd-stack/here-here/assets/110347822/ed2c0828-83cb-4bba-b09a-d788dd55aa96)
+
+
 [ 초대장 예시 화면 ]
 
 ![초대장 예시 화면](https://github.com/dd-stack/here-here/assets/117844745/5c26f2a5-37e4-42fe-8365-a56444d6674c)<br><br>
