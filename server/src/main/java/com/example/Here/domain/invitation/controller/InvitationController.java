@@ -1,11 +1,7 @@
 package com.example.Here.domain.invitation.controller;
 
-import com.example.Here.domain.auth.service.AuthenticationService;
 import com.example.Here.domain.invitation.Service.InvitationService;
 import com.example.Here.domain.member.dto.MemberDtoToAcceptList;
-import com.example.Here.domain.member.entity.Member;
-import com.example.Here.global.exception.BusinessLogicException;
-import com.example.Here.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -42,6 +38,5 @@ public class InvitationController {
 
         return ResponseEntity.ok(invitationService.getAcceptedMembersByCardId(cardId));
     }
-
 
 }
