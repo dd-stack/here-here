@@ -36,6 +36,7 @@ const ExplainWrapper = styled.div`
   text-align: center;
   > img {
     width: 300px;
+    height: 300px;
   }
   > p {
     font-size: 24px;
