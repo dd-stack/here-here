@@ -3,9 +3,9 @@ import { useSelector } from "react-redux";
 
 import styled from "styled-components";
 import { BsBoxArrowUpRight } from "react-icons/bs";
-import makingCardSample from "../img/making-card-sample.png";
-import shareMessageSample from "../img/share-message-sample.png";
-import calendarSample from "../img/calendar-sample.png";
+import makingCardSample from "../img/making-card-sample.svg";
+import shareMessageSample from "../img/share-message-sample.svg";
+import calendarSample from "../img/calendar-sample.svg";
 
 const EntireContainer = styled.div`
   display: flex;
