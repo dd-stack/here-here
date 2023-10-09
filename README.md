@@ -24,9 +24,12 @@
 [ 서버 구성도 ]
 ![아키텍처](https://github.com/dd-stack/here-here/assets/110347822/ed2c0828-83cb-4bba-b09a-d788dd55aa96)<br><br>
 
-[ 초대장 예시 화면 ]
+[ 예시 화면 ]
 
-![초대장 예시 화면](https://github.com/dd-stack/here-here/assets/117844745/5c26f2a5-37e4-42fe-8365-a56444d6674c)<br><br>
+![초대장 제작 화면](https://github.com/dd-stack/here-here/assets/117844745/bc180cb1-ac4b-44a7-8a42-724147c7245c)<br><br>
+
+![초대장 예시 화면](https://github.com/dd-stack/here-here/assets/117844745/1af8262f-0e41-4ea2-b5f3-cc8bd6c9f3c4)<br><br>
+
 
 ### 프로젝트 타임라인
 
